@@ -54,5 +54,12 @@
     "where": "README, handoff",
     "test": "npm run test:e2e -- --grep @claim:rate-limit",
     "sandbox": "60 parallel reads from one synthetic forwarded client IP"
+  },
+  {
+    "id": "paid-license",
+    "claim": "A returned team license is stored, removed from the URL, and verified with Sociobot.",
+    "where": "team plan panel, privacy page, README",
+    "test": "npm run test:e2e -- --grep @claim:paid-license",
+    "sandbox": "fresh browser context with a recorded valid Sociobot verification response"
   }
 ]

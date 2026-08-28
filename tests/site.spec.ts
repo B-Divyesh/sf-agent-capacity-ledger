@@ -40,3 +40,10 @@ test('bad CSV explains what to fix', async ({ page }) => {
   await page.getByRole('button', { name: 'Import sources' }).click();
   await expect(page.getByRole('alert')).toContainText('The CSV needs these columns');
 });
+
+test('primary routes load without console errors', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+  for (const path of ['/', '/demo', '/ledger', '/privacy', '/terms']) await page.goto(path);
+  expect(errors).toEqual([]);
+});

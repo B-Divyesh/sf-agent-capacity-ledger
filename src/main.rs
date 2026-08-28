@@ -76,10 +76,14 @@ async fn get_ledger(
             let data = serde_json::from_str(&data).map_err(internal)?;
             Ok(Json(LedgerResponse { data, updated_at }))
         }
-        None => Err(error(
-            StatusCode::NOT_FOUND,
-            "No ledger exists in this workspace yet.",
-        )),
+        None => Ok(Json(LedgerResponse {
+            data: serde_json::json!({
+                "teamName": "My engineering team",
+                "sources": [],
+                "spend": []
+            }),
+            updated_at: String::new(),
+        })),
     }
 }
 
@@ -160,7 +164,7 @@ async fn make_app(database_url: &str, build_sha: String, dist: PathBuf) -> Route
     Router::new()
         .route("/health", get(health))
         .nest("/api", api)
-        .fallback_service(ServeDir::new(&dist).not_found_service(ServeFile::new(dist.join("index.html"))))
+        .fallback_service(ServeDir::new(&dist).fallback(ServeFile::new(dist.join("index.html"))))
         .with_state(state)
         .layer(SetResponseHeaderLayer::overriding(
             header::X_CONTENT_TYPE_OPTIONS,

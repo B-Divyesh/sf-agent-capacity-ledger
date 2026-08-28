@@ -92,3 +92,15 @@ test('@claim:rate-limit returns 429 and Retry-After after the API allowance', as
   expect(limited).toBeDefined();
   expect(limited!.headers()['retry-after']).toBeTruthy();
 });
+
+test('@claim:paid-license stores and verifies a returned team license', async ({ page }) => {
+  await page.route('https://api.sociobot.in/api/v1/products/agent-capacity-ledger/verify?license=test_token', route => route.fulfill({
+    status: 200,
+    contentType: 'application/json',
+    body: JSON.stringify({ valid: true, reason: 'ok', expires_at: '2027-08-28T00:00:00Z' }),
+  }));
+  await page.goto('/ledger?license=test_token');
+  await expect(page.getByRole('heading', { name: 'Team plan active' })).toBeVisible();
+  expect(await page.evaluate(() => localStorage.getItem('sb_license:agent-capacity-ledger'))).toBe('test_token');
+  expect(new URL(page.url()).searchParams.has('license')).toBe(false);
+});

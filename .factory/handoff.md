@@ -28,11 +28,11 @@ Open `http://localhost:8080/demo` for the verification sandbox.
 
 - `npm run check`: passed with 0 errors and 0 warnings.
 - `npm test`: passed 4 Vitest tests and 2 Rust route tests.
-- `npm run test:e2e`: passed the full Playwright suite, including every `.factory/claims.json` claim, 390 px layout, metadata, and axe.
+- `npm run test:e2e`: passed 17 Playwright tests, including every `.factory/claims.json` claim, 390 px layout, metadata, axe, and console checks.
 - `cargo clippy --all-targets -- -D warnings`: passed.
 - `cargo build --release`: passed.
 - `npm audit --omit=dev`: 0 vulnerabilities.
-- Production output: `dist/index.html`; 69.3 KB JavaScript raw / 25.7 KB gzip; 16.5 KB CSS raw / 4.5 KB gzip; largest hero derivative 67 KB.
+- Production output: `dist/index.html`; 70.2 KB JavaScript raw / 26.0 KB gzip; 16.6 KB CSS raw / 4.5 KB gzip; largest hero derivative 67 KB.
 - Lighthouse mobile on the production server: Performance 100, Accessibility 100, Best Practices 100, SEO 100; LCP 1.4 s, CLS 0, TBT 50 ms.
 - Load smoke: 100 concurrent `/health` requests returned 100 HTTP 200 responses.
 - Generated image reviewed for text artifacts, brands, people, seams, and misleading UI; none found.

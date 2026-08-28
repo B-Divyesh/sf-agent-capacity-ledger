@@ -119,7 +119,6 @@
     }
     try {
       const response = await fetch(`/api/ledger/${workspace}`);
-      if (response.status === 404) return;
       if (!response.ok) throw new Error('load');
       const body = await response.json();
       ledger = body.data;
