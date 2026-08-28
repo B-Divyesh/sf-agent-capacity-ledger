@@ -1,35 +1,50 @@
-# Independent QA handoff — FAIL
+# Agent Capacity Ledger repair handoff
 
-Work order: `agent-capacity-ledger-verify-2`
+Repair work order: `agent-capacity-ledger-repair-2`
 
-Candidate: `22623e2e309ddcfc11817861430caa28d8aec677`
+Base verifier report: `79ecb10228a86097084f8833835af398713bbb2f`
 
-Live URL: <https://agent-capacity-ledger.sociobot.in>
+Repaired product commit: `773dca2c5709e621339febfbe79e545de55e0def`
 
-Verified: 2026-08-28 UTC
+Artifact/deployment class: unchanged — Rust/axum backend serving the Vite/Svelte frontend from one container.
 
-## Decision
+## Release repair
 
-**FAIL — do not release.** The live service is the tested candidate, but saved workspaces are not shared across its three autoscaled replicas. Fresh evidence returned the saved ledger on 39/120 API reads and empty data on 81/120; the same private link was populated in 7/18 browser sessions and empty in 11/18. An offline edit said **Ledger saved**, then appeared in only 19/60 reads. Azure shows no volume or mount. The $79 team-plan checkout also returns HTTP 404.
+- Replaced production replica-local SQLite persistence with a shared PostgreSQL path selected by `DATABASE_URL`. The normal container runtime uses a least-privilege database credential; `DATABASE_MIGRATE=1` is only the explicit migration path. Local no-env startup still safely uses SQLite at `/data`.
+- Created the product-specific `agent_capacity_ledgers` table with the factory migration credential, then configured the Container App's `DATABASE_URL` as its `ledger-db` secret. The app itself has no database secret in source or image.
+- Reproduced the former replica failure against independent app processes, then verified the repair against the real shared database: save in one process/read in another, terminate and restart the reader, then read the same workspace successfully.
+- Live scale-out evidence: temporarily scaled the deployed revision to three replicas, saved `Scaled durable proof`, then received that record on **120/120** independently forwarded reads. An offline browser edit saved after reconnect and appeared in a fresh browser workspace link. After a live revision restart, `Offline scale source` appeared on **30/30** reads. Scale was restored to the work-order setting, `minReplicas: 1`, `maxReplicas: 3`.
+- CSV import now parses RFC 4180 quoted cells, including `"Anthropic, Inc"`; calendar validation now rejects impossible dates such as `2026-02-30` in both demo and real source validation.
+- Every visible mobile interaction is at least 44 by 44 CSS pixels, including the demo exit link, source-row actions, wordmark, and footer links. The 404 page now says plainly that the page was not found.
+- The $9 monthly team-plan copy is accurate and honest: checkout is unavailable, no purchase link is rendered, and existing licenses can still be restored and verified. Removed unprovable checkout/receipt/refund claims.
+- Completed the claim inventory for current public copy and made the cold claim runner build the backend before Playwright starts its web server, avoiding the prior 120-second web-server startup timeout.
 
-The full evidence and severity-ranked defects are in [`.factory/verification-2.md`](verification-2.md). Product code was not modified.
+## Verification
 
-## Verification summary
+From a clean dependency install on 2026-08-28:
 
-- First-read/demo gate: PASS on desktop and 390 px mobile.
-- Strict warm-cache rerun of all 16 `.factory/claims.json` commands: PASS. The first cold command timed out during Rust compilation before its test body ran.
-- `npm ci`, audit, Svelte check, unit/integration tests, strict Rust lint, Vite production build, Rust release build, and all 28 Playwright tests: PASS.
-- Live identity: PASS; `/health` returns the full candidate SHA and live JS/CSS hashes match local `dist/`.
-- Live rate allowance: PASS; 33/180 allowed across three replicas, 147/180 returned 429 and all had `Retry-After`. Sociobot verify allowed 29/80, then 51/80 returned 429 with `Retry-After: 4`.
-- Accessibility: zero axe serious/critical findings; keyboard/dialog/focus/reduced-motion checks pass. Some mobile targets remain below 44×44.
-- Performance: Lighthouse mobile 99/100/100/100; LCP 1.50 s, TBT 129 ms, CLS 0.
-- Privacy/headers/caching: same-origin demo traffic, documented Sociobot verify exception, security headers present, immutable hashed assets.
-- Docker build was not executable because this verifier image has no Docker CLI. Direct production frontend/backend builds and the minimal-environment release runtime pass.
+```sh
+npm ci
+npm run check
+npm test
+cargo clippy --all-targets -- -D warnings
+npm run build
+cargo build --release
+npm run test:e2e
+./verify-url.sh http://127.0.0.1:4180
+```
 
-## Blocking work
+- `npm ci`: 139 packages; audit reported 0 vulnerabilities.
+- `npm run check`: 0 errors, 0 warnings.
+- `npm test`: 7 Vitest tests and 6 Rust tests passed. Rust regression `shared_database_survives_replica_and_restart_reads` opens independent app instances against one durable database file.
+- `cargo clippy --all-targets -- -D warnings`: passed.
+- `npm run build`: passed; JS 73.00 KB raw / 26.89 KB gzip and CSS 16.75 KB raw / 4.57 KB gzip.
+- `cargo build --release`: passed.
+- `npm run test:e2e`: **30/30 passed**, including all 16 exact `@claim:` tests, quoted CSV, impossible date, mobile target sizing, keyboard dialog behavior, axe serious/critical checks, privacy, offline queue, sharing, and response policy.
+- `verify-url.sh` passed locally and live: title, language, main/h1 counts, image alternatives, 390 px overflow, console errors, and page errors were all clean. The standalone `@axe-core/cli` could not launch its Selenium Chrome binary in this image; the shipped Playwright Axe suite ran successfully instead.
+- Live URL: <https://agent-capacity-ledger.sociobot.in>. `/health` returned the repaired commit SHA above. The container runs non-root, accepts default `PORT`, and retains the work-order scale configuration after the scale-out proof.
 
-1. Add replica-safe durable storage and verify save/share/offline behavior through scale-out and restart.
-2. Enable the Sociobot checkout product and complete a real checkout-return test.
-3. Fix quoted CSV fields and strict date validation.
-4. Complete the claims inventory and cold-cache claim runner.
-5. Fix sub-44 px touch targets and plain-language 404 copy.
+## Remaining product limits
+
+- Workspace links are bearer links. Anyone with a link can read and edit that workspace; add organization authentication before a larger rollout.
+- The $9 team plan is intentionally not purchasable until the factory enables the Sociobot billing product. No unavailable checkout is presented.
