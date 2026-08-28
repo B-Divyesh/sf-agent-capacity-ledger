@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { attributedPercent, ledgerCsv, remaining, risk, sourceValidationError } from './ledger';
+import { attributedPercent, ledgerCsv, parseCsv, remaining, risk, sourceValidationError } from './ledger';
 import { sampleLedger } from './sample';
 
 describe('capacity forecast', () => {
@@ -30,5 +30,11 @@ describe('capacity forecast', () => {
     expect(sourceValidationError({ ...source, used: source.limit + 1 })).toBe('Sessions used cannot exceed the session limit.');
     expect(sourceValidationError({ ...source, used: -1 })).toBe('Sessions used cannot be negative.');
     expect(sourceValidationError({ ...source, dailyPace: -1 })).toBe('Daily pace cannot be negative.');
+    expect(sourceValidationError({ ...source, resetsOn: '2026-02-30' })).toBe('Add a valid reset date.');
+  });
+
+  it('parses quoted RFC 4180 CSV cells and rejects malformed quote placement', () => {
+    expect(parseCsv('vendor,plan\n"Anthropic, Inc",Team')).toEqual([['vendor', 'plan'], ['Anthropic, Inc', 'Team']]);
+    expect(parseCsv('vendor\nnot"quoted')).toBeNull();
   });
 });

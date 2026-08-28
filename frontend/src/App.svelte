@@ -2,8 +2,8 @@
   import { onMount, tick } from 'svelte';
   import type { Ledger, SaveState, Source, SpendEntry } from './types';
   import { emptyLedger, sampleLedger } from './sample';
-  import { attributedPercent, daysUntil, downloadCsv, remaining, risk, runoutDays, sourceValidationError } from './ledger';
-  import { cachedLicenseValid, checkoutUrl, setLicense, storeLicenseFromUrl, verifyLicense } from './license';
+  import { attributedPercent, daysUntil, downloadCsv, parseCsv, remaining, risk, runoutDays, sourceValidationError } from './ledger';
+  import { cachedLicenseValid, setLicense, storeLicenseFromUrl, verifyLicense } from './license';
 
   type Route = '/' | '/demo' | '/ledger' | '/privacy' | '/terms' | '/404';
   let route: Route = routeFromPath(location.pathname);
@@ -293,17 +293,17 @@
 
   function parseImport() {
     importError = '';
-    const lines = importText.trim().split(/\r?\n/).filter(Boolean);
-    if (lines.length < 2) { importError = 'No usage rows were found. Add a header and at least one row.'; return; }
-    const headers = lines[0].split(',').map((item) => item.trim().toLowerCase());
+    const rows = parseCsv(importText.trim());
+    if (!rows || rows.length < 2) { importError = rows ? 'No usage rows were found. Add a header and at least one row.' : 'The CSV has an unclosed or misplaced quote. Fix the quoted field and import again.'; return; }
+    const headers = rows[0].map((item) => item.trim().toLowerCase());
     const required = ['vendor', 'plan', 'limit', 'used', 'daily_pace', 'resets_on', 'monthly_cost'];
     if (!required.every((name) => headers.includes(name))) {
       importError = `The CSV needs these columns: ${required.join(', ')}.`; return;
     }
     const imported: Source[] = [];
-    for (const [rowIndex, line] of lines.slice(1).entries()) {
-      const cells = line.split(',').map((item) => item.trim());
-      const get = (name: string) => cells[headers.indexOf(name)] ?? '';
+    for (const [rowIndex, cells] of rows.slice(1).entries()) {
+      if (!cells.some((cell) => cell.trim())) continue;
+      const get = (name: string) => (cells[headers.indexOf(name)] ?? '').trim();
       const limit = Number(get('limit')); const used = Number(get('used')); const dailyPace = Number(get('daily_pace')); const monthlyCost = Number(get('monthly_cost'));
       if (!get('vendor') || ![limit, used, dailyPace, monthlyCost].every(Number.isFinite)) {
         importError = `Row ${rowIndex + 2} has missing or invalid values. Fix that row and import again.`; return;
@@ -396,7 +396,7 @@
         <ul class="plain-facts" aria-label="Product facts">
           <li>No prompts collected</li>
           <li>CSV import and export</li>
-          <li>$79 per team each month</li>
+          <li>$9 per team each month</li>
         </ul>
       </div>
       <figure class="hero-art">
@@ -433,10 +433,9 @@
 
     <section class="pricing" aria-labelledby="price-title">
       <p class="eyebrow">Team plan</p>
-      <h2 id="price-title">Track every paid source for $79 a month</h2>
-      <p>Free ledgers hold three sources. The team plan adds sources beyond that cap and lets your team use the license.</p>
-      <a class="primary-button" href={checkoutUrl()}>Buy the team plan</a>
-      <p class="fine-print">Sociobot hosts checkout and handles receipts and refunds.</p>
+      <h2 id="price-title">Track every paid source for $9 a month</h2>
+      <p>Free ledgers hold three sources. The $9 team plan is not available to buy yet, so no checkout link is shown.</p>
+      <p class="fine-print">The free ledger, CSV export, and private workspace links remain available.</p>
     </section>
   {:else if route === '/demo' || route === '/ledger'}
     <section class="app-shell">
@@ -519,8 +518,8 @@
 
       {#if route === '/ledger'}
         <section class="license-panel" aria-labelledby="license-title">
-          <div><p class="eyebrow">Team plan</p><h2 id="license-title">{licensed ? 'Team plan active' : 'Add more than three sources'}</h2><p>{licensed ? 'This device can use the team source limit.' : '$79 per team each month. CSV export and three sources stay free.'}</p></div>
-          {#if !licensed}<div class="license-actions"><a class="primary-button" href={checkoutUrl()}>Buy the team plan</a><label for="license-token">Have a license? Paste it<input id="license-token" bind:value={licenseToken} autocomplete="off" /></label><button class="secondary-button" on:click={restoreLicense}>Verify license</button></div>{/if}
+          <div><p class="eyebrow">Team plan</p><h2 id="license-title">{licensed ? 'Team plan active' : 'Add more than three sources'}</h2><p>{licensed ? 'This device can use the team source limit.' : '$9 per team each month. Checkout is not available yet. CSV export and three sources stay free.'}</p></div>
+          {#if !licensed}<div class="license-actions"><label for="license-token">Have a license? Paste it<input id="license-token" bind:value={licenseToken} autocomplete="off" /></label><button class="secondary-button" on:click={restoreLicense}>Verify license</button></div>{/if}
           {#if licenseMessage}<p class="license-message" role="status">{licenseMessage}</p>{/if}
         </section>
       {/if}
@@ -531,7 +530,7 @@
       <p>Agent Capacity Ledger stores the capacity details you enter. It never asks for prompts, code, vendor passwords, or API keys.</p>
       <h2>What the service stores</h2><p>The server stores your workspace identifier, source limits, reset dates, fallback choices, project names, costs, and update time. Your browser keeps a matching copy for offline edits.</p><p>Anyone with a private workspace link can view and edit that ledger. Share the link only with your team.</p>
       <h2>Demo data</h2><p>The demo runs in memory. It does not read or write your real workspace.</p>
-      <h2>Licenses and checkout</h2><p>Your browser stores a license token after checkout. It sends that token to Sociobot for verification no more than once a day. Sociobot hosts checkout.</p>
+      <h2>Licenses</h2><p>Your browser stores a license token when you paste one. It sends that token to Sociobot for verification no more than once a day. Checkout is not available yet.</p>
       <h2>Deletion</h2><p>Email <a href="mailto:privacy@sociobot.in">privacy@sociobot.in</a> with your workspace identifier to request deletion.</p>
     </article>
   {:else if route === '/terms'}
@@ -539,12 +538,12 @@
       <p class="eyebrow">Last updated 28 August 2026</p><h1 tabindex="-1">Terms for honest capacity planning</h1>
       <p>Use this service to plan work within each vendor’s rules. Do not use it to share accounts, bypass limits, or store credentials.</p>
       <h2>Forecasts are estimates</h2><p>Forecasts depend on the limits, reset dates, and pace you enter. Confirm critical capacity decisions with the vendor.</p>
-      <h2>Team plan</h2><p>The team plan costs $79 each month. Sociobot handles checkout, receipts, refunds, and license status.</p>
+      <h2>Team plan</h2><p>The team plan is $9 each month when checkout is available. It is not available to buy yet. Existing licenses can still be verified.</p>
       <h2>Your data</h2><p>You are responsible for team names, project names, costs, and vendor readings you enter. Do not add confidential prompts or source code.</p>
       <h2>Availability</h2><p>The service is provided as available. Export your ledger before a critical planning event.</p>
     </article>
   {:else}
-    <section class="not-found"><p class="eyebrow">404 · Outside the chart</p><h1 tabindex="-1">This page has no reading</h1><p>The ledger only maps places that exist.</p><a class="primary-button" href="/" on:click={(event) => nav(event, '/')}>Return to the ledger</a></section>
+    <section class="not-found"><p class="eyebrow">404</p><h1 tabindex="-1">Page not found</h1><p>The page you requested does not exist or has moved.</p><a class="primary-button" href="/" on:click={(event) => nav(event, '/')}>Return to the ledger</a></section>
   {/if}
 </main>
 

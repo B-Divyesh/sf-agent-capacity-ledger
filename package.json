@@ -8,7 +8,7 @@
     "build": "vite build",
     "server": "cargo run",
     "test": "vitest run && cargo test",
-    "test:e2e": "playwright test",
+    "test:e2e": "npm run build && cargo build && playwright test",
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "dependencies": {

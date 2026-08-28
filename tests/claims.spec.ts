@@ -22,12 +22,12 @@ test('@claim:csv-export exports every demo source and spend entry as CSV', async
   expect(csv.trim().split('\n')).toHaveLength(8);
 });
 
-test('@claim:csv-import imports a valid capacity row with its source readings', async ({ page }) => {
+test('@claim:csv-import imports RFC 4180 quoted vendor fields with their source readings', async ({ page }) => {
   await page.goto('/demo');
   await page.getByRole('button', { name: 'Import usage CSV' }).click();
-  await page.getByLabel('CSV rows').fill('vendor,plan,limit,used,daily_pace,resets_on,monthly_cost\nZed,Team,80,20,3,2099-01-01,35');
+  await page.getByLabel('CSV rows').fill('vendor,plan,limit,used,daily_pace,resets_on,monthly_cost\n"Anthropic, Inc",Team,80,20,3,2099-01-01,35');
   await page.getByRole('button', { name: 'Import sources' }).click();
-  const source = page.locator('.source-row').filter({ has: page.getByRole('heading', { name: 'Zed' }) });
+  const source = page.locator('.source-row').filter({ has: page.getByRole('heading', { name: 'Anthropic, Inc' }) });
   await expect(source).toContainText('60 of 80 sessions left');
   await expect(source).toContainText('$35/month');
 });
@@ -193,11 +193,9 @@ test('@claim:policy-boundary has no model proxy or account-sharing workflow', as
   expect(await page.locator('input[type="password"]').count()).toBe(0);
 });
 
-test('@claim:sociobot-billing uses the hosted Sociobot checkout and no payment-provider script', async ({ page }) => {
+test('@claim:team-plan-availability keeps the $9 offer honest while checkout is unavailable', async ({ page }) => {
   await page.goto('/');
-  const buy = page.getByRole('link', { name: 'Buy the team plan' });
-  await expect(buy).toHaveAttribute('href', 'https://api.sociobot.in/api/v1/products/agent-capacity-ledger/checkout');
-  await expect(page.getByText('$79 per team each month')).toBeVisible();
-  const scriptOrigins = await page.locator('script[src]').evaluateAll(elements => elements.map(element => new URL((element as HTMLScriptElement).src).origin));
-  expect(scriptOrigins).toEqual([new URL(page.url()).origin]);
+  await expect(page.getByText('$9 per team each month')).toBeVisible();
+  await expect(page.getByText('The $9 team plan is not available to buy yet, so no checkout link is shown.')).toBeVisible();
+  await expect(page.getByRole('link', { name: /Buy the team plan/i })).toHaveCount(0);
 });

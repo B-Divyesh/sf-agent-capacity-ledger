@@ -37,7 +37,7 @@ button:disabled { opacity: .48; cursor: not-allowed; }
 .primary-button:hover { background: #ff987f; }
 .secondary-button { color: var(--paper); border: 1px solid var(--line); background: var(--slate); }
 .secondary-button:hover { border-color: var(--aqua); }
-.text-button, .delete-button { min-height: 44px; padding: 8px 2px; background: transparent; text-decoration: underline; text-underline-offset: 4px; }
+.text-button, .delete-button { min-width: 44px; min-height: 44px; padding: 8px; background: transparent; text-decoration: underline; text-underline-offset: 4px; }
 .delete-button { color: var(--mist); font-weight: 600; }
 .delete-button:hover { color: var(--danger); }
 .icon-button { width: 44px; height: 44px; padding: 0; background: transparent; font-size: 2rem; font-weight: 400; }
@@ -46,7 +46,7 @@ button:disabled { opacity: .48; cursor: not-allowed; }
 .sr-only, .route-announcement { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
 
 .site-header { min-height: 88px; display: flex; align-items: center; justify-content: space-between; gap: 24px; max-width: 1440px; margin: 0 auto; padding: 16px clamp(20px, 4vw, 64px); border-bottom: 1px solid var(--line); }
-.wordmark { color: var(--paper); display: flex; align-items: center; gap: 12px; text-decoration: none; text-transform: uppercase; font-size: .75rem; font-weight: 800; letter-spacing: .1em; line-height: 1.2; }
+.wordmark { color: var(--paper); display: flex; align-items: center; min-height: 44px; gap: 12px; text-decoration: none; text-transform: uppercase; font-size: .75rem; font-weight: 800; letter-spacing: .1em; line-height: 1.2; }
 .mark { width: 38px; height: 38px; border: 2px solid var(--paper); border-radius: 50%; position: relative; overflow: hidden; }
 .mark i { position: absolute; width: 100%; height: 42%; left: 0; bottom: 0; background: var(--aqua); border-top: 2px solid var(--paper); }
 .site-header nav { display: flex; align-items: center; gap: 32px; }
@@ -56,6 +56,7 @@ button:disabled { opacity: .48; cursor: not-allowed; }
 .demo-banner { display: flex; justify-content: center; align-items: center; gap: 40px; padding: 9px 20px; min-height: 48px; background: var(--gold); color: #201604; font-size: .9rem; }
 .banner-actions { display: flex; gap: 24px; align-items: center; }
 .demo-banner a, .demo-banner button { color: #201604; }
+.demo-banner a, footer a { display: inline-flex; align-items: center; min-width: 44px; min-height: 44px; }
 
 main { min-height: 70vh; }
 .hero { max-width: 1440px; margin: 0 auto; padding: clamp(48px, 9vw, 128px) clamp(20px, 4vw, 64px) 96px; display: grid; grid-template-columns: minmax(0, .92fr) minmax(420px, 1.08fr); gap: clamp(36px, 7vw, 104px); align-items: center; overflow: hidden; }

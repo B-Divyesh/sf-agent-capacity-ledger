@@ -13,7 +13,7 @@ export default defineConfig({
   },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
   webServer: {
-    command: 'npm run build && env PORT=4173 DATA_DIR=/tmp/agent-capacity-ledger-tests cargo run',
+    command: 'env PORT=4173 DATA_DIR=/tmp/agent-capacity-ledger-tests ./target/debug/agent-capacity-ledger',
     url: 'http://127.0.0.1:4173/health',
     reuseExistingServer: false,
     timeout: 120_000,

@@ -15,7 +15,7 @@ The live product is [agent-capacity-ledger.sociobot.in](https://agent-capacity-l
 - Opens the same saved ledger from a private workspace link.
 - Keeps demo edits isolated from real workspaces.
 
-The free ledger holds three sources. The team plan costs $79 per team each month and adds sources beyond that cap. Sociobot hosts checkout and verifies licenses; no payment provider script is embedded here.
+The free ledger holds three sources. The team plan is $9 per team each month, but checkout is not available yet. The product deliberately shows no buy link until Sociobot checkout is enabled. Existing team licenses can still be verified; no payment provider script is embedded here.
 
 ## Run locally
 
@@ -49,7 +49,7 @@ npm run test:e2e
 
 `npm test` runs the TypeScript forecast/export tests and Rust route tests. Playwright covers every claim in [`.factory/claims.json`](.factory/claims.json), mobile layout, route metadata, and serious accessibility findings.
 
-The API persists real workspaces in SQLite. Each replica limits the first `X-Forwarded-For` address to a 10-request burst, refilling at five requests per second. The three-replica deployment therefore stays below 40 burst requests and 20 requests per second. Empty buckets return `429` with `Retry-After`. Demo mode never calls the workspace API.
+The API uses `DATABASE_URL` when supplied, which is the deployment path for the shared PostgreSQL database. With no database URL it starts safely with SQLite under `DATA_DIR` for local use. Each replica limits the first `X-Forwarded-For` address to a 10-request burst, refilling at five requests per second. Empty buckets return `429` with `Retry-After`. Demo mode never calls the workspace API.
 
 ## Deploy
 
@@ -60,7 +60,7 @@ docker build --build-arg BUILD_SHA="$(git rev-parse HEAD)" -t agent-capacity-led
 docker run --rm -p 8080:8080 -v ledger-data:/data agent-capacity-ledger
 ```
 
-The multi-stage image builds the Svelte app and Rust server. It runs as a non-root user. It listens on `PORT` and serves `dist/`. It stores SQLite data under `/data` and reports the build SHA at `/health`.
+The multi-stage image builds the Svelte app and Rust server. It runs as a non-root user. It listens on `PORT` and serves `dist/`. For local use it stores SQLite data under `/data`; production supplies a shared PostgreSQL `DATABASE_URL` through a container secret. It reports the build SHA at `/health`.
 
 ## Privacy and scope
 

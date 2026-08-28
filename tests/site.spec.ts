@@ -48,6 +48,32 @@ test('bad CSV explains what to fix', async ({ page }) => {
   await expect(page.getByRole('alert')).toContainText('The CSV needs these columns');
 });
 
+test('quoted CSV and impossible calendar dates have exact recovery behavior', async ({ page }) => {
+  await page.goto('/demo');
+  await page.getByRole('button', { name: 'Import usage CSV' }).click();
+  await page.getByLabel('CSV rows').fill('vendor,plan,limit,used,daily_pace,resets_on,monthly_cost\n"Anthropic, Inc",Team,10,2,1,2026-02-30,9');
+  await page.getByRole('button', { name: 'Import sources' }).click();
+  await expect(page.getByRole('alert')).toHaveText('Row 2: Add a valid reset date.');
+  await expect(page.getByRole('heading', { name: 'Anthropic, Inc' })).toHaveCount(0);
+});
+
+test('every mobile interactive target is at least 44 pixels', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/demo');
+  const targets = page.locator('button, a[href], input, select, textarea');
+  const boxes = await targets.evaluateAll(elements => elements.filter(element => {
+    const style = getComputedStyle(element);
+    return style.display !== 'none' && style.visibility !== 'hidden' && element.getClientRects().length > 0;
+  }).map(element => {
+    const box = element.getBoundingClientRect();
+    return { label: (element.textContent || element.getAttribute('aria-label') || '').trim(), width: box.width, height: box.height };
+  }));
+  for (const target of boxes) {
+    expect(target.width, `${target.label} is too narrow`).toBeGreaterThanOrEqual(44);
+    expect(target.height, `${target.label} is too short`).toBeGreaterThanOrEqual(44);
+  }
+});
+
 test('source removal undo restores linked spend and fallback relationships', async ({ page }) => {
   await page.goto('/demo');
   const claude = page.locator('.source-row').filter({ has: page.getByRole('heading', { name: 'Claude Code' }) });
@@ -107,7 +133,7 @@ test('invalid source and CSV relationships explain recovery', async ({ page }) =
 test('unknown paths return HTTP 404 and assets use immutable caching', async ({ request }) => {
   const missing = await request.get('/does-not-exist-qa');
   expect(missing.status()).toBe(404);
-  expect(await missing.text()).toContain('This page has no reading');
+  expect(await missing.text()).toContain('Page not found');
 
   const landing = await request.get('/');
   const html = await landing.text();

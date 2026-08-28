@@ -7,8 +7,46 @@ export function sourceValidationError(source: Source): string {
   if (source.used > source.limit) return 'Sessions used cannot exceed the session limit.';
   if (!Number.isFinite(source.dailyPace) || source.dailyPace < 0) return 'Daily pace cannot be negative.';
   if (!Number.isFinite(source.monthlyCost) || source.monthlyCost < 0) return 'Monthly cost cannot be negative.';
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(source.resetsOn) || Number.isNaN(new Date(`${source.resetsOn}T00:00:00Z`).getTime())) return 'Add a valid reset date.';
+  if (!validCalendarDate(source.resetsOn)) return 'Add a valid reset date.';
   return '';
+}
+
+export function validCalendarDate(value: string): boolean {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+  if (!match) return false;
+  const [, year, month, day] = match;
+  const parsed = new Date(Date.UTC(Number(year), Number(month) - 1, Number(day)));
+  return parsed.getUTCFullYear() === Number(year)
+    && parsed.getUTCMonth() === Number(month) - 1
+    && parsed.getUTCDate() === Number(day);
+}
+
+/** Parse RFC 4180 cells, including quoted commas, escaped quotes, and CRLF rows. */
+export function parseCsv(text: string): string[][] | null {
+  const rows: string[][] = [];
+  let row: string[] = [];
+  let cell = '';
+  let quoted = false;
+  for (let index = 0; index < text.length; index += 1) {
+    const character = text[index];
+    if (quoted) {
+      if (character === '"' && text[index + 1] === '"') { cell += '"'; index += 1; }
+      else if (character === '"') quoted = false;
+      else cell += character;
+      continue;
+    }
+    if (character === '"') {
+      if (cell.length) return null;
+      quoted = true;
+    } else if (character === ',') { row.push(cell); cell = ''; }
+    else if (character === '\n' || character === '\r') {
+      if (character === '\r' && text[index + 1] === '\n') index += 1;
+      row.push(cell); rows.push(row); row = []; cell = '';
+    } else cell += character;
+  }
+  if (quoted) return null;
+  if (cell.length || row.length) { row.push(cell); rows.push(row); }
+  return rows;
 }
 
 export function remaining(source: Source): number {

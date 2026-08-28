@@ -50,10 +50,10 @@
   },
   {
     "id": "server-persistence",
-    "claim": "Real workspaces save and load through the SQLite service.",
+    "claim": "Real workspaces save and load through the shared durable database service.",
     "where": "README",
     "test": "npm run test:e2e -- --grep @claim:server-persistence",
-    "sandbox": "random isolated workspace through the local container API"
+    "sandbox": "random isolated workspace through the local container API; Rust integration coverage opens independent app instances against one database file"
   },
   {
     "id": "workspace-sharing",
@@ -105,10 +105,10 @@
     "sandbox": "fresh browser context; assert boundary copy, absent password fields, and a 404 from a model-proxy endpoint"
   },
   {
-    "id": "sociobot-billing",
-    "claim": "The $79 monthly team plan uses Sociobot-hosted checkout without a payment-provider script.",
-    "where": "landing pricing, terms, README",
-    "test": "npm run test:e2e -- --grep @claim:sociobot-billing",
-    "sandbox": "fresh landing page; assert price, checkout origin, and same-origin page scripts"
+    "id": "team-plan-availability",
+    "claim": "The $9 monthly team plan clearly states that checkout is not available and shows no unavailable checkout link.",
+    "where": "landing pricing, ledger plan panel, terms, README",
+    "test": "npm run test:e2e -- --grep @claim:team-plan-availability",
+    "sandbox": "fresh landing page; assert the price, unavailable status, and absence of a buy link"
   }
 ]

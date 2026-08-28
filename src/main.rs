@@ -10,7 +10,7 @@ use axum::{
 };
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use sqlx::{sqlite::SqlitePoolOptions, SqlitePool};
+use sqlx::{postgres::PgPoolOptions, sqlite::SqlitePoolOptions, PgPool, SqlitePool};
 use tower_governor::{
     governor::GovernorConfigBuilder, key_extractor::SmartIpKeyExtractor, GovernorLayer,
 };
@@ -23,8 +23,14 @@ use tracing::info;
 
 #[derive(Clone)]
 struct AppState {
-    db: SqlitePool,
+    db: Database,
     build_sha: String,
+}
+
+#[derive(Clone)]
+enum Database {
+    Sqlite(SqlitePool),
+    Postgres(PgPool),
 }
 
 #[derive(Serialize)]
@@ -99,12 +105,22 @@ async fn get_ledger(
     if !valid_workspace(&workspace) {
         return Err(error(StatusCode::BAD_REQUEST, "Workspace ID is not valid."));
     }
-    let row: Option<(String, String)> =
-        sqlx::query_as("SELECT data, updated_at FROM ledgers WHERE workspace_id = ?")
-            .bind(workspace)
-            .fetch_optional(&state.db)
-            .await
-            .map_err(internal)?;
+    let row: Option<(String, String)> = match &state.db {
+        Database::Sqlite(db) => sqlx::query_as(
+            "SELECT data, updated_at FROM agent_capacity_ledgers WHERE workspace_id = ?",
+        )
+        .bind(workspace)
+        .fetch_optional(db)
+        .await
+        .map_err(internal)?,
+        Database::Postgres(db) => sqlx::query_as(
+            "SELECT data, updated_at FROM agent_capacity_ledgers WHERE workspace_id = $1",
+        )
+        .bind(workspace)
+        .fetch_optional(db)
+        .await
+        .map_err(internal)?,
+    };
 
     match row {
         Some((data, updated_at)) => {
@@ -135,16 +151,32 @@ async fn put_ledger(
         ));
     }
     let updated_at = chrono::Utc::now().to_rfc3339();
-    sqlx::query(
-        "INSERT INTO ledgers (workspace_id, data, updated_at) VALUES (?, ?, ?)\
-         ON CONFLICT(workspace_id) DO UPDATE SET data = excluded.data, updated_at = excluded.updated_at",
-    )
-    .bind(workspace)
-    .bind(&encoded)
-    .bind(&updated_at)
-    .execute(&state.db)
-    .await
-    .map_err(internal)?;
+    match &state.db {
+        Database::Sqlite(db) => {
+            sqlx::query(
+            "INSERT INTO agent_capacity_ledgers (workspace_id, data, updated_at) VALUES (?, ?, ?)\
+             ON CONFLICT(workspace_id) DO UPDATE SET data = excluded.data, updated_at = excluded.updated_at",
+        )
+        .bind(workspace)
+        .bind(&encoded)
+        .bind(&updated_at)
+        .execute(db)
+        .await
+        .map_err(internal)?;
+        }
+        Database::Postgres(db) => {
+            sqlx::query(
+            "INSERT INTO agent_capacity_ledgers (workspace_id, data, updated_at) VALUES ($1, $2, $3)\
+             ON CONFLICT(workspace_id) DO UPDATE SET data = EXCLUDED.data, updated_at = EXCLUDED.updated_at",
+        )
+        .bind(workspace)
+        .bind(&encoded)
+        .bind(&updated_at)
+        .execute(db)
+        .await
+        .map_err(internal)?;
+        }
+    };
 
     Ok(Json(LedgerResponse {
         data: payload.data,
@@ -260,19 +292,37 @@ fn internal<E: std::fmt::Display>(err: E) -> (StatusCode, Json<Value>) {
     )
 }
 
-async fn make_app(database_url: &str, build_sha: String, dist: PathBuf) -> Router {
-    let db = SqlitePoolOptions::new()
-        .max_connections(5)
-        .connect(database_url)
-        .await
-        .expect("database should open");
-    sqlx::query(
-        "CREATE TABLE IF NOT EXISTS ledgers (\
-         workspace_id TEXT PRIMARY KEY, data TEXT NOT NULL, updated_at TEXT NOT NULL)",
-    )
-    .execute(&db)
-    .await
-    .expect("database should migrate");
+async fn make_app(database_url: &str, build_sha: String, dist: PathBuf, migrate: bool) -> Router {
+    let schema = "CREATE TABLE IF NOT EXISTS agent_capacity_ledgers (\
+         workspace_id TEXT PRIMARY KEY, data TEXT NOT NULL, updated_at TEXT NOT NULL)";
+    let db = if database_url.starts_with("postgres://") || database_url.starts_with("postgresql://")
+    {
+        let pool = PgPoolOptions::new()
+            .max_connections(10)
+            .connect(database_url)
+            .await
+            .expect("shared PostgreSQL database should open");
+        if migrate {
+            sqlx::query(schema)
+                .execute(&pool)
+                .await
+                .expect("database should migrate");
+        }
+        Database::Postgres(pool)
+    } else {
+        let pool = SqlitePoolOptions::new()
+            .max_connections(5)
+            .connect(database_url)
+            .await
+            .expect("SQLite database should open");
+        if migrate {
+            sqlx::query(schema)
+                .execute(&pool)
+                .await
+                .expect("database should migrate");
+        }
+        Database::Sqlite(pool)
+    };
     let state = AppState { db, build_sha };
     let governor = Arc::new(
         GovernorConfigBuilder::default()
@@ -339,6 +389,7 @@ async fn main() {
         .unwrap_or(8080);
     let build_sha_value = env::var("BUILD_SHA").ok();
     let build_sha = build_sha_value.clone().unwrap_or_else(|| "dev".into());
+    let database_url_value = env::var("DATABASE_URL").ok();
     let data_dir_value = env::var("DATA_DIR").ok();
     let data_dir = data_dir_value.clone().unwrap_or_else(|| "/data".into());
     let data_path = PathBuf::from(&data_dir);
@@ -353,18 +404,27 @@ async fn main() {
     tokio::fs::create_dir_all(&usable_dir)
         .await
         .expect("create data directory");
-    let database_url = format!("sqlite://{}/ledger.db?mode=rwc", usable_dir.display());
+    let database_url = database_url_value
+        .clone()
+        .unwrap_or_else(|| format!("sqlite://{}/ledger.db?mode=rwc", usable_dir.display()));
     info!(
         port,
         port_source = if port_value.is_some() { "supplied" } else { "defaulted" },
-        database = %usable_dir.display(),
+        database_kind = if database_url_value.is_some() { "supplied-shared" } else { "defaulted-local" },
         data_dir_source = if data_dir_value.is_some() { "supplied" } else { "defaulted" },
         build_sha = %build_sha,
         build_sha_source = if build_sha_value.is_some() { "supplied" } else { "defaulted" },
         "runtime configuration"
     );
 
-    let app = make_app(&database_url, build_sha, PathBuf::from("dist")).await;
+    let database_migrate = env::var("DATABASE_MIGRATE").is_ok_and(|value| value == "1");
+    let app = make_app(
+        &database_url,
+        build_sha,
+        PathBuf::from("dist"),
+        database_url_value.is_none() || database_migrate,
+    )
+    .await;
     let listener = tokio::net::TcpListener::bind(("0.0.0.0", port))
         .await
         .expect("bind server");
@@ -404,7 +464,13 @@ mod tests {
     use tower::ServiceExt;
 
     async fn app() -> Router {
-        make_app("sqlite::memory:", "test-sha".into(), PathBuf::from("dist")).await
+        make_app(
+            "sqlite::memory:",
+            "test-sha".into(),
+            PathBuf::from("dist"),
+            true,
+        )
+        .await
     }
 
     fn ledger_json() -> &'static str {
@@ -515,6 +581,41 @@ mod tests {
     }
 
     #[tokio::test]
+    async fn shared_database_survives_replica_and_restart_reads() {
+        let directory = tempfile::tempdir().unwrap();
+        let database_url = format!(
+            "sqlite://{}?mode=rwc",
+            directory.path().join("shared.db").display()
+        );
+        let first = make_app(&database_url, "first".into(), PathBuf::from("dist"), true).await;
+        let write = Request::put("/api/ledger/replica-shared-123")
+            .header("x-forwarded-for", "203.0.113.44")
+            .header("content-type", "application/json")
+            .body(Body::from(ledger_json()))
+            .unwrap();
+        assert_eq!(first.oneshot(write).await.unwrap().status(), StatusCode::OK);
+
+        for build in ["second", "after-restart"] {
+            let replica = make_app(&database_url, build.into(), PathBuf::from("dist"), true).await;
+            let response = replica
+                .oneshot(
+                    Request::get("/api/ledger/replica-shared-123")
+                        .header("x-forwarded-for", "203.0.113.45")
+                        .body(Body::empty())
+                        .unwrap(),
+                )
+                .await
+                .unwrap();
+            let body = response.into_body().collect().await.unwrap().to_bytes();
+            assert!(
+                String::from_utf8_lossy(&body).contains("Test team"),
+                "unexpected replica response: {}",
+                String::from_utf8_lossy(&body)
+            );
+        }
+    }
+
+    #[tokio::test]
     async fn unknown_routes_are_404_and_assets_are_immutable() {
         let directory = tempfile::tempdir().unwrap();
         std::fs::create_dir(directory.path().join("assets")).unwrap();
@@ -529,6 +630,7 @@ mod tests {
             "sqlite::memory:",
             "test-sha".into(),
             directory.path().into(),
+            true,
         )
         .await;
         let response = app

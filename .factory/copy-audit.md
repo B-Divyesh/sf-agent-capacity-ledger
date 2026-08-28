@@ -15,7 +15,7 @@ Audited 2026-08-28. Counts treat numbers and hyphenated forms as one word. No li
 | See a filled team ledger next. | 6 | — |
 | No prompts collected | 3 | — |
 | CSV import and export | 4 | — |
-| $79 per team each month | 5 | — |
+| $9 per team each month | 5 | — |
 | Each source is finite. | 4 | — |
 | The ledger watches the reset horizon. | 6 | — |
 | Live preview | 2 | — |
@@ -38,11 +38,10 @@ Audited 2026-08-28. Counts treat numbers and hyphenated forms as one word. No li
 | Forecasts use the limits and pace your team enters. | 9 | — |
 | Every forecast is labeled as an estimate. | 7 | — |
 | Team plan | 2 | — |
-| Track every paid source for $79 a month | 8 | — |
+| Track every paid source for $9 a month | 8 | — |
 | Free ledgers hold three sources. | 5 | — |
-| The team plan adds sources beyond that cap and lets your team use the license. | 14 | — |
-| Buy the team plan | 4 | — |
-| Sociobot hosts checkout and handles receipts and refunds. | 8 | — |
+| The $9 team plan is not available to buy yet, so no checkout link is shown. | 15 | — |
+| The free ledger, CSV export, and private workspace links remain available. | 11 | — |
 | Plan paid agent capacity before limits stop work. | 8 | — |
 | Terms | 1 | — |
 | Built by Param Factory | 4 | — |
