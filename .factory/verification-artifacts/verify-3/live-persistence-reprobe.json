@@ -1,0 +1,44 @@
+{
+  "counts": {
+    "200:2:2026-08-28T23:12:27.943524419+00:00": 42,
+    "200:1:2026-08-28T23:12:26.959042900+00:00": 39,
+    "200:0:": 39
+  },
+  "headers": [
+    {
+      "status": 200,
+      "text": "{\"data\":{\"teamName\":\"My engineering team\",\"sources\":[{\"id\":\"d22207c3-64ef-4fbc-acb0-57bfad2acf92\",\"vendor\":\"Live normal source\",\"plan\":\"Team\",\"limit\":100.0,\"used\":25.0,\"dailyPace\":5.0,\"resetsOn\":\"2026-09-04\",\"monthlyCost\":40.0,\"fallbackId\":\"\",\"notes\":\"\"},{\"id\":\"2b026000-1322-4c72-85e2-85c22862ff95\",\"vendor\":\"Live offline source\",\"plan\":\"Backup\",\"limit\":100.0,\"used\":0.0,\"dailyPace\":5.0,\"resetsOn\":\"2026-09-04\",\"monthlyCost\":0.0,\"fallbackId\":\"\",\"notes\":\"\"}],\"spend\":[]},\"updated_at\":\"2026-08-28T23:12:27.943524419+00:00\"}",
+      "date": "Fri, 28 Aug 2026 23:12:49 GMT",
+      "cache": null,
+      "age": null
+    },
+    {
+      "status": 200,
+      "text": "{\"data\":{\"teamName\":\"My engineering team\",\"sources\":[{\"id\":\"d22207c3-64ef-4fbc-acb0-57bfad2acf92\",\"vendor\":\"Live normal source\",\"plan\":\"Team\",\"limit\":100.0,\"used\":25.0,\"dailyPace\":5.0,\"resetsOn\":\"2026-09-04\",\"monthlyCost\":40.0,\"fallbackId\":\"\",\"notes\":\"\"}],\"spend\":[]},\"updated_at\":\"2026-08-28T23:12:26.959042900+00:00\"}",
+      "date": "Fri, 28 Aug 2026 23:12:49 GMT",
+      "cache": null,
+      "age": null
+    },
+    {
+      "status": 200,
+      "text": "{\"data\":{\"teamName\":\"My engineering team\",\"sources\":[{\"id\":\"d22207c3-64ef-4fbc-acb0-57bfad2acf92\",\"vendor\":\"Live normal source\",\"plan\":\"Team\",\"limit\":100.0,\"used\":25.0,\"dailyPace\":5.0,\"resetsOn\":\"2026-09-04\",\"monthlyCost\":40.0,\"fallbackId\":\"\",\"notes\":\"\"},{\"id\":\"2b026000-1322-4c72-85e2-85c22862ff95\",\"vendor\":\"Live offline source\",\"plan\":\"Backup\",\"limit\":100.0,\"used\":0.0,\"dailyPace\":5.0,\"resetsOn\":\"2026-09-04\",\"monthlyCost\":0.0,\"fallbackId\":\"\",\"notes\":\"\"}],\"spend\":[]},\"updated_at\":\"2026-08-28T23:12:27.943524419+00:00\"}",
+      "date": "Fri, 28 Aug 2026 23:12:49 GMT",
+      "cache": null,
+      "age": null
+    },
+    {
+      "status": 200,
+      "text": "{\"data\":{\"teamName\":\"My engineering team\",\"sources\":[{\"id\":\"d22207c3-64ef-4fbc-acb0-57bfad2acf92\",\"vendor\":\"Live normal source\",\"plan\":\"Team\",\"limit\":100.0,\"used\":25.0,\"dailyPace\":5.0,\"resetsOn\":\"2026-09-04\",\"monthlyCost\":40.0,\"fallbackId\":\"\",\"notes\":\"\"},{\"id\":\"2b026000-1322-4c72-85e2-85c22862ff95\",\"vendor\":\"Live offline source\",\"plan\":\"Backup\",\"limit\":100.0,\"used\":0.0,\"dailyPace\":5.0,\"resetsOn\":\"2026-09-04\",\"monthlyCost\":0.0,\"fallbackId\":\"\",\"notes\":\"\"}],\"spend\":[]},\"updated_at\":\"2026-08-28T23:12:27.943524419+00:00\"}",
+      "date": "Fri, 28 Aug 2026 23:12:49 GMT",
+      "cache": null,
+      "age": null
+    },
+    {
+      "status": 200,
+      "text": "{\"data\":{\"teamName\":\"My engineering team\",\"sources\":[{\"id\":\"d22207c3-64ef-4fbc-acb0-57bfad2acf92\",\"vendor\":\"Live normal source\",\"plan\":\"Team\",\"limit\":100.0,\"used\":25.0,\"dailyPace\":5.0,\"resetsOn\":\"2026-09-04\",\"monthlyCost\":40.0,\"fallbackId\":\"\",\"notes\":\"\"},{\"id\":\"2b026000-1322-4c72-85e2-85c22862ff95\",\"vendor\":\"Live offline source\",\"plan\":\"Backup\",\"limit\":100.0,\"used\":0.0,\"dailyPace\":5.0,\"resetsOn\":\"2026-09-04\",\"monthlyCost\":0.0,\"fallbackId\":\"\",\"notes\":\"\"}],\"spend\":[]},\"updated_at\":\"2026-08-28T23:12:27.943524419+00:00\"}",
+      "date": "Fri, 28 Aug 2026 23:12:49 GMT",
+      "cache": null,
+      "age": null
+    }
+  ]
+}

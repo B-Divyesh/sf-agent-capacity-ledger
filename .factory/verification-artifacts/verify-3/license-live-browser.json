@@ -1,0 +1,34 @@
+{
+  "url": "https://agent-capacity-ledger.sociobot.in/ledger",
+  "stored": "verify3_browser_invalid",
+  "message": "License received. Checking it now.",
+  "requests": [
+    {
+      "method": "GET",
+      "url": "https://agent-capacity-ledger.sociobot.in/ledger?license=verify3_browser_invalid"
+    },
+    {
+      "method": "GET",
+      "url": "https://agent-capacity-ledger.sociobot.in/assets/index-DFygyazo.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://agent-capacity-ledger.sociobot.in/assets/index-BK3gCgHs.css"
+    },
+    {
+      "method": "GET",
+      "url": "https://agent-capacity-ledger.sociobot.in/api/ledger/e5d28347-3f65-468e-8271-c00f2385758b"
+    },
+    {
+      "method": "GET",
+      "url": "https://api.sociobot.in/api/v1/products/agent-capacity-ledger/verify?license=verify3_browser_invalid"
+    },
+    {
+      "response": 200,
+      "url": "https://api.sociobot.in/api/v1/products/agent-capacity-ledger/verify?license=verify3_browser_invalid",
+      "cache": "no-store",
+      "cors": "https://agent-capacity-ledger.sociobot.in"
+    }
+  ],
+  "errors": []
+}

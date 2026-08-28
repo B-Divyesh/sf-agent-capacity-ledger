@@ -1,0 +1,283 @@
+{
+  "base": "https://agent-capacity-ledger.sociobot.in",
+  "checkedAt": "2026-08-28T23:11:57.003Z",
+  "candidate": "14a5c3575fac020d80bd8548f37d976ec7db8ed8",
+  "health": {
+    "status": 200,
+    "body": {
+      "status": "ok",
+      "build_sha": "14a5c3575fac020d80bd8548f37d976ec7db8ed8"
+    },
+    "headers": {
+      "content-length": "70",
+      "content-security-policy": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self' https://api.sociobot.in; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'",
+      "content-type": "application/json",
+      "date": "Fri, 28 Aug 2026 23:11:57 GMT",
+      "permissions-policy": "camera=(), microphone=(), geolocation=()",
+      "referrer-policy": "strict-origin-when-cross-origin",
+      "x-content-type-options": "nosniff"
+    }
+  },
+  "saved": {
+    "workspace": "verify3-1787958717004",
+    "status": 200,
+    "body": {
+      "data": {
+        "teamName": "QA durable 1787958717004",
+        "sources": [
+          {
+            "id": "source-1",
+            "vendor": "Capacity QA",
+            "plan": "Boundary",
+            "limit": 10,
+            "used": 10,
+            "dailyPace": 0,
+            "resetsOn": "2099-01-01",
+            "monthlyCost": 0,
+            "fallbackId": "",
+            "notes": "Fresh verification record"
+          }
+        ],
+        "spend": [
+          {
+            "id": "spend-1",
+            "date": "2026-08-28",
+            "project": "Verification",
+            "sourceId": "source-1",
+            "amount": 0
+          }
+        ]
+      },
+      "updated_at": "2026-08-28T23:11:57.095762415+00:00"
+    }
+  },
+  "persistence": {
+    "total": 120,
+    "statusCounts": {
+      "200": 120
+    },
+    "exactMatches": 120
+  },
+  "healthConcurrency": {
+    "total": 100,
+    "ok": 100
+  },
+  "concurrentWrites": {
+    "total": 30,
+    "ok": 30,
+    "statuses": [
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200
+    ]
+  },
+  "invalid": {
+    "bad-workspace": {
+      "status": 400,
+      "body": "{\"error\":\"Workspace ID is not valid.\"}"
+    },
+    "used-over-limit": {
+      "status": 400,
+      "body": "{\"error\":\"A source has invalid limits, use, reset date, cost, or fallback.\"}"
+    },
+    "negative-cost": {
+      "status": 400,
+      "body": "{\"error\":\"A source has invalid limits, use, reset date, cost, or fallback.\"}"
+    },
+    "impossible-date": {
+      "status": 400,
+      "body": "{\"error\":\"A source has invalid limits, use, reset date, cost, or fallback.\"}"
+    },
+    "sensitive-extra-field": {
+      "status": 422,
+      "body": "Failed to deserialize the JSON body into the target type: data.prompt: unknown field `prompt`, expected one of `teamName`, `sources`, `spend` at line 1 column 358"
+    },
+    "malformed-json": {
+      "status": 400,
+      "body": "Failed to parse the request body as JSON: key must be a string at line 1 column 2"
+    }
+  },
+  "productRateLimit": {
+    "total": 60,
+    "statusCounts": {
+      "200": 10,
+      "429": 50
+    },
+    "retryAfter": [
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  "unlockRateLimit": {
+    "total": 80,
+    "statusCounts": {
+      "200": 30,
+      "429": 50
+    },
+    "retryAfter": [
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4",
+      "4"
+    ],
+    "cors": null,
+    "cacheControl": "no-store"
+  },
+  "responses": {
+    "landing": {
+      "status": 200,
+      "headers": {
+        "accept-ranges": "bytes",
+        "content-length": "1624",
+        "content-security-policy": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self' https://api.sociobot.in; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'",
+        "content-type": "text/html",
+        "date": "Fri, 28 Aug 2026 23:11:58 GMT",
+        "last-modified": "Fri, 28 Aug 2026 22:05:57 GMT",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "x-content-type-options": "nosniff"
+      }
+    },
+    "assets": {
+      "js": {
+        "path": "/assets/index-DFygyazo.js",
+        "status": 200,
+        "bytes": 72995,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "liveSha256": "160e1b9bb20bbbeba2cfdafda5b729658e8af6483055179948b52bfab0b83bbf",
+        "localSha256": "160e1b9bb20bbbeba2cfdafda5b729658e8af6483055179948b52bfab0b83bbf",
+        "matches": true
+      },
+      "css": {
+        "path": "/assets/index-BK3gCgHs.css",
+        "status": 200,
+        "bytes": 16751,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "liveSha256": "6cb874fa9ba641d074d1575bd8018f243be302e9cec60498ef5197b05c2a2ea4",
+        "localSha256": "6cb874fa9ba641d074d1575bd8018f243be302e9cec60498ef5197b05c2a2ea4",
+        "matches": true
+      }
+    }
+  }
+}

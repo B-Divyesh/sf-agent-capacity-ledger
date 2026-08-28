@@ -1,0 +1,58 @@
+{
+  "base": "https://agent-capacity-ledger.sociobot.in",
+  "checkedAt": "2026-08-28T23:15:00.859Z",
+  "desktop": {
+    "firstRead": {
+      "title": "Agent Capacity Ledger — plan agent limits",
+      "h1": [
+        "Plan agent capacity before limits stop work"
+      ],
+      "hero": "A SHARED WATCH FOR PAID AGENT LIMITS\n\nPlan agent capacity before limits stop work\n\nFor small engineering teams juggling coding subscriptions, project spend, and approved backup tools.\n\nTry it with sample data\nSee a filled team ledger next.\nNo prompts collected\nCSV import and export\n$9 per team each month",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "scrollWidth": 1440
+      }
+    },
+    "demo": {
+      "initialSources": 3,
+      "initialSpendRows": 5,
+      "exportLines": 8,
+      "importedBoundary": "ON TRACK\nQuoted, Vendor\nTeam\n0 of 10 sessions left\nReset in 26424 days\n\nAt 0 sessions a day, this source lasts about ∞ days. Estimate.\n\nUsed sessions\nApproved fallback\nNo fallback set\nClaude Code\nCodex\nGitHub Copilot\nRecovery source\n$0/month\nEdit\nRemove",
+      "invalidAlert": "Sessions used cannot exceed the session limit. Fix the value and save again.",
+      "externalRequests": [],
+      "requestLog": [
+        "GET https://agent-capacity-ledger.sociobot.in/",
+        "GET https://agent-capacity-ledger.sociobot.in/assets/index-DFygyazo.js",
+        "GET https://agent-capacity-ledger.sociobot.in/assets/index-BK3gCgHs.css",
+        "GET https://agent-capacity-ledger.sociobot.in/assets/capacity-observatory-1200.webp"
+      ],
+      "serviceWorkers": 0
+    },
+    "keyboard": {
+      "dialogFocusReturned": true,
+      "focusOutline": "rgb(120, 216, 202) solid 3px"
+    }
+  },
+  "mobile": {
+    "normalOverflow": 0,
+    "zoomOverflow": 0,
+    "minimumTargetWidth": 44,
+    "minimumTargetHeight": 44,
+    "undersized": []
+  },
+  "accessibility": {
+    "/": [],
+    "/demo": [],
+    "/ledger": [],
+    "/privacy": [],
+    "/terms": [],
+    "dialog": [],
+    "reducedMotion": {
+      "animationDuration": "1e-05s",
+      "transitionDuration": "1e-05s",
+      "scrollBehavior": "auto"
+    }
+  },
+  "errors": []
+}

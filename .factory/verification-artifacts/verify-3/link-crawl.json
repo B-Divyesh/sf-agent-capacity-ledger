@@ -1,0 +1,61 @@
+[
+  {
+    "url": "https://agent-capacity-ledger.sociobot.in/#main",
+    "status": 200,
+    "final": "https://agent-capacity-ledger.sociobot.in/"
+  },
+  {
+    "url": "https://agent-capacity-ledger.sociobot.in/",
+    "status": 200,
+    "final": "https://agent-capacity-ledger.sociobot.in/"
+  },
+  {
+    "url": "https://agent-capacity-ledger.sociobot.in/demo",
+    "status": 200,
+    "final": "https://agent-capacity-ledger.sociobot.in/demo"
+  },
+  {
+    "url": "https://agent-capacity-ledger.sociobot.in/ledger",
+    "status": 200,
+    "final": "https://agent-capacity-ledger.sociobot.in/ledger"
+  },
+  {
+    "url": "https://agent-capacity-ledger.sociobot.in/privacy",
+    "status": 200,
+    "final": "https://agent-capacity-ledger.sociobot.in/privacy"
+  },
+  {
+    "url": "https://agent-capacity-ledger.sociobot.in/terms",
+    "status": 200,
+    "final": "https://agent-capacity-ledger.sociobot.in/terms"
+  },
+  {
+    "url": "https://sociobot.in/",
+    "status": 200,
+    "final": "https://sociobot.in/"
+  },
+  {
+    "url": "https://agent-capacity-ledger.sociobot.in/demo#main",
+    "status": 200,
+    "final": "https://agent-capacity-ledger.sociobot.in/demo"
+  },
+  {
+    "url": "https://agent-capacity-ledger.sociobot.in/ledger#main",
+    "status": 200,
+    "final": "https://agent-capacity-ledger.sociobot.in/ledger"
+  },
+  {
+    "url": "https://agent-capacity-ledger.sociobot.in/privacy#main",
+    "status": 200,
+    "final": "https://agent-capacity-ledger.sociobot.in/privacy"
+  },
+  {
+    "url": "mailto:privacy@sociobot.in",
+    "status": "explicit mailto"
+  },
+  {
+    "url": "https://agent-capacity-ledger.sociobot.in/terms#main",
+    "status": 200,
+    "final": "https://agent-capacity-ledger.sociobot.in/terms"
+  }
+]
