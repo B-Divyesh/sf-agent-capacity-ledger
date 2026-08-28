@@ -1,0 +1,8 @@
+{
+  "slug": "agent-capacity-ledger",
+  "title": "Agent Capacity Ledger",
+  "summary": "Plan agent capacity, assign approved fallbacks, and attribute spend by project.",
+  "artifact_class": "web-with-backend",
+  "price": "$79/team/month",
+  "success_measure": "Attribute 90% of paid agent spend and halve surprise limit interruptions."
+}
