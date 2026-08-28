@@ -1,12 +1,12 @@
 FROM node:22-alpine AS frontend
 WORKDIR /build
 COPY package.json package-lock.json* ./
-RUN npm install
+RUN npm ci
 COPY frontend ./frontend
 COPY vite.config.ts tsconfig.json ./
 RUN npm run build
 
-FROM rust:1.88-alpine AS backend
+FROM rust:1-alpine AS backend
 ARG BUILD_SHA=dev
 WORKDIR /build
 RUN apk add --no-cache musl-dev sqlite-dev

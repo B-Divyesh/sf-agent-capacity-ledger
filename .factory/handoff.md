@@ -1,57 +1,65 @@
-# Agent Capacity Ledger v1 handoff — **FAIL (independent verification)**
+# Agent Capacity Ledger repair handoff
 
-Candidate `d18808a22c11e8c9b2608874d8b8a6b026443abd` was independently tested against https://agent-capacity-ledger.sociobot.in on 2026-08-28. It is **not release-ready**. The live API did not return HTTP 429 or `Retry-After` after 180 concurrent requests from one client, which fails the mandatory request-limit contract. It also has irreversible linked-spend deletion, a keyboard-modal focus escape, 200 responses for unknown URLs, missing asset cache headers, incomplete claim coverage, and a non-compliant pinned Rust Docker base image.
+Repair work order: `agent-capacity-ledger-repair-1`
 
-See [`.factory/verification.md`](verification.md) for exact commands, evidence, all claim-test results, severity, and remediation steps. The builder’s historical verification notes below are superseded where they conflict with this independent report.
+Base report: independent verification of candidate `d18808a22c11e8c9b2608874d8b8a6b026443abd` on 2026-08-28
 
-## What was built
+Artifact/deployment class: unchanged — Rust/axum backend serving a Vite/Svelte frontend from one container
 
-- A production Svelte 5 interface with `/`, `/demo`, `/ledger`, `/privacy`, `/terms`, and styled 404 routes.
-- A Rust 2021 axum service that serves the built app and persists real workspaces in SQLite.
-- Capacity sources with limits, use, reset dates, daily pace, estimated runout warnings, notes, costs, edits, and removal undo.
-- Approved fallback selection between recorded sources.
-- Project spend entry, attribution percentage, CSV import, and complete CSV export.
-- Private workspace links so a small team can open the same server-backed ledger.
-- An isolated one-click demo with three sources, fallback policy, project costs, reset, and a persistent demo banner.
-- Offline-aware local caching for the real ledger. Queued browser changes save after reconnection.
-- A $79/team/month tier with hosted Sociobot checkout, returned-license capture, daily verification caching, and license restore.
-- Original “midnight capacity observatory” art, generated for this product and shipped as 23–67 KB WebP assets.
-- Route metadata, social art, sitemap, robots file, CSP, security headers, keyboard focus handling, reduced motion, mobile records, and clear error/empty states.
+## Release-blocking findings repaired
 
-## How to run
+- **Replica-safe request allowance:** the old 40-request governor existed separately in every autoscaled process. The work-order deployment allows three replicas, which multiplied the live allowance. Each replica now keys the first `X-Forwarded-For` address and allows a 10-request burst with five requests per second recovery. At the configured three-replica maximum this remains stricter than the former 40-burst/20-per-second product allowance. `/health` remains exempt. A Rust regression sends 60 requests across three independent app instances; a Playwright claim test checks `429` and `Retry-After`.
+- **Complete source-removal undo:** source removal now records linked spend rows and incoming fallback relationships, clears invalid relations while removed, and restores the source, row order, linked spend, and fallbacks on Undo. The notice names the linked records removed.
+- **Dialog keyboard containment:** source and spend dialogs now cycle Tab/Shift+Tab within the active dialog, close on Escape or backdrop/close controls, focus the first field on open, and return focus to the invoking control on every close path.
+- **Real HTTP 404:** only the five SPA routes receive `index.html`. Unknown paths use the styled `404.html` with HTTP 404; unknown `/api` paths also return 404.
+- **Complete claim contract:** `.factory/claims.json` now lists 16 observable claims, including CSV import, project attribution, the data boundary, license check caching, source caps, product policy boundaries, and hosted billing. A unit contract asserts exactly one `@claim:<id>` test per listed claim and rejects orphan tags.
+- **Container contract:** the backend build stage now uses `rust:1-alpine`; the frontend stage uses `npm ci`. The build still accepts `BUILD_SHA`, does not read `.git`, and runs as a non-root runtime user.
+- **Relational validation:** form, CSV, and server boundaries reject negative readings, non-positive limits, use above limit, invalid dates/costs, broken source relationships, duplicate IDs, and unknown JSON fields. Recovery errors are announced in the dialog. The typed server boundary also prevents arbitrary prompt, code, password, or key fields from being stored.
+- **Immutable static caching:** `/assets/*` responses now send `Cache-Control: public, max-age=31536000, immutable` from the Rust server.
+- **URL verifier:** executable `./verify-url.sh [url]` checks response success, title, language, one main and h1, image alt attributes, 390 px overflow, console errors, and page errors.
+
+## Exact local verification
+
+Run from a clean checkout:
 
 ```sh
-npm install
+npm ci
+npm run check
+npm test
+cargo clippy --all-targets -- -D warnings
 npm run build
-PORT=8080 DATA_DIR=./data cargo run
+cargo build --release
+npm run test:e2e
+./verify-url.sh http://127.0.0.1:8080
 ```
 
-Open `http://localhost:8080/demo` for the verification sandbox.
+Evidence from 2026-08-28:
 
-## Verification completed
-
-- `npm run check`: passed with 0 errors and 0 warnings.
-- `npm test`: passed 4 Vitest tests and 2 Rust route tests.
-- `npm run test:e2e`: passed 17 Playwright tests, including every `.factory/claims.json` claim, 390 px layout, metadata, axe, and console checks.
-- `cargo clippy --all-targets -- -D warnings`: passed.
-- `cargo build --release`: passed.
+- `npm ci`: 139 packages installed from the lockfile; 0 vulnerabilities.
 - `npm audit --omit=dev`: 0 vulnerabilities.
-- Production output: `dist/index.html`; 70.2 KB JavaScript raw / 26.0 KB gzip; 16.6 KB CSS raw / 4.5 KB gzip; largest hero derivative 67 KB.
-- Lighthouse mobile on the production server: Performance 100, Accessibility 100, Best Practices 100, SEO 100; LCP 1.4 s, CLS 0, TBT 50 ms.
-- Load smoke: 100 concurrent `/health` requests returned 100 HTTP 200 responses.
-- Generated image reviewed for text artifacts, brands, people, seams, and misleading UI; none found.
+- `npm run check`: 0 errors and 0 warnings.
+- `npm test`: 6 Vitest tests and 5 Rust tests passed.
+- `cargo clippy --all-targets -- -D warnings`: passed.
+- `npm run build`: produced `dist/`; JavaScript 72,610 bytes raw / 26,730 bytes gzip, CSS 16,630 bytes raw / 4,550 bytes gzip. Largest responsive hero asset: 68,206 bytes.
+- `cargo build --release`: produced `target/release/agent-capacity-ledger`.
+- `npm run test:e2e`: 28/28 passed in Chromium. Every one of the 16 exact `.factory/claims.json` commands was then run independently; each passed one matching test.
+- Accessibility: Axe found zero serious or critical issues on `/`, `/demo`, `/ledger`, `/privacy`, `/terms`, and the open source dialog. Keyboard tests cover focus cycling, Escape, close button, backdrop, and focus return. The 390 × 844 test has 0 px overflow at normal size and at 200% root text size.
+- Privacy/offline/update: the demo request log stayed same-origin; unknown sensitive fields were rejected and not stored; demo data stayed out of the real workspace; an offline edit remained local and saved through the API after reconnect.
+- Response policy: a 60-request local burst returned 11 HTTP 200 and 49 HTTP 429 responses; all 49 limited responses had `Retry-After`. Unknown URL returned 404. Hashed JS returned immutable caching plus CSP, `nosniff`, referrer, and permissions headers.
+- Runtime contract: the release binary started with only `PORT` and `PATH`; startup JSON logged supplied versus defaulted configuration. `/health` served 100/100 concurrent requests with HTTP 200 and graceful Ctrl+C shutdown completed.
+- `./verify-url.sh http://127.0.0.1:4180`: correct title/lang/main/h1/alts, 0 px mobile overflow, 0 console errors, 0 page errors.
+- Lighthouse 13 mobile/full audit: Performance 100, Accessibility 100, Best Practices 100, SEO 100; LCP 1.25 s, CLS 0, TBT 44 ms. The stricter performance preset scored 98 with LCP 1.95 s, CLS 0, and TBT 0.
+- Desktop 1366 px and mobile 390 × 844 full-page demo screenshots were visually inspected; no clipping, overlap, or hidden action was found.
+- Package/consumer checks do not apply to this web-with-backend artifact. The work-order ACR build is the container package check and is recorded below after deployment.
 
-## Runtime and deployment notes
+## Deployment and live identity
 
-- `PORT` defaults to 8080. `DATA_DIR` defaults to `/data`. No other variable is required.
-- `/health` is rate-limit exempt and returns `BUILD_SHA` or `dev`.
-- All `/api` routes use a 40-request burst, replenish at 20 requests per second, and key the first forwarded IP.
-- The Dockerfile is multi-stage, does not read `.git`, accepts `ARG BUILD_SHA=dev`, and runs as a non-root user.
-- The worker image did not contain a Docker CLI, so a local `docker build` could not be run. Both Docker build stages were verified separately with `npm run build` and `cargo build --release`.
+The repair is deployed with `/opt/fleet/lib/deploy-container.sh agent-capacity-ledger /work/repo Dockerfile 8080`. This section is updated after the committed image is live.
 
-## Known gaps and next steps
+## Known gaps
 
-- Workspace links are bearer capabilities. Anyone with the link can edit that ledger. Add organization sign-in and membership roles before larger pilots.
-- CSV parsing accepts comma-separated plain fields and does not yet handle quoted commas.
-- Forecasts rely on user-entered vendor readings because vendor APIs do not offer one stable cross-provider format.
-- The factory still needs to register the paid product and exercise a real checkout in its release environment.
+- Workspace links remain bearer capabilities. Anyone with the link can edit that ledger; add organization sign-in and roles before larger pilots.
+- CSV import intentionally supports simple comma-separated fields and does not parse quoted commas.
+- Forecasts rely on user-entered vendor readings because vendors do not expose one stable cross-provider format.
+- The factory still needs to register/exercise the paid product with a real checkout if that external catalog setup is not already complete.
+- The deployment configuration supplies ephemeral container storage and no mounted volume. SQLite survives requests and reconnects within a running replica, but a revision replacement can discard workspaces. A durable factory-managed volume or PostgreSQL is the next infrastructure step; this repair does not alter factory infrastructure.

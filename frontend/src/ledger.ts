@@ -1,5 +1,16 @@
 import type { Ledger, Source } from './types';
 
+export function sourceValidationError(source: Source): string {
+  if (!source.vendor.trim() || !source.plan.trim()) return 'Add both a vendor and plan.';
+  if (!Number.isFinite(source.limit) || source.limit <= 0) return 'Session limit must be greater than zero.';
+  if (!Number.isFinite(source.used) || source.used < 0) return 'Sessions used cannot be negative.';
+  if (source.used > source.limit) return 'Sessions used cannot exceed the session limit.';
+  if (!Number.isFinite(source.dailyPace) || source.dailyPace < 0) return 'Daily pace cannot be negative.';
+  if (!Number.isFinite(source.monthlyCost) || source.monthlyCost < 0) return 'Monthly cost cannot be negative.';
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(source.resetsOn) || Number.isNaN(new Date(`${source.resetsOn}T00:00:00Z`).getTime())) return 'Add a valid reset date.';
+  return '';
+}
+
 export function remaining(source: Source): number {
   return Math.max(0, source.limit - source.used);
 }

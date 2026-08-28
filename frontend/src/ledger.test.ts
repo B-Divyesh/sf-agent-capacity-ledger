@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { attributedPercent, ledgerCsv, remaining, risk } from './ledger';
+import { attributedPercent, ledgerCsv, remaining, risk, sourceValidationError } from './ledger';
 import { sampleLedger } from './sample';
 
 describe('capacity forecast', () => {
@@ -23,5 +23,12 @@ describe('capacity forecast', () => {
     expect(csv).toContain('"type","date","project"');
     expect(csv.split('\n')).toHaveLength(1 + ledger.sources.length + ledger.spend.length);
     expect(csv).toContain('"Atlas migration"');
+  });
+
+  it('rejects impossible source readings', () => {
+    const source = sampleLedger().sources[0];
+    expect(sourceValidationError({ ...source, used: source.limit + 1 })).toBe('Sessions used cannot exceed the session limit.');
+    expect(sourceValidationError({ ...source, used: -1 })).toBe('Sessions used cannot be negative.');
+    expect(sourceValidationError({ ...source, dailyPace: -1 })).toBe('Daily pace cannot be negative.');
   });
 });

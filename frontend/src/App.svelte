@@ -2,7 +2,7 @@
   import { onMount, tick } from 'svelte';
   import type { Ledger, SaveState, Source, SpendEntry } from './types';
   import { emptyLedger, sampleLedger } from './sample';
-  import { attributedPercent, daysUntil, downloadCsv, remaining, risk, runoutDays } from './ledger';
+  import { attributedPercent, daysUntil, downloadCsv, remaining, risk, runoutDays, sourceValidationError } from './ledger';
   import { cachedLicenseValid, checkoutUrl, setLicense, storeLicenseFromUrl, verifyLicense } from './license';
 
   type Route = '/' | '/demo' | '/ledger' | '/privacy' | '/terms' | '/404';
@@ -15,12 +15,16 @@
   let showImport = false;
   let importText = '';
   let importError = '';
+  let sourceError = '';
   let licenseToken = '';
   let licensed = cachedLicenseValid();
   let licenseMessage = '';
   let online = navigator.onLine;
   let workspace = '';
-  let lastDeleted: { kind: 'source' | 'spend'; value: Source | SpendEntry; index: number } | null = null;
+  type DeletedItem =
+    | { kind: 'source'; value: Source; index: number; spend: { value: SpendEntry; index: number }[]; fallbackSourceIds: string[] }
+    | { kind: 'spend'; value: SpendEntry; index: number };
+  let lastDeleted: DeletedItem | null = null;
   let undoTimer: number | undefined;
   let sourceDraft = blankSource();
   let spendDraft = blankSpend();
@@ -160,19 +164,58 @@
     previousFocus = document.activeElement as HTMLElement;
     editingSourceId = source?.id ?? '';
     sourceDraft = source ? { ...source } : blankSource();
+    sourceError = '';
     showSourceForm = true;
     tick().then(() => document.querySelector<HTMLInputElement>('#source-vendor')?.focus());
+  }
+
+  function openSpendForm() {
+    previousFocus = document.activeElement as HTMLElement;
+    spendDraft = blankSpend();
+    showSpendForm = true;
+    tick().then(() => document.querySelector<HTMLInputElement>('#spend-project')?.focus());
   }
 
   function closeDialogs() {
     showSourceForm = false;
     showSpendForm = false;
+    sourceError = '';
     tick().then(() => previousFocus?.focus());
   }
 
+  function handleDialogKeydown(event: KeyboardEvent) {
+    if (!showSourceForm && !showSpendForm) return;
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      closeDialogs();
+      return;
+    }
+    if (event.key !== 'Tab') return;
+    const dialog = document.querySelector<HTMLDialogElement>('.dialog[open]');
+    if (!dialog) return;
+    const controls = [...dialog.querySelectorAll<HTMLElement>('button, input, select, textarea, a[href], [tabindex]:not([tabindex="-1"])')]
+      .filter((element) => !element.hasAttribute('disabled') && element.getAttribute('aria-hidden') !== 'true');
+    if (!controls.length) return;
+    const first = controls[0];
+    const last = controls[controls.length - 1];
+    if (event.shiftKey && (document.activeElement === first || !dialog.contains(document.activeElement))) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && (document.activeElement === last || !dialog.contains(document.activeElement))) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
+
   function saveSource() {
+    sourceError = sourceValidationError(sourceDraft);
+    if (sourceError) {
+      sourceError = `${sourceError} Fix the value and save again.`;
+      return;
+    }
     if (!editingSourceId && ledger.sources.length >= 3 && !licensed && route !== '/demo') {
       licenseMessage = 'The free ledger holds three sources. Add the team plan for more.';
+      sourceError = 'The free ledger holds three sources. Add the team plan to add more.';
       return;
     }
     if (editingSourceId) {
@@ -182,6 +225,7 @@
       ledger = { ...ledger, sources: [...ledger.sources, source] };
     }
     sourceDraft = blankSource();
+    sourceError = '';
     editingSourceId = '';
     showSourceForm = false;
     tick().then(() => previousFocus?.focus());
@@ -193,6 +237,7 @@
     ledger = { ...ledger, spend: [...ledger.spend, entry] };
     spendDraft = blankSpend();
     showSpendForm = false;
+    tick().then(() => previousFocus?.focus());
     void save();
   }
 
@@ -206,10 +251,24 @@
   }
 
   function deleteItem(kind: 'source' | 'spend', value: Source | SpendEntry, index: number) {
-    lastDeleted = { kind, value, index };
     if (kind === 'source') {
-      ledger = { ...ledger, sources: ledger.sources.filter((item) => item.id !== value.id), spend: ledger.spend.filter((item) => item.sourceId !== value.id) };
+      const source = value as Source;
+      lastDeleted = {
+        kind,
+        value: source,
+        index,
+        spend: ledger.spend.flatMap((item, spendIndex) => item.sourceId === source.id ? [{ value: item, index: spendIndex }] : []),
+        fallbackSourceIds: ledger.sources.filter((item) => item.fallbackId === source.id).map((item) => item.id),
+      };
+      ledger = {
+        ...ledger,
+        sources: ledger.sources
+          .filter((item) => item.id !== source.id)
+          .map((item) => item.fallbackId === source.id ? { ...item, fallbackId: '' } : item),
+        spend: ledger.spend.filter((item) => item.sourceId !== source.id),
+      };
     } else {
+      lastDeleted = { kind, value: value as SpendEntry, index };
       ledger = { ...ledger, spend: ledger.spend.filter((item) => item.id !== value.id) };
     }
     clearTimeout(undoTimer);
@@ -220,9 +279,13 @@
   function undoDelete() {
     if (!lastDeleted) return;
     if (lastDeleted.kind === 'source') {
-      const items = [...ledger.sources]; items.splice(lastDeleted.index, 0, lastDeleted.value as Source); ledger = { ...ledger, sources: items };
+      const sources = ledger.sources.map((source) => lastDeleted?.kind === 'source' && lastDeleted.fallbackSourceIds.includes(source.id) ? { ...source, fallbackId: lastDeleted.value.id } : source);
+      sources.splice(lastDeleted.index, 0, lastDeleted.value);
+      const spend = [...ledger.spend];
+      for (const related of lastDeleted.spend) spend.splice(Math.min(related.index, spend.length), 0, related.value);
+      ledger = { ...ledger, sources, spend };
     } else {
-      const items = [...ledger.spend]; items.splice(lastDeleted.index, 0, lastDeleted.value as SpendEntry); ledger = { ...ledger, spend: items };
+      const items = [...ledger.spend]; items.splice(lastDeleted.index, 0, lastDeleted.value); ledger = { ...ledger, spend: items };
     }
     lastDeleted = null;
     void save();
@@ -245,7 +308,10 @@
       if (!get('vendor') || ![limit, used, dailyPace, monthlyCost].every(Number.isFinite)) {
         importError = `Row ${rowIndex + 2} has missing or invalid values. Fix that row and import again.`; return;
       }
-      imported.push({ id: crypto.randomUUID(), vendor: get('vendor'), plan: get('plan'), limit, used, dailyPace, resetsOn: get('resets_on'), monthlyCost, fallbackId: '', notes: '' });
+      const source = { id: crypto.randomUUID(), vendor: get('vendor'), plan: get('plan'), limit, used, dailyPace, resetsOn: get('resets_on'), monthlyCost, fallbackId: '', notes: '' };
+      const validationError = sourceValidationError(source);
+      if (validationError) { importError = `Row ${rowIndex + 2}: ${validationError}`; return; }
+      imported.push(source);
     }
     if (ledger.sources.length + imported.length > 3 && !licensed && route !== '/demo') {
       importError = 'The free ledger holds three sources. Import fewer rows or add the team plan.'; return;
@@ -291,7 +357,7 @@
   });
 </script>
 
-<svelte:window on:keydown={(event) => { if (event.key === 'Escape' && (showSourceForm || showSpendForm)) closeDialogs(); }} />
+<svelte:window on:keydown={handleDialogKeydown} />
 
 <a class="skip-link" href="#main">Skip to main content</a>
 <header class="site-header">
@@ -368,9 +434,9 @@
     <section class="pricing" aria-labelledby="price-title">
       <p class="eyebrow">Team plan</p>
       <h2 id="price-title">Track every paid source for $79 a month</h2>
-      <p>Free ledgers hold three sources. The team plan adds unlimited sources and license use across your team.</p>
+      <p>Free ledgers hold three sources. The team plan adds sources beyond that cap and lets your team use the license.</p>
       <a class="primary-button" href={checkoutUrl()}>Buy the team plan</a>
-      <p class="fine-print">Sociobot is the merchant of record. Refunds there revoke the license.</p>
+      <p class="fine-print">Sociobot hosts checkout and handles receipts and refunds.</p>
     </section>
   {:else if route === '/demo' || route === '/ledger'}
     <section class="app-shell">
@@ -438,7 +504,7 @@
       </section>
 
       <section class="ledger-section spend-section" aria-labelledby="spend-title">
-        <div class="section-toolbar"><div><p class="eyebrow">Cost record</p><h2 id="spend-title">Project spend</h2></div><button class="secondary-button" disabled={ledger.sources.length === 0} on:click={() => { spendDraft = blankSpend(); showSpendForm = true; }}>Record spend</button></div>
+        <div class="section-toolbar"><div><p class="eyebrow">Cost record</p><h2 id="spend-title">Project spend</h2></div><button class="secondary-button" disabled={ledger.sources.length === 0} on:click={openSpendForm}>Record spend</button></div>
         {#if ledger.spend.length === 0}
           <div class="empty-state compact"><h3>No project spend recorded</h3><p>Cost entries will show which projects use paid capacity.</p></div>
         {:else}
@@ -465,7 +531,7 @@
       <p>Agent Capacity Ledger stores the capacity details you enter. It never asks for prompts, code, vendor passwords, or API keys.</p>
       <h2>What the service stores</h2><p>The server stores your workspace identifier, source limits, reset dates, fallback choices, project names, costs, and update time. Your browser keeps a matching copy for offline edits.</p><p>Anyone with a private workspace link can view and edit that ledger. Share the link only with your team.</p>
       <h2>Demo data</h2><p>The demo runs in memory. It does not read or write your real workspace.</p>
-      <h2>Licenses and checkout</h2><p>Your browser stores a license token after checkout. It sends that token to Sociobot for verification no more than once a day. Sociobot is the merchant of record.</p>
+      <h2>Licenses and checkout</h2><p>Your browser stores a license token after checkout. It sends that token to Sociobot for verification no more than once a day. Sociobot hosts checkout.</p>
       <h2>Deletion</h2><p>Email <a href="mailto:privacy@sociobot.in">privacy@sociobot.in</a> with your workspace identifier to request deletion.</p>
     </article>
   {:else if route === '/terms'}
@@ -473,7 +539,7 @@
       <p class="eyebrow">Last updated 28 August 2026</p><h1 tabindex="-1">Terms for honest capacity planning</h1>
       <p>Use this service to plan work within each vendor’s rules. Do not use it to share accounts, bypass limits, or store credentials.</p>
       <h2>Forecasts are estimates</h2><p>Forecasts depend on the limits, reset dates, and pace you enter. Confirm critical capacity decisions with the vendor.</p>
-      <h2>Team plan</h2><p>The team plan costs $79 each month. Sociobot handles checkout, receipts, refunds, and license status. A refund ends the related license.</p>
+      <h2>Team plan</h2><p>The team plan costs $79 each month. Sociobot handles checkout, receipts, refunds, and license status.</p>
       <h2>Your data</h2><p>You are responsible for team names, project names, costs, and vendor readings you enter. Do not add confidential prompts or source code.</p>
       <h2>Availability</h2><p>The service is provided as available. Export your ledger before a critical planning event.</p>
     </article>
@@ -483,14 +549,15 @@
 </main>
 
 {#if showSourceForm}
-  <div class="dialog-backdrop" role="presentation" on:click={(event) => { if (event.target === event.currentTarget) showSourceForm = false; }}>
+  <div class="dialog-backdrop" role="presentation" on:click={(event) => { if (event.target === event.currentTarget) closeDialogs(); }}>
     <dialog open class="dialog" aria-modal="true" aria-labelledby="source-form-title">
       <div class="form-heading"><h2 id="source-form-title">{editingSourceId ? 'Edit paid source' : 'Add a paid source'}</h2><button class="icon-button" aria-label="Close source form" on:click={closeDialogs}>×</button></div>
       <form on:submit={(event) => { event.preventDefault(); saveSource(); }}>
         <label>Vendor<input id="source-vendor" bind:value={sourceDraft.vendor} required /></label><label>Plan<input bind:value={sourceDraft.plan} required /></label>
-        <div class="field-pair"><label>Session limit<input type="number" min="1" bind:value={sourceDraft.limit} required /></label><label>Sessions used<input type="number" min="0" bind:value={sourceDraft.used} required /></label></div>
+        <div class="field-pair"><label>Session limit<input type="number" min="1" bind:value={sourceDraft.limit} aria-describedby={sourceError ? 'source-error' : undefined} required /></label><label>Sessions used<input type="number" min="0" bind:value={sourceDraft.used} aria-describedby={sourceError ? 'source-error' : undefined} required /></label></div>
         <div class="field-pair"><label>Daily pace<input type="number" min="0" step="0.1" bind:value={sourceDraft.dailyPace} required /></label><label>Reset date<input type="date" bind:value={sourceDraft.resetsOn} required /></label></div>
         <label>Monthly cost in USD<input type="number" min="0" step="0.01" bind:value={sourceDraft.monthlyCost} required /></label><label>Notes<textarea bind:value={sourceDraft.notes} rows="2"></textarea></label>
+        {#if sourceError}<p id="source-error" class="form-error" role="alert">{sourceError}</p>{/if}
         <div class="dialog-actions"><button type="button" class="secondary-button" on:click={closeDialogs}>Cancel</button><button class="primary-button">Save source</button></div>
       </form>
     </dialog>
@@ -498,11 +565,11 @@
 {/if}
 
 {#if showSpendForm}
-  <div class="dialog-backdrop" role="presentation" on:click={(event) => { if (event.target === event.currentTarget) showSpendForm = false; }}>
+  <div class="dialog-backdrop" role="presentation" on:click={(event) => { if (event.target === event.currentTarget) closeDialogs(); }}>
     <dialog open class="dialog" aria-modal="true" aria-labelledby="spend-form-title">
       <div class="form-heading"><h2 id="spend-form-title">Record project spend</h2><button class="icon-button" aria-label="Close spend form" on:click={closeDialogs}>×</button></div>
       <form on:submit={(event) => { event.preventDefault(); addSpend(); }}>
-        <label>Project<input bind:value={spendDraft.project} required /></label><label>Source<select bind:value={spendDraft.sourceId} required>{#each ledger.sources as source}<option value={source.id}>{source.vendor} · {source.plan}</option>{/each}</select></label>
+        <label>Project<input id="spend-project" bind:value={spendDraft.project} required /></label><label>Source<select bind:value={spendDraft.sourceId} required>{#each ledger.sources as source}<option value={source.id}>{source.vendor} · {source.plan}</option>{/each}</select></label>
         <div class="field-pair"><label>Date<input type="date" bind:value={spendDraft.date} required /></label><label>Cost in USD<input type="number" min="0" step="0.01" bind:value={spendDraft.amount} required /></label></div>
         <div class="dialog-actions"><button type="button" class="secondary-button" on:click={closeDialogs}>Cancel</button><button class="primary-button">Save spend</button></div>
       </form>
@@ -511,7 +578,7 @@
 {/if}
 
 {#if lastDeleted}
-  <div class="undo-toast" role="status"><span>Item removed.</span><button on:click={undoDelete}>Undo</button></div>
+  <div class="undo-toast" role="status"><span>{lastDeleted.kind === 'source' && lastDeleted.spend.length ? `Source and ${lastDeleted.spend.length} linked spend ${lastDeleted.spend.length === 1 ? 'entry' : 'entries'} removed.` : 'Item removed.'}</span><button on:click={undoDelete}>Undo</button></div>
 {/if}
 
 <footer>

@@ -40,16 +40,15 @@ Audited 2026-08-28. Counts treat numbers and hyphenated forms as one word. No li
 | Team plan | 2 | — |
 | Track every paid source for $79 a month | 8 | — |
 | Free ledgers hold three sources. | 5 | — |
-| The team plan adds unlimited sources and license use across your team. | 11 | — |
+| The team plan adds sources beyond that cap and lets your team use the license. | 14 | — |
 | Buy the team plan | 4 | — |
-| Sociobot is the merchant of record. | 6 | — |
-| Refunds there revoke the license. | 5 | — |
+| Sociobot hosts checkout and handles receipts and refunds. | 8 | — |
 | Plan paid agent capacity before limits stop work. | 8 | — |
 | Terms | 1 | — |
 | Built by Param Factory | 4 | — |
 | Generated artwork | 2 | — |
 
-Average sentence or phrase length: 5.4 words. The first screen reads in one breath: it names the job, the team, and the demo action.
+Average sentence or phrase length: 5.5 words. The first screen reads in one breath: it names the job, the team, and the demo action.
 
 ## Terminology table
 

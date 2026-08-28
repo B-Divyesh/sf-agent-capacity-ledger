@@ -11,11 +11,11 @@ The live product is [agent-capacity-ledger.sociobot.in](https://agent-capacity-l
 - Records session limits, current use, reset dates, pace, and monthly costs.
 - Warns when estimated capacity may run out before its reset date.
 - Assigns approved fallback tools without storing vendor credentials.
-- Records cost by project and exports the full ledger as CSV.
+- Imports source readings from CSV, records cost by project, and exports the full ledger as CSV.
 - Opens the same saved ledger from a private workspace link.
 - Keeps demo edits isolated from real workspaces.
 
-The free ledger holds three sources. The team plan costs $79 per team each month and raises that limit. Checkout and license verification use the Sociobot billing API; no payment provider is embedded here.
+The free ledger holds three sources. The team plan costs $79 per team each month and adds sources beyond that cap. Sociobot hosts checkout and verifies licenses; no payment provider script is embedded here.
 
 ## Run locally
 
@@ -39,15 +39,17 @@ npm run dev
 ## Test and verify
 
 ```sh
+npm ci
 npm test
 npm run check
 npm run build
 npm run test:e2e
+./verify-url.sh http://127.0.0.1:8080
 ```
 
 `npm test` runs the TypeScript forecast/export tests and Rust route tests. Playwright covers every claim in [`.factory/claims.json`](.factory/claims.json), mobile layout, route metadata, and serious accessibility findings.
 
-The API persists real workspaces in SQLite. It limits requests by the first `X-Forwarded-For` address and returns `429` with `Retry-After` after a burst. Demo mode never calls the workspace API.
+The API persists real workspaces in SQLite. Each replica limits the first `X-Forwarded-For` address to a 10-request burst, refilling at five requests per second. The three-replica deployment therefore stays below 40 burst requests and 20 requests per second. Empty buckets return `429` with `Retry-After`. Demo mode never calls the workspace API.
 
 ## Deploy
 

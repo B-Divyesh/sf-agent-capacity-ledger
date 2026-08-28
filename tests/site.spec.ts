@@ -16,12 +16,16 @@ for (const [path, title] of [
   });
 }
 
-test('landing and demo have no serious accessibility findings', async ({ page }) => {
-  for (const path of ['/', '/demo']) {
+test('primary routes and source dialog have no serious accessibility findings', async ({ page }) => {
+  for (const path of ['/', '/demo', '/ledger', '/privacy', '/terms']) {
     await page.goto(path);
     const results = await new AxeBuilder({ page }).analyze();
     expect(results.violations.filter(item => ['serious', 'critical'].includes(item.impact ?? ''))).toEqual([]);
   }
+  await page.goto('/demo');
+  await page.getByRole('button', { name: 'Add a source' }).click();
+  const dialogResults = await new AxeBuilder({ page }).analyze();
+  expect(dialogResults.violations.filter(item => ['serious', 'critical'].includes(item.impact ?? ''))).toEqual([]);
 });
 
 test('mobile demo fits 390 pixels and supports the menu', async ({ page }) => {
@@ -31,6 +35,9 @@ test('mobile demo fits 390 pixels and supports the menu', async ({ page }) => {
   await expect(page.getByRole('navigation', { name: 'Main navigation' })).toBeVisible();
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   expect(overflow).toBeLessThanOrEqual(1);
+  await page.evaluate(() => { document.documentElement.style.fontSize = '200%'; });
+  const resizedOverflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  expect(resizedOverflow).toBeLessThanOrEqual(1);
 });
 
 test('bad CSV explains what to fix', async ({ page }) => {
@@ -39,6 +46,75 @@ test('bad CSV explains what to fix', async ({ page }) => {
   await page.getByLabel('CSV rows').fill('vendor,plan\nOnly one row');
   await page.getByRole('button', { name: 'Import sources' }).click();
   await expect(page.getByRole('alert')).toContainText('The CSV needs these columns');
+});
+
+test('source removal undo restores linked spend and fallback relationships', async ({ page }) => {
+  await page.goto('/demo');
+  const claude = page.locator('.source-row').filter({ has: page.getByRole('heading', { name: 'Claude Code' }) });
+  await claude.getByRole('button', { name: 'Remove Claude Code' }).click();
+  await expect(page.getByText('Source and 1 linked spend entry removed.')).toBeVisible();
+  await expect(page.getByText('Atlas migration')).toHaveCount(0);
+  await page.getByRole('button', { name: 'Undo' }).click();
+  await expect(page.getByRole('heading', { name: 'Claude Code' })).toBeVisible();
+  await expect(page.getByText('Atlas migration')).toBeVisible();
+  await expect(page.locator('.source-row').filter({ has: page.getByRole('heading', { name: 'Claude Code' }) }).getByLabel('Approved fallback')).toHaveValue('codex-team');
+  await expect(page.locator('.spend-table [role="row"]')).toHaveCount(5);
+});
+
+test('source dialog traps focus, closes with Escape, and returns focus', async ({ page }) => {
+  await page.goto('/demo');
+  const trigger = page.getByRole('button', { name: 'Add a source' });
+  await trigger.focus();
+  await trigger.press('Enter');
+  await expect(page.getByLabel('Vendor')).toBeFocused();
+  await page.getByRole('button', { name: 'Save source' }).focus();
+  await page.keyboard.press('Tab');
+  await expect(page.getByRole('button', { name: 'Close source form' })).toBeFocused();
+  await page.keyboard.press('Shift+Tab');
+  await expect(page.getByRole('button', { name: 'Save source' })).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await expect(trigger).toBeFocused();
+
+  await trigger.click();
+  await page.getByRole('button', { name: 'Close source form' }).click();
+  await expect(trigger).toBeFocused();
+
+  await trigger.click();
+  await page.locator('.dialog-backdrop').click({ position: { x: 4, y: 4 } });
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await expect(trigger).toBeFocused();
+});
+
+test('invalid source and CSV relationships explain recovery', async ({ page }) => {
+  await page.goto('/demo');
+  await page.getByRole('button', { name: 'Add a source' }).click();
+  await page.getByLabel('Vendor').fill('Invalid source');
+  await page.getByLabel('Plan').fill('Team');
+  await page.getByLabel('Session limit').fill('10');
+  await page.getByLabel('Sessions used').fill('20');
+  await page.getByRole('button', { name: 'Save source' }).click();
+  await expect(page.getByRole('alert')).toHaveText('Sessions used cannot exceed the session limit. Fix the value and save again.');
+  await expect(page.getByRole('heading', { name: 'Invalid source' })).toHaveCount(0);
+  await page.getByRole('button', { name: 'Cancel' }).click();
+
+  await page.getByRole('button', { name: 'Import usage CSV' }).click();
+  await page.getByLabel('CSV rows').fill('vendor,plan,limit,used,daily_pace,resets_on,monthly_cost\nInvalid,Team,10,20,2,2099-01-01,40');
+  await page.getByRole('button', { name: 'Import sources' }).click();
+  await expect(page.getByRole('alert')).toHaveText('Row 2: Sessions used cannot exceed the session limit.');
+});
+
+test('unknown paths return HTTP 404 and assets use immutable caching', async ({ request }) => {
+  const missing = await request.get('/does-not-exist-qa');
+  expect(missing.status()).toBe(404);
+  expect(await missing.text()).toContain('This page has no reading');
+
+  const landing = await request.get('/');
+  const html = await landing.text();
+  const assetPath = html.match(/\/assets\/index-[^"']+\.js/)?.[0];
+  expect(assetPath).toBeTruthy();
+  const asset = await request.get(assetPath!);
+  expect(asset.headers()['cache-control']).toBe('public, max-age=31536000, immutable');
 });
 
 test('primary routes load without console errors', async ({ page }) => {

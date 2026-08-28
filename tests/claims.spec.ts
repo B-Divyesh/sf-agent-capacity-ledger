@@ -22,6 +22,27 @@ test('@claim:csv-export exports every demo source and spend entry as CSV', async
   expect(csv.trim().split('\n')).toHaveLength(8);
 });
 
+test('@claim:csv-import imports a valid capacity row with its source readings', async ({ page }) => {
+  await page.goto('/demo');
+  await page.getByRole('button', { name: 'Import usage CSV' }).click();
+  await page.getByLabel('CSV rows').fill('vendor,plan,limit,used,daily_pace,resets_on,monthly_cost\nZed,Team,80,20,3,2099-01-01,35');
+  await page.getByRole('button', { name: 'Import sources' }).click();
+  const source = page.locator('.source-row').filter({ has: page.getByRole('heading', { name: 'Zed' }) });
+  await expect(source).toContainText('60 of 80 sessions left');
+  await expect(source).toContainText('$35/month');
+});
+
+test('@claim:project-spend records cost by project and updates attribution', async ({ page }) => {
+  await page.goto('/demo');
+  await page.getByRole('button', { name: 'Record spend' }).click();
+  const dialog = page.getByRole('dialog', { name: 'Record project spend' });
+  await dialog.getByLabel('Project', { exact: true }).fill('Launch review');
+  await dialog.getByLabel('Cost in USD', { exact: true }).fill('100');
+  await dialog.getByRole('button', { name: 'Save spend' }).click();
+  await expect(page.getByText('Launch review')).toBeVisible();
+  await expect(page.locator('.forecast-strip')).toContainText('96%');
+});
+
 test('@claim:demo-isolation keeps demo changes out of the real workspace', async ({ page }) => {
   await page.goto('/demo');
   const used = page.locator('.source-row').filter({ has: page.getByRole('heading', { name: 'Claude Code' }) }).getByLabel('Used sessions');
@@ -42,6 +63,20 @@ test('@claim:prompt-privacy sends no demo data to another origin', async ({ page
   await page.getByRole('button', { name: 'Export CSV' }).click();
   await downloadPromise;
   expect(external).toEqual([]);
+});
+
+test('@claim:data-boundary never requests or accepts prompts, code, keys, or passwords', async ({ page, request }) => {
+  await page.goto('/ledger');
+  const labels = (await page.locator('label').allTextContents()).join(' ').toLowerCase();
+  expect(labels).not.toMatch(/prompt|source code|api key|password/);
+  const workspace = `boundary-${Date.now()}`;
+  const response = await request.put(`/api/ledger/${workspace}`, {
+    headers: { 'x-forwarded-for': '198.51.100.31' },
+    data: { data: { teamName: 'Boundary team', prompt: 'private prompt', sources: [], spend: [] } },
+  });
+  expect(response.status()).toBe(422);
+  const stored = await request.get(`/api/ledger/${workspace}`, { headers: { 'x-forwarded-for': '198.51.100.31' } });
+  expect((await stored.json()).data).toEqual({ teamName: 'My engineering team', sources: [], spend: [] });
 });
 
 test('@claim:server-persistence saves and loads a real workspace', async ({ request }) => {
@@ -103,4 +138,66 @@ test('@claim:paid-license stores and verifies a returned team license', async ({
   await expect(page.getByRole('heading', { name: 'Team plan active' })).toBeVisible();
   expect(await page.evaluate(() => localStorage.getItem('sb_license:agent-capacity-ledger'))).toBe('test_token');
   expect(new URL(page.url()).searchParams.has('license')).toBe(false);
+});
+
+test('@claim:license-daily-cache verifies an unchanged license no more than once a day', async ({ page }) => {
+  let checks = 0;
+  await page.route('https://api.sociobot.in/api/v1/products/agent-capacity-ledger/verify?license=daily_token', route => {
+    checks += 1;
+    return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ valid: true, reason: 'ok' }) });
+  });
+  await page.goto('/ledger?license=daily_token');
+  await expect(page.getByRole('heading', { name: 'Team plan active' })).toBeVisible();
+  await page.reload();
+  await expect(page.getByRole('heading', { name: 'Team plan active' })).toBeVisible();
+  expect(checks).toBe(1);
+});
+
+test('@claim:source-cap keeps three sources free and permits a fourth with a valid team license', async ({ page }) => {
+  await page.goto('/ledger');
+  for (let index = 1; index <= 3; index += 1) {
+    await page.getByRole('button', { name: 'Add a source' }).click();
+    await page.getByLabel('Vendor').fill(`Free source ${index}`);
+    await page.getByLabel('Plan', { exact: true }).fill('Team');
+    await page.getByRole('button', { name: 'Save source' }).click();
+    await expect(page.getByRole('heading', { name: `Free source ${index}` })).toBeVisible();
+  }
+  await page.getByRole('button', { name: 'Add a source' }).click();
+  await page.getByLabel('Vendor').fill('Fourth source');
+  await page.getByLabel('Plan', { exact: true }).fill('Team');
+  await page.getByRole('button', { name: 'Save source' }).click();
+  await expect(page.getByRole('alert')).toHaveText('The free ledger holds three sources. Add the team plan to add more.');
+  await page.getByRole('button', { name: 'Cancel' }).click();
+  await page.evaluate(() => {
+    localStorage.setItem('sb_license:agent-capacity-ledger', 'valid_cap_token');
+    localStorage.setItem('sb_license_verdict:agent-capacity-ledger', JSON.stringify({ valid: true, checkedAt: Date.now() }));
+  });
+  await page.reload();
+  await expect(page.getByRole('heading', { name: 'Team plan active' })).toBeVisible();
+  await page.getByRole('button', { name: 'Add a source' }).click();
+  await page.getByLabel('Vendor').fill('Fourth source');
+  await page.getByLabel('Plan', { exact: true }).fill('Team');
+  await page.getByRole('button', { name: 'Save source' }).click();
+  await expect(page.getByRole('heading', { name: 'Fourth source' })).toBeVisible();
+});
+
+test('@claim:policy-boundary has no model proxy or account-sharing workflow', async ({ page, request }) => {
+  await page.goto('/');
+  await expect(page.getByText('The ledger does not proxy models, collect prompts, store vendor credentials, or encourage account sharing.')).toBeVisible();
+  const proxy = await request.post('/api/proxy', {
+    headers: { 'x-forwarded-for': '198.51.100.32' },
+    data: { input: 'test' },
+  });
+  expect(proxy.status()).toBe(404);
+  await page.goto('/ledger');
+  expect(await page.locator('input[type="password"]').count()).toBe(0);
+});
+
+test('@claim:sociobot-billing uses the hosted Sociobot checkout and no payment-provider script', async ({ page }) => {
+  await page.goto('/');
+  const buy = page.getByRole('link', { name: 'Buy the team plan' });
+  await expect(buy).toHaveAttribute('href', 'https://api.sociobot.in/api/v1/products/agent-capacity-ledger/checkout');
+  await expect(page.getByText('$79 per team each month')).toBeVisible();
+  const scriptOrigins = await page.locator('script[src]').evaluateAll(elements => elements.map(element => new URL((element as HTMLScriptElement).src).origin));
+  expect(scriptOrigins).toEqual([new URL(page.url()).origin]);
 });
