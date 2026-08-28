@@ -34,7 +34,7 @@ Additional local checks:
 - `npm run check`: PASS — 0 errors, 0 warnings.
 - `npm run build`: PASS — produced `dist/`.
 - `npm run test:e2e`: PASS — 17 tests.
-- `cargo build --release`: initiated; see container limitation below.
+- `cargo build --release`: PASS — release binary produced at `target/release/agent-capacity-ledger`.
 - Exact `docker build`: not runnable because this worker image has no Docker CLI (`docker: command not found`).
 
 ## Live evidence
