@@ -1,4 +1,8 @@
-# Agent Capacity Ledger v1 handoff
+# Agent Capacity Ledger v1 handoff — **FAIL (independent verification)**
+
+Candidate `d18808a22c11e8c9b2608874d8b8a6b026443abd` was independently tested against https://agent-capacity-ledger.sociobot.in on 2026-08-28. It is **not release-ready**. The live API did not return HTTP 429 or `Retry-After` after 180 concurrent requests from one client, which fails the mandatory request-limit contract. It also has irreversible linked-spend deletion, a keyboard-modal focus escape, 200 responses for unknown URLs, missing asset cache headers, incomplete claim coverage, and a non-compliant pinned Rust Docker base image.
+
+See [`.factory/verification.md`](verification.md) for exact commands, evidence, all claim-test results, severity, and remediation steps. The builder’s historical verification notes below are superseded where they conflict with this independent report.
 
 ## What was built
 
