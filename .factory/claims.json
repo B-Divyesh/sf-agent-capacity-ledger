@@ -1,0 +1,58 @@
+[
+  {
+    "id": "capacity-forecast",
+    "claim": "Forecasts remaining useful sessions and warns when a source may run out before reset.",
+    "where": "landing preview, demo ledger, README",
+    "test": "npm run test:e2e -- --grep @claim:capacity-forecast",
+    "sandbox": "fresh browser context at /demo with bundled sample sources"
+  },
+  {
+    "id": "csv-export",
+    "claim": "Exports capacity and project spend as CSV.",
+    "where": "landing facts, ledger toolbar, README",
+    "test": "npm run test:e2e -- --grep @claim:csv-export",
+    "sandbox": "fresh browser context at /demo; assert headers and all seven sample rows"
+  },
+  {
+    "id": "demo-isolation",
+    "claim": "Demo changes never enter the real workspace.",
+    "where": "demo banner, privacy page, README",
+    "test": "npm run test:e2e -- --grep @claim:demo-isolation",
+    "sandbox": "fresh browser context; edit demo then enter real ledger and assert empty state"
+  },
+  {
+    "id": "prompt-privacy",
+    "claim": "The demo collects no prompts and sends no data to another origin.",
+    "where": "landing facts, privacy page, README",
+    "test": "npm run test:e2e -- --grep @claim:prompt-privacy",
+    "sandbox": "record every request during reset and export in a fresh /demo context"
+  },
+  {
+    "id": "server-persistence",
+    "claim": "Real workspaces save and load through the SQLite service.",
+    "where": "README",
+    "test": "npm run test:e2e -- --grep @claim:server-persistence",
+    "sandbox": "random isolated workspace through the local container API"
+  },
+  {
+    "id": "workspace-sharing",
+    "claim": "A private workspace link opens the same saved team ledger.",
+    "where": "ledger toolbar, privacy page, README",
+    "test": "npm run test:e2e -- --grep @claim:workspace-sharing",
+    "sandbox": "seed a random workspace, open its link in a fresh browser context, and assert its source and team name"
+  },
+  {
+    "id": "offline-queue",
+    "claim": "An open ledger keeps edits on the device during connection loss and saves them after reconnect.",
+    "where": "ledger offline notice, handoff",
+    "test": "npm run test:e2e -- --grep @claim:offline-queue",
+    "sandbox": "fresh real workspace; go offline, add a source, reconnect, and read the saved source from the API"
+  },
+  {
+    "id": "rate-limit",
+    "claim": "The API limits bursts and returns Retry-After with HTTP 429.",
+    "where": "README, handoff",
+    "test": "npm run test:e2e -- --grep @claim:rate-limit",
+    "sandbox": "60 parallel reads from one synthetic forwarded client IP"
+  }
+]
