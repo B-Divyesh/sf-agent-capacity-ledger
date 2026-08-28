@@ -40,7 +40,7 @@ Evidence from 2026-08-28:
 - `npm run check`: 0 errors and 0 warnings.
 - `npm test`: 6 Vitest tests and 5 Rust tests passed.
 - `cargo clippy --all-targets -- -D warnings`: passed.
-- `npm run build`: produced `dist/`; JavaScript 72,610 bytes raw / 26,730 bytes gzip, CSS 16,630 bytes raw / 4,550 bytes gzip. Largest responsive hero asset: 68,206 bytes.
+- `npm run build`: produced `dist/`; JavaScript 72,606 bytes raw / 26,620 bytes gzip, CSS 16,630 bytes raw / 4,564 bytes gzip. Largest responsive hero asset: 68,206 bytes.
 - `cargo build --release`: produced `target/release/agent-capacity-ledger`.
 - `npm run test:e2e`: 28/28 passed in Chromium. Every one of the 16 exact `.factory/claims.json` commands was then run independently; each passed one matching test.
 - Accessibility: Axe found zero serious or critical issues on `/`, `/demo`, `/ledger`, `/privacy`, `/terms`, and the open source dialog. Keyboard tests cover focus cycling, Escape, close button, backdrop, and focus return. The 390 × 844 test has 0 px overflow at normal size and at 200% root text size.
@@ -54,12 +54,20 @@ Evidence from 2026-08-28:
 
 ## Deployment and live identity
 
-The repair is deployed with `/opt/fleet/lib/deploy-container.sh agent-capacity-ledger /work/repo Dockerfile 8080`. This section is updated after the committed image is live.
+- Pushed commit: `5118e168933073b19f549ca4980cf3cd5e4e8256` on `main`.
+- Factory command: `/opt/fleet/lib/deploy-container.sh agent-capacity-ledger /work/repo Dockerfile 8080`.
+- ACR build: run `chm3`, successful in 7m15s; image `sociobotregistry.azurecr.io/sf-agent-capacity-ledger:5118e1689330`.
+- Container Apps revision: `sf-agent-capacity-ledger--0000001`, 100% of traffic, one-to-three replica work-order scale configuration.
+- Live URL: `https://agent-capacity-ledger.sociobot.in` returned HTTPS 200. `/health` returned the full pushed SHA above.
+- Factory live browser verifier: 566 ms load, correct title/lang/main/h1/alts, 0 unlabeled buttons, and no console or page errors. Desktop and 390 px screenshots were produced.
+- Live Axe sweep: zero serious or critical findings on `/`, `/demo`, `/ledger`, `/privacy`, `/terms`, and the open dialog. Live dialog Tab stayed on **Close source form**, Escape returned focus, linked-spend Undo restored all five table rows, and mobile overflow was 0 px.
+- Live rate replay: 180 concurrent API reads from one forwarded address returned 34 HTTP 200 and 146 HTTP 429. All 146 limited responses included `Retry-After`.
+- Live response policy: unknown route returned HTTP 404; hashed JavaScript returned immutable caching, CSP, `nosniff`, referrer policy, and permissions policy.
 
 ## Known gaps
 
 - Workspace links remain bearer capabilities. Anyone with the link can edit that ledger; add organization sign-in and roles before larger pilots.
 - CSV import intentionally supports simple comma-separated fields and does not parse quoted commas.
 - Forecasts rely on user-entered vendor readings because vendors do not expose one stable cross-provider format.
-- The factory still needs to register/exercise the paid product with a real checkout if that external catalog setup is not already complete.
-- The deployment configuration supplies ephemeral container storage and no mounted volume. SQLite survives requests and reconnects within a running replica, but a revision replacement can discard workspaces. A durable factory-managed volume or PostgreSQL is the next infrastructure step; this repair does not alter factory infrastructure.
+- The Sociobot checkout URL currently returns HTTP 404. The factory must register the external paid product before purchase can work; repository code cannot create billing products and no direct payment provider is embedded.
+- The deployment configuration supplies ephemeral container storage and no mounted volume. SQLite survives requests within a running replica, but replicas do not share the file and a revision replacement can discard it. A live two-replica probe returned the saved workspace from 9 of 20 reads and an empty workspace from 11. A durable factory-managed volume/PostgreSQL or a single-replica deployment is required for reliable cross-replica sharing; this repair does not alter factory infrastructure.
