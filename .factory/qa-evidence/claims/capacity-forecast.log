@@ -1,0 +1,24 @@
+
+> agent-capacity-ledger@1.0.0 test:e2e
+> playwright test --grep @claim:capacity-forecast
+
+[1A[2K[WebServer] (node:4025) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+[1A[2K[WebServer]     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.62s
+
+[1A[2K[WebServer]      Running `target/debug/agent-capacity-ledger`
+
+
+Running 1 test using 1 worker
+
+[1A[2K(node:4053) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:4053) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K[1/1] [chromium] › tests/claims.spec.ts:3:1 › @claim:capacity-forecast forecasts remaining useful sessions and warns before reset
+[1A[2K  1 passed (6.4s)

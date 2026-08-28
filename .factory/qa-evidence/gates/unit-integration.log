@@ -1,0 +1,43 @@
+
+> agent-capacity-ledger@1.0.0 test
+> vitest run && cargo test
+
+9:11:47 PM [vite-plugin-svelte] no Svelte config found at /work/repo/frontend - using default configuration.
+
+ RUN  v3.2.7 /work/repo/frontend
+
+ ✓ src/claims-contract.test.ts (1 test) 6ms
+ ✓ src/ledger.test.ts (5 tests) 6ms
+
+ Test Files  2 passed (2)
+      Tests  6 passed (6)
+   Start at  21:11:47
+   Duration  1.33s (transform 302ms, setup 0ms, collect 325ms, tests 12ms, environment 0ms, prepare 592ms)
+
+ Downloading crates ...
+  Downloaded fastrand v2.5.0
+  Downloaded tempfile v3.27.0
+  Downloaded rustix v1.1.4
+  Downloaded linux-raw-sys v0.12.1
+   Compiling bitflags v2.13.1
+   Compiling raw-cpuid v11.6.0
+   Compiling rustix v1.1.4
+   Compiling quanta v0.12.6
+   Compiling linux-raw-sys v0.12.1
+   Compiling governor v0.10.4
+   Compiling fastrand v2.5.0
+   Compiling tempfile v3.27.0
+   Compiling tower-http v0.6.11
+   Compiling tower_governor v0.8.0
+   Compiling agent-capacity-ledger v1.0.0 (/work/repo)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 12.36s
+     Running unittests src/main.rs (target/debug/deps/agent_capacity_ledger-4376a9e35d42701b)
+
+running 5 tests
+test tests::health_reports_build ... ok
+test tests::ledger_round_trip_and_validation ... ok
+test tests::rate_limit_holds_across_maximum_replica_count ... ok
+test tests::rejects_invalid_capacity_and_unknown_sensitive_fields ... ok
+test tests::unknown_routes_are_404_and_assets_are_immutable ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s

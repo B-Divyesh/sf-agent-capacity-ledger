@@ -1,0 +1,2 @@
+{"timestamp":"2026-08-28T21:25:45.670256Z","level":"INFO","fields":{"message":"runtime configuration","port":4181,"port_source":"supplied","database":"/data","data_dir_source":"defaulted","build_sha":"dev","build_sha_source":"defaulted"},"target":"agent_capacity_ledger"}
+{"timestamp":"2026-08-28T21:25:45.671953Z","level":"INFO","fields":{"message":"server ready","address":"0.0.0.0:4181"},"target":"agent_capacity_ledger"}

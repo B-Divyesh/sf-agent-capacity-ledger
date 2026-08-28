@@ -1,0 +1,95 @@
+{
+  "timestamp": "2026-08-28T21:21:57.546Z",
+  "results": [
+    {
+      "from": "/",
+      "text": "Skip to main content",
+      "href": "https://agent-capacity-ledger.sociobot.in/#main",
+      "status": 200,
+      "location": null
+    },
+    {
+      "from": "/",
+      "text": "Agent CapacityLedger",
+      "href": "https://agent-capacity-ledger.sociobot.in/",
+      "status": 200,
+      "location": null
+    },
+    {
+      "from": "/",
+      "text": "Demo",
+      "href": "https://agent-capacity-ledger.sociobot.in/demo",
+      "status": 200,
+      "location": null
+    },
+    {
+      "from": "/",
+      "text": "Ledger",
+      "href": "https://agent-capacity-ledger.sociobot.in/ledger",
+      "status": 200,
+      "location": null
+    },
+    {
+      "from": "/",
+      "text": "Privacy",
+      "href": "https://agent-capacity-ledger.sociobot.in/privacy",
+      "status": 200,
+      "location": null
+    },
+    {
+      "from": "/",
+      "text": "Buy the team plan",
+      "href": "https://api.sociobot.in/api/v1/products/agent-capacity-ledger/checkout",
+      "status": 404,
+      "location": null
+    },
+    {
+      "from": "/",
+      "text": "Terms",
+      "href": "https://agent-capacity-ledger.sociobot.in/terms",
+      "status": 200,
+      "location": null
+    },
+    {
+      "from": "/",
+      "text": "Built by Param Factory (external site)",
+      "href": "https://sociobot.in/",
+      "status": 200,
+      "location": null
+    },
+    {
+      "from": "/demo",
+      "text": "Skip to main content",
+      "href": "https://agent-capacity-ledger.sociobot.in/demo#main",
+      "status": 200,
+      "location": null
+    },
+    {
+      "from": "/ledger",
+      "text": "Skip to main content",
+      "href": "https://agent-capacity-ledger.sociobot.in/ledger#main",
+      "status": 200,
+      "location": null
+    },
+    {
+      "from": "/privacy",
+      "text": "Skip to main content",
+      "href": "https://agent-capacity-ledger.sociobot.in/privacy#main",
+      "status": 200,
+      "location": null
+    },
+    {
+      "from": "/privacy",
+      "text": "privacy@sociobot.in",
+      "href": "mailto:privacy@sociobot.in",
+      "status": "mailto"
+    },
+    {
+      "from": "/terms",
+      "text": "Skip to main content",
+      "href": "https://agent-capacity-ledger.sociobot.in/terms#main",
+      "status": 200,
+      "location": null
+    }
+  ]
+}

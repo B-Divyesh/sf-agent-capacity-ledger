@@ -1,0 +1,14 @@
+
+> agent-capacity-ledger@1.0.0 build
+> vite build
+
+9:13:16 PM [vite-plugin-svelte] no Svelte config found at /work/repo/frontend - using default configuration.
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 113 modules transformed.
+rendering chunks...
+computing gzip size...
+../dist/index.html                  1.62 kB │ gzip:  0.58 kB
+../dist/assets/index-D65kzRip.css  16.63 kB │ gzip:  4.55 kB
+../dist/assets/index-BOzNjxv9.js   72.61 kB │ gzip: 26.73 kB
+✓ built in 1.88s

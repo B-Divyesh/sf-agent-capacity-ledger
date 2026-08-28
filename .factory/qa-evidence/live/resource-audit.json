@@ -1,0 +1,226 @@
+{
+  "timestamp": "2026-08-28T21:21:48.236Z",
+  "resources": [
+    {
+      "path": "/",
+      "status": 200,
+      "contentType": "text/html",
+      "contentLength": "1624",
+      "cacheControl": null,
+      "etag": null,
+      "lastModified": "Fri, 28 Aug 2026 20:37:11 GMT",
+      "csp": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self' https://api.sociobot.in; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'",
+      "nosniff": "nosniff",
+      "referrerPolicy": "strict-origin-when-cross-origin",
+      "permissionsPolicy": "camera=(), microphone=(), geolocation=()"
+    },
+    {
+      "path": "/demo",
+      "status": 200,
+      "contentType": "text/html",
+      "contentLength": "1624",
+      "cacheControl": null,
+      "etag": null,
+      "lastModified": "Fri, 28 Aug 2026 20:37:11 GMT",
+      "csp": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self' https://api.sociobot.in; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'",
+      "nosniff": "nosniff",
+      "referrerPolicy": "strict-origin-when-cross-origin",
+      "permissionsPolicy": "camera=(), microphone=(), geolocation=()"
+    },
+    {
+      "path": "/ledger",
+      "status": 200,
+      "contentType": "text/html",
+      "contentLength": "1624",
+      "cacheControl": null,
+      "etag": null,
+      "lastModified": "Fri, 28 Aug 2026 20:37:11 GMT",
+      "csp": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self' https://api.sociobot.in; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'",
+      "nosniff": "nosniff",
+      "referrerPolicy": "strict-origin-when-cross-origin",
+      "permissionsPolicy": "camera=(), microphone=(), geolocation=()"
+    },
+    {
+      "path": "/privacy",
+      "status": 200,
+      "contentType": "text/html",
+      "contentLength": "1624",
+      "cacheControl": null,
+      "etag": null,
+      "lastModified": "Fri, 28 Aug 2026 20:37:11 GMT",
+      "csp": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self' https://api.sociobot.in; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'",
+      "nosniff": "nosniff",
+      "referrerPolicy": "strict-origin-when-cross-origin",
+      "permissionsPolicy": "camera=(), microphone=(), geolocation=()"
+    },
+    {
+      "path": "/terms",
+      "status": 200,
+      "contentType": "text/html",
+      "contentLength": "1624",
+      "cacheControl": null,
+      "etag": null,
+      "lastModified": "Fri, 28 Aug 2026 20:37:11 GMT",
+      "csp": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self' https://api.sociobot.in; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'",
+      "nosniff": "nosniff",
+      "referrerPolicy": "strict-origin-when-cross-origin",
+      "permissionsPolicy": "camera=(), microphone=(), geolocation=()"
+    },
+    {
+      "path": "/does-not-exist-qa",
+      "status": 404,
+      "contentType": "text/html",
+      "contentLength": "392",
+      "cacheControl": null,
+      "etag": null,
+      "lastModified": "Fri, 28 Aug 2026 20:37:11 GMT",
+      "csp": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self' https://api.sociobot.in; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'",
+      "nosniff": "nosniff",
+      "referrerPolicy": "strict-origin-when-cross-origin",
+      "permissionsPolicy": "camera=(), microphone=(), geolocation=()"
+    },
+    {
+      "path": "/robots.txt",
+      "status": 200,
+      "contentType": "text/plain",
+      "contentLength": "86",
+      "cacheControl": null,
+      "etag": null,
+      "lastModified": "Fri, 28 Aug 2026 20:37:11 GMT",
+      "csp": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self' https://api.sociobot.in; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'",
+      "nosniff": "nosniff",
+      "referrerPolicy": "strict-origin-when-cross-origin",
+      "permissionsPolicy": "camera=(), microphone=(), geolocation=()"
+    },
+    {
+      "path": "/sitemap.xml",
+      "status": 200,
+      "contentType": "text/xml",
+      "contentLength": "467",
+      "cacheControl": null,
+      "etag": null,
+      "lastModified": "Fri, 28 Aug 2026 20:37:11 GMT",
+      "csp": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self' https://api.sociobot.in; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'",
+      "nosniff": "nosniff",
+      "referrerPolicy": "strict-origin-when-cross-origin",
+      "permissionsPolicy": "camera=(), microphone=(), geolocation=()"
+    },
+    {
+      "path": "/favicon.svg",
+      "status": 200,
+      "contentType": "image/svg+xml",
+      "contentLength": "312",
+      "cacheControl": null,
+      "etag": null,
+      "lastModified": "Fri, 28 Aug 2026 20:37:11 GMT",
+      "csp": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self' https://api.sociobot.in; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'",
+      "nosniff": "nosniff",
+      "referrerPolicy": "strict-origin-when-cross-origin",
+      "permissionsPolicy": "camera=(), microphone=(), geolocation=()"
+    },
+    {
+      "path": "/assets/apple-touch-icon.png",
+      "status": 200,
+      "contentType": "image/png",
+      "contentLength": "50124",
+      "cacheControl": "public, max-age=31536000, immutable",
+      "etag": null,
+      "lastModified": "Fri, 28 Aug 2026 20:37:11 GMT",
+      "csp": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self' https://api.sociobot.in; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'",
+      "nosniff": "nosniff",
+      "referrerPolicy": "strict-origin-when-cross-origin",
+      "permissionsPolicy": "camera=(), microphone=(), geolocation=()"
+    },
+    {
+      "path": "/assets/social-card.webp",
+      "status": 200,
+      "contentType": "image/webp",
+      "contentLength": "62750",
+      "cacheControl": "public, max-age=31536000, immutable",
+      "etag": null,
+      "lastModified": "Fri, 28 Aug 2026 20:37:11 GMT",
+      "csp": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self' https://api.sociobot.in; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'",
+      "nosniff": "nosniff",
+      "referrerPolicy": "strict-origin-when-cross-origin",
+      "permissionsPolicy": "camera=(), microphone=(), geolocation=()"
+    },
+    {
+      "path": "/assets/index-BOzNjxv9.js",
+      "status": 200,
+      "contentType": "text/javascript",
+      "contentLength": "72606",
+      "cacheControl": "public, max-age=31536000, immutable",
+      "etag": null,
+      "lastModified": "Fri, 28 Aug 2026 20:37:11 GMT",
+      "csp": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self' https://api.sociobot.in; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'",
+      "nosniff": "nosniff",
+      "referrerPolicy": "strict-origin-when-cross-origin",
+      "permissionsPolicy": "camera=(), microphone=(), geolocation=()"
+    },
+    {
+      "path": "/assets/index-D65kzRip.css",
+      "status": 200,
+      "contentType": "text/css",
+      "contentLength": "16630",
+      "cacheControl": "public, max-age=31536000, immutable",
+      "etag": null,
+      "lastModified": "Fri, 28 Aug 2026 20:37:11 GMT",
+      "csp": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self' https://api.sociobot.in; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'",
+      "nosniff": "nosniff",
+      "referrerPolicy": "strict-origin-when-cross-origin",
+      "permissionsPolicy": "camera=(), microphone=(), geolocation=()"
+    },
+    {
+      "path": "/assets/capacity-observatory-1200.webp",
+      "status": 200,
+      "contentType": "image/webp",
+      "contentLength": "68206",
+      "cacheControl": "public, max-age=31536000, immutable",
+      "etag": null,
+      "lastModified": "Fri, 28 Aug 2026 20:37:11 GMT",
+      "csp": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self' https://api.sociobot.in; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'",
+      "nosniff": "nosniff",
+      "referrerPolicy": "strict-origin-when-cross-origin",
+      "permissionsPolicy": "camera=(), microphone=(), geolocation=()"
+    }
+  ],
+  "hrefs": [
+    "https://agent-capacity-ledger.sociobot.in/",
+    "/favicon.svg",
+    "/assets/apple-touch-icon.png",
+    "/assets/index-D65kzRip.css"
+  ],
+  "linkResults": [
+    {
+      "href": "https://agent-capacity-ledger.sociobot.in/",
+      "url": "https://agent-capacity-ledger.sociobot.in/",
+      "status": 200,
+      "location": null
+    },
+    {
+      "href": "/favicon.svg",
+      "url": "https://agent-capacity-ledger.sociobot.in/favicon.svg",
+      "status": 200,
+      "location": null
+    },
+    {
+      "href": "/assets/apple-touch-icon.png",
+      "url": "https://agent-capacity-ledger.sociobot.in/assets/apple-touch-icon.png",
+      "status": 200,
+      "location": null
+    },
+    {
+      "href": "/assets/index-D65kzRip.css",
+      "url": "https://agent-capacity-ledger.sociobot.in/assets/index-D65kzRip.css",
+      "status": 200,
+      "location": null
+    }
+  ],
+  "local": {
+    "js": 72606,
+    "css": 16630,
+    "hero1200": 68206,
+    "hero720": 23550,
+    "social": 62750
+  }
+}

@@ -1,0 +1,51 @@
+
+> agent-capacity-ledger@1.0.0 test:e2e
+> playwright test
+
+[1A[2K[WebServer] (node:12704) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+[1A[2K[WebServer]     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.75s
+
+[1A[2K[WebServer]      Running `target/debug/agent-capacity-ledger`
+
+
+Running 28 tests using 1 worker
+
+[1A[2K(node:12730) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:12730) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K[1/28] [chromium] › tests/claims.spec.ts:3:1 › @claim:capacity-forecast forecasts remaining useful sessions and warns before reset
+[1A[2K[2/28] [chromium] › tests/claims.spec.ts:11:1 › @claim:csv-export exports every demo source and spend entry as CSV
+[1A[2K[3/28] [chromium] › tests/claims.spec.ts:25:1 › @claim:csv-import imports a valid capacity row with its source readings
+[1A[2K[4/28] [chromium] › tests/claims.spec.ts:35:1 › @claim:project-spend records cost by project and updates attribution
+[1A[2K[5/28] [chromium] › tests/claims.spec.ts:46:1 › @claim:demo-isolation keeps demo changes out of the real workspace
+[1A[2K[6/28] [chromium] › tests/claims.spec.ts:55:1 › @claim:prompt-privacy sends no demo data to another origin
+[1A[2K[7/28] [chromium] › tests/claims.spec.ts:68:1 › @claim:data-boundary never requests or accepts prompts, code, keys, or passwords
+[1A[2K[8/28] [chromium] › tests/claims.spec.ts:82:1 › @claim:server-persistence saves and loads a real workspace
+[1A[2K[9/28] [chromium] › tests/claims.spec.ts:93:1 › @claim:workspace-sharing opens the same ledger from its private link
+[1A[2K[10/28] [chromium] › tests/claims.spec.ts:106:1 › @claim:offline-queue keeps an open-page edit and saves it after reconnect
+[1A[2K[11/28] [chromium] › tests/claims.spec.ts:123:1 › @claim:rate-limit returns 429 and Retry-After after the API allowance
+[1A[2K[12/28] [chromium] › tests/claims.spec.ts:131:1 › @claim:paid-license stores and verifies a returned team license
+[1A[2K[13/28] [chromium] › tests/claims.spec.ts:143:1 › @claim:license-daily-cache verifies an unchanged license no more than once a day
+[1A[2K[14/28] [chromium] › tests/claims.spec.ts:156:1 › @claim:source-cap keeps three sources free and permits a fourth with a valid team license
+[1A[2K[15/28] [chromium] › tests/claims.spec.ts:184:1 › @claim:policy-boundary has no model proxy or account-sharing workflow
+[1A[2K[16/28] [chromium] › tests/claims.spec.ts:196:1 › @claim:sociobot-billing uses the hosted Sociobot checkout and no payment-provider script
+[1A[2K[17/28] [chromium] › tests/site.spec.ts:10:3 › / has route metadata, landmarks, and one h1
+[1A[2K[18/28] [chromium] › tests/site.spec.ts:10:3 › /demo has route metadata, landmarks, and one h1
+[1A[2K[19/28] [chromium] › tests/site.spec.ts:10:3 › /privacy has route metadata, landmarks, and one h1
+[1A[2K[20/28] [chromium] › tests/site.spec.ts:10:3 › /terms has route metadata, landmarks, and one h1
+[1A[2K[21/28] [chromium] › tests/site.spec.ts:19:1 › primary routes and source dialog have no serious accessibility findings
+[1A[2K[22/28] [chromium] › tests/site.spec.ts:31:1 › mobile demo fits 390 pixels and supports the menu
+[1A[2K[23/28] [chromium] › tests/site.spec.ts:43:1 › bad CSV explains what to fix
+[1A[2K[24/28] [chromium] › tests/site.spec.ts:51:1 › source removal undo restores linked spend and fallback relationships
+[1A[2K[25/28] [chromium] › tests/site.spec.ts:64:1 › source dialog traps focus, closes with Escape, and returns focus
+[1A[2K[26/28] [chromium] › tests/site.spec.ts:89:1 › invalid source and CSV relationships explain recovery
+[1A[2K[27/28] [chromium] › tests/site.spec.ts:107:1 › unknown paths return HTTP 404 and assets use immutable caching
+[1A[2K[28/28] [chromium] › tests/site.spec.ts:120:1 › primary routes load without console errors
+[1A[2K  28 passed (32.1s)

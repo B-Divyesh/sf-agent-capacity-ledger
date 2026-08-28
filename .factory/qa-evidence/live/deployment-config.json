@@ -1,0 +1,19 @@
+{
+  "env": [
+    {
+      "name": "PORT",
+      "value": "8080"
+    }
+  ],
+  "image": "sociobotregistry.azurecr.io/sf-agent-capacity-ledger:22623e2e309d",
+  "provisioningState": "Succeeded",
+  "revision": "sf-agent-capacity-ledger--0000002",
+  "scale": {
+    "cooldownPeriod": 300,
+    "maxReplicas": 3,
+    "minReplicas": 1,
+    "pollingInterval": 30,
+    "rules": null
+  },
+  "volumeMounts": null
+}

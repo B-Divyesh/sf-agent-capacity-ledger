@@ -1,0 +1,24 @@
+
+> agent-capacity-ledger@1.0.0 test:e2e
+> playwright test --grep @claim:offline-queue
+
+[1A[2K[WebServer] (node:5253) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+[1A[2K[WebServer]     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.14s
+
+[1A[2K[WebServer]      Running `target/debug/agent-capacity-ledger`
+
+
+Running 1 test using 1 worker
+
+[1A[2K(node:5279) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:5279) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K[1/1] [chromium] › tests/claims.spec.ts:106:1 › @claim:offline-queue keeps an open-page edit and saves it after reconnect
+[1A[2K  1 passed (6.7s)

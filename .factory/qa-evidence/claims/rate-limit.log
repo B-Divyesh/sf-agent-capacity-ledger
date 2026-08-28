@@ -1,0 +1,24 @@
+
+> agent-capacity-ledger@1.0.0 test:e2e
+> playwright test --grep @claim:rate-limit
+
+[1A[2K[WebServer] (node:5393) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+[1A[2K[WebServer]     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.16s
+
+[1A[2K[WebServer]      Running `target/debug/agent-capacity-ledger`
+
+
+Running 1 test using 1 worker
+
+[1A[2K(node:5420) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:5420) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K[1/1] [chromium] › tests/claims.spec.ts:123:1 › @claim:rate-limit returns 429 and Retry-After after the API allowance
+[1A[2K  1 passed (5.9s)

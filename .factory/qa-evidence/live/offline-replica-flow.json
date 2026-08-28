@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-08-28T21:24:08.026Z",
+  "workspace": "qa-offline-live-1787952246034",
+  "localVisible": true,
+  "offlineMessage": "Offline. This change is queued on this device.",
+  "savedMessage": "Ledger saved.",
+  "counts": {
+    "saved": 19,
+    "empty": 41
+  },
+  "externalRequests": []
+}

@@ -1,0 +1,77 @@
+[
+  {
+    "id": "/subscriptions/283af945-693b-4a6e-b952-df928d0a18a9/resourceGroups/sociobot/providers/Microsoft.App/containerApps/sf-agent-capacity-ledger/revisions/sf-agent-capacity-ledger--0000002/replicas/sf-agent-capacity-ledger--0000002-84ff5f95d7-cvbz6",
+    "name": "sf-agent-capacity-ledger--0000002-84ff5f95d7-cvbz6",
+    "properties": {
+      "containers": [
+        {
+          "containerId": "containerd://c8cb7c72ebda49579fa071e88b02d811",
+          "execEndpoint": "wss://eastus2.azurecontainerapps.dev/subscriptions/283af945-693b-4a6e-b952-df928d0a18a9/resourceGroups/sociobot/containerApps/sf-agent-capacity-ledger/revisions/sf-agent-capacity-ledger--0000002/replicas/sf-agent-capacity-ledger--0000002-84ff5f95d7-cvbz6/containers/app/exec",
+          "logStreamEndpoint": "https://eastus2.azurecontainerapps.dev/subscriptions/283af945-693b-4a6e-b952-df928d0a18a9/resourceGroups/sociobot/containerApps/sf-agent-capacity-ledger/revisions/sf-agent-capacity-ledger--0000002/replicas/sf-agent-capacity-ledger--0000002-84ff5f95d7-cvbz6/containers/app/logstream",
+          "name": "app",
+          "ready": true,
+          "restartCount": 0,
+          "runningState": "Running",
+          "runningStateDetails": "Container started at: 8/28/2026 9:19:38 PM.",
+          "started": true
+        }
+      ],
+      "createdTime": "2026-08-28T21:19:22Z",
+      "initContainers": [],
+      "runningState": "Running",
+      "runningStateDetails": ""
+    },
+    "resourceGroup": "sociobot",
+    "type": "Microsoft.App/containerapps/revisions/replicas"
+  },
+  {
+    "id": "/subscriptions/283af945-693b-4a6e-b952-df928d0a18a9/resourceGroups/sociobot/providers/Microsoft.App/containerApps/sf-agent-capacity-ledger/revisions/sf-agent-capacity-ledger--0000002/replicas/sf-agent-capacity-ledger--0000002-84ff5f95d7-kl2bw",
+    "name": "sf-agent-capacity-ledger--0000002-84ff5f95d7-kl2bw",
+    "properties": {
+      "containers": [
+        {
+          "containerId": "containerd://8c3cce7f499a49f788943326127d64aa",
+          "execEndpoint": "wss://eastus2.azurecontainerapps.dev/subscriptions/283af945-693b-4a6e-b952-df928d0a18a9/resourceGroups/sociobot/containerApps/sf-agent-capacity-ledger/revisions/sf-agent-capacity-ledger--0000002/replicas/sf-agent-capacity-ledger--0000002-84ff5f95d7-kl2bw/containers/app/exec",
+          "logStreamEndpoint": "https://eastus2.azurecontainerapps.dev/subscriptions/283af945-693b-4a6e-b952-df928d0a18a9/resourceGroups/sociobot/containerApps/sf-agent-capacity-ledger/revisions/sf-agent-capacity-ledger--0000002/replicas/sf-agent-capacity-ledger--0000002-84ff5f95d7-kl2bw/containers/app/logstream",
+          "name": "app",
+          "ready": true,
+          "restartCount": 0,
+          "runningState": "Running",
+          "runningStateDetails": "Container started at: 8/28/2026 9:19:44 PM.",
+          "started": true
+        }
+      ],
+      "createdTime": "2026-08-28T21:19:22Z",
+      "initContainers": [],
+      "runningState": "Running",
+      "runningStateDetails": ""
+    },
+    "resourceGroup": "sociobot",
+    "type": "Microsoft.App/containerapps/revisions/replicas"
+  },
+  {
+    "id": "/subscriptions/283af945-693b-4a6e-b952-df928d0a18a9/resourceGroups/sociobot/providers/Microsoft.App/containerApps/sf-agent-capacity-ledger/revisions/sf-agent-capacity-ledger--0000002/replicas/sf-agent-capacity-ledger--0000002-84ff5f95d7-mhms5",
+    "name": "sf-agent-capacity-ledger--0000002-84ff5f95d7-mhms5",
+    "properties": {
+      "containers": [
+        {
+          "containerId": "containerd://5be19488ec3e42e0a7e1dbc10b6795fb",
+          "execEndpoint": "wss://eastus2.azurecontainerapps.dev/subscriptions/283af945-693b-4a6e-b952-df928d0a18a9/resourceGroups/sociobot/containerApps/sf-agent-capacity-ledger/revisions/sf-agent-capacity-ledger--0000002/replicas/sf-agent-capacity-ledger--0000002-84ff5f95d7-mhms5/containers/app/exec",
+          "logStreamEndpoint": "https://eastus2.azurecontainerapps.dev/subscriptions/283af945-693b-4a6e-b952-df928d0a18a9/resourceGroups/sociobot/containerApps/sf-agent-capacity-ledger/revisions/sf-agent-capacity-ledger--0000002/replicas/sf-agent-capacity-ledger--0000002-84ff5f95d7-mhms5/containers/app/logstream",
+          "name": "app",
+          "ready": true,
+          "restartCount": 0,
+          "runningState": "Running",
+          "runningStateDetails": "Container started at: 8/28/2026 8:44:08 PM.",
+          "started": true
+        }
+      ],
+      "createdTime": "2026-08-28T20:43:47Z",
+      "initContainers": [],
+      "runningState": "Running",
+      "runningStateDetails": ""
+    },
+    "resourceGroup": "sociobot",
+    "type": "Microsoft.App/containerapps/revisions/replicas"
+  }
+]

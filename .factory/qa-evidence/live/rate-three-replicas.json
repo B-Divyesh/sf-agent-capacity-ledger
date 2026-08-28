@@ -1,0 +1,14 @@
+{
+  "timestamp": "2026-08-28T21:24:21.204Z",
+  "durationMs": 661,
+  "clientIp": "192.0.2.145",
+  "attempts": 180,
+  "counts": {
+    "200": 33,
+    "429": 147
+  },
+  "limitedWithRetryAfter": 147,
+  "retryAfterValues": [
+    "0"
+  ]
+}

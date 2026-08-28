@@ -1,0 +1,24 @@
+
+> agent-capacity-ledger@1.0.0 test:e2e
+> playwright test --grep @claim:csv-import
+
+[1A[2K[WebServer] (node:4300) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+[1A[2K[WebServer]     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.15s
+
+[1A[2K[WebServer]      Running `target/debug/agent-capacity-ledger`
+
+
+Running 1 test using 1 worker
+
+[1A[2K(node:4327) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:4327) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K[1/1] [chromium] › tests/claims.spec.ts:25:1 › @claim:csv-import imports a valid capacity row with its source readings
+[1A[2K  1 passed (6.8s)

@@ -1,0 +1,86 @@
+{
+  "title": "Agent Capacity Ledger — plan agent limits",
+  "lang": "en",
+  "h1": [
+    "Plan agent capacity before limits stop work"
+  ],
+  "viewportText": [
+    "Demo",
+    "Ledger",
+    "Privacy",
+    "Agent Capacity Ledger — plan agent limits",
+    "A SHARED WATCH FOR PAID AGENT LIMITS",
+    "Plan agent capacity before limits stop work",
+    "For small engineering teams juggling coding subscriptions, project spend, and approved backup tools.",
+    "Try it with sample data",
+    "See a filled team ledger next.",
+    "No prompts collected",
+    "CSV import and export",
+    "$79 per team each month",
+    "Each source is finite. The ledger watches the reset horizon."
+  ],
+  "actions": [
+    {
+      "tag": "A",
+      "text": "AGENT CAPACITY\nLEDGER",
+      "href": "https://agent-capacity-ledger.sociobot.in/"
+    },
+    {
+      "tag": "A",
+      "text": "Demo",
+      "href": "https://agent-capacity-ledger.sociobot.in/demo"
+    },
+    {
+      "tag": "A",
+      "text": "Ledger",
+      "href": "https://agent-capacity-ledger.sociobot.in/ledger"
+    },
+    {
+      "tag": "A",
+      "text": "Privacy",
+      "href": "https://agent-capacity-ledger.sociobot.in/privacy"
+    },
+    {
+      "tag": "A",
+      "text": "Try it with sample data",
+      "href": "https://agent-capacity-ledger.sociobot.in/demo"
+    }
+  ],
+  "status": 200,
+  "headers": {
+    "accept-ranges": "bytes",
+    "content-length": "1624",
+    "content-security-policy": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self' https://api.sociobot.in; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'",
+    "content-type": "text/html",
+    "date": "Fri, 28 Aug 2026 21:11:15 GMT",
+    "last-modified": "Fri, 28 Aug 2026 20:37:11 GMT",
+    "permissions-policy": "camera=(), microphone=(), geolocation=()",
+    "referrer-policy": "strict-origin-when-cross-origin",
+    "x-content-type-options": "nosniff"
+  },
+  "url": "https://agent-capacity-ledger.sociobot.in/",
+  "requests": [
+    {
+      "method": "GET",
+      "url": "https://agent-capacity-ledger.sociobot.in/",
+      "type": "document"
+    },
+    {
+      "method": "GET",
+      "url": "https://agent-capacity-ledger.sociobot.in/assets/index-BOzNjxv9.js",
+      "type": "script"
+    },
+    {
+      "method": "GET",
+      "url": "https://agent-capacity-ledger.sociobot.in/assets/index-D65kzRip.css",
+      "type": "stylesheet"
+    },
+    {
+      "method": "GET",
+      "url": "https://agent-capacity-ledger.sociobot.in/assets/capacity-observatory-1200.webp",
+      "type": "image"
+    }
+  ],
+  "consoleErrors": [],
+  "pageErrors": []
+}

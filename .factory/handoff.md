@@ -1,73 +1,35 @@
-# Agent Capacity Ledger repair handoff
+# Independent QA handoff — FAIL
 
-Repair work order: `agent-capacity-ledger-repair-1`
+Work order: `agent-capacity-ledger-verify-2`
 
-Base report: independent verification of candidate `d18808a22c11e8c9b2608874d8b8a6b026443abd` on 2026-08-28
+Candidate: `22623e2e309ddcfc11817861430caa28d8aec677`
 
-Artifact/deployment class: unchanged — Rust/axum backend serving a Vite/Svelte frontend from one container
+Live URL: <https://agent-capacity-ledger.sociobot.in>
 
-## Release-blocking findings repaired
+Verified: 2026-08-28 UTC
 
-- **Replica-safe request allowance:** the old 40-request governor existed separately in every autoscaled process. The work-order deployment allows three replicas, which multiplied the live allowance. Each replica now keys the first `X-Forwarded-For` address and allows a 10-request burst with five requests per second recovery. At the configured three-replica maximum this remains stricter than the former 40-burst/20-per-second product allowance. `/health` remains exempt. A Rust regression sends 60 requests across three independent app instances; a Playwright claim test checks `429` and `Retry-After`.
-- **Complete source-removal undo:** source removal now records linked spend rows and incoming fallback relationships, clears invalid relations while removed, and restores the source, row order, linked spend, and fallbacks on Undo. The notice names the linked records removed.
-- **Dialog keyboard containment:** source and spend dialogs now cycle Tab/Shift+Tab within the active dialog, close on Escape or backdrop/close controls, focus the first field on open, and return focus to the invoking control on every close path.
-- **Real HTTP 404:** only the five SPA routes receive `index.html`. Unknown paths use the styled `404.html` with HTTP 404; unknown `/api` paths also return 404.
-- **Complete claim contract:** `.factory/claims.json` now lists 16 observable claims, including CSV import, project attribution, the data boundary, license check caching, source caps, product policy boundaries, and hosted billing. A unit contract asserts exactly one `@claim:<id>` test per listed claim and rejects orphan tags.
-- **Container contract:** the backend build stage now uses `rust:1-alpine`; the frontend stage uses `npm ci`. The build still accepts `BUILD_SHA`, does not read `.git`, and runs as a non-root runtime user.
-- **Relational validation:** form, CSV, and server boundaries reject negative readings, non-positive limits, use above limit, invalid dates/costs, broken source relationships, duplicate IDs, and unknown JSON fields. Recovery errors are announced in the dialog. The typed server boundary also prevents arbitrary prompt, code, password, or key fields from being stored.
-- **Immutable static caching:** `/assets/*` responses now send `Cache-Control: public, max-age=31536000, immutable` from the Rust server.
-- **URL verifier:** executable `./verify-url.sh [url]` checks response success, title, language, one main and h1, image alt attributes, 390 px overflow, console errors, and page errors.
+## Decision
 
-## Exact local verification
+**FAIL — do not release.** The live service is the tested candidate, but saved workspaces are not shared across its three autoscaled replicas. Fresh evidence returned the saved ledger on 39/120 API reads and empty data on 81/120; the same private link was populated in 7/18 browser sessions and empty in 11/18. An offline edit said **Ledger saved**, then appeared in only 19/60 reads. Azure shows no volume or mount. The $79 team-plan checkout also returns HTTP 404.
 
-Run from a clean checkout:
+The full evidence and severity-ranked defects are in [`.factory/verification-2.md`](verification-2.md). Product code was not modified.
 
-```sh
-npm ci
-npm run check
-npm test
-cargo clippy --all-targets -- -D warnings
-npm run build
-cargo build --release
-npm run test:e2e
-./verify-url.sh http://127.0.0.1:8080
-```
+## Verification summary
 
-Evidence from 2026-08-28:
+- First-read/demo gate: PASS on desktop and 390 px mobile.
+- Strict warm-cache rerun of all 16 `.factory/claims.json` commands: PASS. The first cold command timed out during Rust compilation before its test body ran.
+- `npm ci`, audit, Svelte check, unit/integration tests, strict Rust lint, Vite production build, Rust release build, and all 28 Playwright tests: PASS.
+- Live identity: PASS; `/health` returns the full candidate SHA and live JS/CSS hashes match local `dist/`.
+- Live rate allowance: PASS; 33/180 allowed across three replicas, 147/180 returned 429 and all had `Retry-After`. Sociobot verify allowed 29/80, then 51/80 returned 429 with `Retry-After: 4`.
+- Accessibility: zero axe serious/critical findings; keyboard/dialog/focus/reduced-motion checks pass. Some mobile targets remain below 44×44.
+- Performance: Lighthouse mobile 99/100/100/100; LCP 1.50 s, TBT 129 ms, CLS 0.
+- Privacy/headers/caching: same-origin demo traffic, documented Sociobot verify exception, security headers present, immutable hashed assets.
+- Docker build was not executable because this verifier image has no Docker CLI. Direct production frontend/backend builds and the minimal-environment release runtime pass.
 
-- `npm ci`: 139 packages installed from the lockfile; 0 vulnerabilities.
-- `npm audit --omit=dev`: 0 vulnerabilities.
-- `npm run check`: 0 errors and 0 warnings.
-- `npm test`: 6 Vitest tests and 5 Rust tests passed.
-- `cargo clippy --all-targets -- -D warnings`: passed.
-- `npm run build`: produced `dist/`; JavaScript 72,606 bytes raw / 26,620 bytes gzip, CSS 16,630 bytes raw / 4,564 bytes gzip. Largest responsive hero asset: 68,206 bytes.
-- `cargo build --release`: produced `target/release/agent-capacity-ledger`.
-- `npm run test:e2e`: 28/28 passed in Chromium. Every one of the 16 exact `.factory/claims.json` commands was then run independently; each passed one matching test.
-- Accessibility: Axe found zero serious or critical issues on `/`, `/demo`, `/ledger`, `/privacy`, `/terms`, and the open source dialog. Keyboard tests cover focus cycling, Escape, close button, backdrop, and focus return. The 390 × 844 test has 0 px overflow at normal size and at 200% root text size.
-- Privacy/offline/update: the demo request log stayed same-origin; unknown sensitive fields were rejected and not stored; demo data stayed out of the real workspace; an offline edit remained local and saved through the API after reconnect.
-- Response policy: a 60-request local burst returned 11 HTTP 200 and 49 HTTP 429 responses; all 49 limited responses had `Retry-After`. Unknown URL returned 404. Hashed JS returned immutable caching plus CSP, `nosniff`, referrer, and permissions headers.
-- Runtime contract: the release binary started with only `PORT` and `PATH`; startup JSON logged supplied versus defaulted configuration. `/health` served 100/100 concurrent requests with HTTP 200 and graceful Ctrl+C shutdown completed.
-- `./verify-url.sh http://127.0.0.1:4180`: correct title/lang/main/h1/alts, 0 px mobile overflow, 0 console errors, 0 page errors.
-- Lighthouse 13 mobile/full audit: Performance 100, Accessibility 100, Best Practices 100, SEO 100; LCP 1.25 s, CLS 0, TBT 44 ms. The stricter performance preset scored 98 with LCP 1.95 s, CLS 0, and TBT 0.
-- Desktop 1366 px and mobile 390 × 844 full-page demo screenshots were visually inspected; no clipping, overlap, or hidden action was found.
-- Package/consumer checks do not apply to this web-with-backend artifact. The work-order ACR build is the container package check and is recorded below after deployment.
+## Blocking work
 
-## Deployment and live identity
-
-- Pushed commit: `5118e168933073b19f549ca4980cf3cd5e4e8256` on `main`.
-- Factory command: `/opt/fleet/lib/deploy-container.sh agent-capacity-ledger /work/repo Dockerfile 8080`.
-- ACR build: run `chm3`, successful in 7m15s; image `sociobotregistry.azurecr.io/sf-agent-capacity-ledger:5118e1689330`.
-- Container Apps revision: `sf-agent-capacity-ledger--0000001`, 100% of traffic, one-to-three replica work-order scale configuration.
-- Live URL: `https://agent-capacity-ledger.sociobot.in` returned HTTPS 200. `/health` returned the full pushed SHA above.
-- Factory live browser verifier: 566 ms load, correct title/lang/main/h1/alts, 0 unlabeled buttons, and no console or page errors. Desktop and 390 px screenshots were produced.
-- Live Axe sweep: zero serious or critical findings on `/`, `/demo`, `/ledger`, `/privacy`, `/terms`, and the open dialog. Live dialog Tab stayed on **Close source form**, Escape returned focus, linked-spend Undo restored all five table rows, and mobile overflow was 0 px.
-- Live rate replay: 180 concurrent API reads from one forwarded address returned 34 HTTP 200 and 146 HTTP 429. All 146 limited responses included `Retry-After`.
-- Live response policy: unknown route returned HTTP 404; hashed JavaScript returned immutable caching, CSP, `nosniff`, referrer policy, and permissions policy.
-
-## Known gaps
-
-- Workspace links remain bearer capabilities. Anyone with the link can edit that ledger; add organization sign-in and roles before larger pilots.
-- CSV import intentionally supports simple comma-separated fields and does not parse quoted commas.
-- Forecasts rely on user-entered vendor readings because vendors do not expose one stable cross-provider format.
-- The Sociobot checkout URL currently returns HTTP 404. The factory must register the external paid product before purchase can work; repository code cannot create billing products and no direct payment provider is embedded.
-- The deployment configuration supplies ephemeral container storage and no mounted volume. SQLite survives requests within a running replica, but replicas do not share the file and a revision replacement can discard it. A live two-replica probe returned the saved workspace from 9 of 20 reads and an empty workspace from 11. A durable factory-managed volume/PostgreSQL or a single-replica deployment is required for reliable cross-replica sharing; this repair does not alter factory infrastructure.
+1. Add replica-safe durable storage and verify save/share/offline behavior through scale-out and restart.
+2. Enable the Sociobot checkout product and complete a real checkout-return test.
+3. Fix quoted CSV fields and strict date validation.
+4. Complete the claims inventory and cold-cache claim runner.
+5. Fix sub-44 px touch targets and plain-language 404 copy.

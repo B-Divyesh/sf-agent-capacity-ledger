@@ -1,0 +1,120 @@
+{
+  "timestamp": "2026-08-28T21:22:20.693Z",
+  "url": "https://agent-capacity-ledger.sociobot.in/ledger?workspace=qa-persist-1787951951428",
+  "expected": "QA persistence 1787951951428",
+  "counts": {
+    "saved": 7,
+    "empty": 11,
+    "other": 0
+  },
+  "runs": [
+    {
+      "run": 1,
+      "teamVisible": false,
+      "emptyVisible": true,
+      "errors": []
+    },
+    {
+      "run": 2,
+      "teamVisible": true,
+      "emptyVisible": false,
+      "errors": []
+    },
+    {
+      "run": 3,
+      "teamVisible": false,
+      "emptyVisible": true,
+      "errors": []
+    },
+    {
+      "run": 4,
+      "teamVisible": true,
+      "emptyVisible": false,
+      "errors": []
+    },
+    {
+      "run": 5,
+      "teamVisible": true,
+      "emptyVisible": false,
+      "errors": []
+    },
+    {
+      "run": 6,
+      "teamVisible": false,
+      "emptyVisible": true,
+      "errors": []
+    },
+    {
+      "run": 7,
+      "teamVisible": true,
+      "emptyVisible": false,
+      "errors": []
+    },
+    {
+      "run": 8,
+      "teamVisible": false,
+      "emptyVisible": true,
+      "errors": []
+    },
+    {
+      "run": 9,
+      "teamVisible": false,
+      "emptyVisible": true,
+      "errors": []
+    },
+    {
+      "run": 10,
+      "teamVisible": true,
+      "emptyVisible": false,
+      "errors": []
+    },
+    {
+      "run": 11,
+      "teamVisible": false,
+      "emptyVisible": true,
+      "errors": []
+    },
+    {
+      "run": 12,
+      "teamVisible": false,
+      "emptyVisible": true,
+      "errors": []
+    },
+    {
+      "run": 13,
+      "teamVisible": false,
+      "emptyVisible": true,
+      "errors": []
+    },
+    {
+      "run": 14,
+      "teamVisible": true,
+      "emptyVisible": false,
+      "errors": []
+    },
+    {
+      "run": 15,
+      "teamVisible": false,
+      "emptyVisible": true,
+      "errors": []
+    },
+    {
+      "run": 16,
+      "teamVisible": true,
+      "emptyVisible": false,
+      "errors": []
+    },
+    {
+      "run": 17,
+      "teamVisible": false,
+      "emptyVisible": true,
+      "errors": []
+    },
+    {
+      "run": 18,
+      "teamVisible": false,
+      "emptyVisible": true,
+      "errors": []
+    }
+  ]
+}

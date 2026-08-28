@@ -1,0 +1,1484 @@
+{
+  "timestamp": "2026-08-28T21:19:12.634Z",
+  "workspace": "qa-persist-1787951951428",
+  "put": {
+    "status": 200,
+    "body": "{\"data\":{\"teamName\":\"QA persistence 1787951951428\",\"sources\":[{\"id\":\"boundary-source\",\"vendor\":\"Boundary Vendor\",\"plan\":\"Team\",\"limit\":100.0,\"used\":100.0,\"dailyPace\":0.0,\"resetsOn\":\"2099-12-31\",\"monthlyCost\":0.0,\"fallbackId\":\"\",\"notes\":\"limit boundary\"}],\"spend\":[{\"id\":\"zero-spend\",\"date\":\"2026-08-28\",\"project\":\"Zero cost boundary\",\"sourceId\":\"boundary-source\",\"amount\":0.0}]},\"updated_at\":\"2026-08-28T21:19:11.525083462+00:00\"}"
+  },
+  "persistence": {
+    "counts": {
+      "200:saved": [
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "state": "saved",
+          "retryAfter": null
+        }
+      ]
+    },
+    "responses": [
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      },
+      {
+        "status": 200,
+        "state": "saved",
+        "retryAfter": null
+      }
+    ]
+  },
+  "rate": {
+    "clientIp": "192.0.2.29",
+    "counts": {
+      "200": [
+        {
+          "status": 200,
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "retryAfter": null
+        },
+        {
+          "status": 200,
+          "retryAfter": null
+        }
+      ],
+      "429": [
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        },
+        {
+          "status": 429,
+          "retryAfter": "0"
+        }
+      ]
+    },
+    "limitedWithRetryAfter": 169,
+    "limitedTotal": 169
+  },
+  "health": {
+    "counts": {
+      "200": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ]
+    }
+  },
+  "invalids": [
+    {
+      "name": "used-over-limit",
+      "status": 400,
+      "body": "{\"error\":\"A source has invalid limits, use, reset date, cost, or fallback.\"}"
+    },
+    {
+      "name": "negative-cost",
+      "status": 400,
+      "body": "{\"error\":\"A source has invalid limits, use, reset date, cost, or fallback.\"}"
+    },
+    {
+      "name": "bad-date",
+      "status": 400,
+      "body": "{\"error\":\"A source has invalid limits, use, reset date, cost, or fallback.\"}"
+    },
+    {
+      "name": "unknown-prompt",
+      "status": 422,
+      "body": "Failed to deserialize the JSON body into the target type: data.prompt: unknown field `prompt`, expected one of `teamName`, `sources`, `spend` at line 1 column 376"
+    },
+    {
+      "name": "broken-fallback",
+      "status": 400,
+      "body": "{\"error\":\"A source has invalid limits, use, reset date, cost, or fallback.\"}"
+    }
+  ],
+  "malformed": {
+    "status": 400,
+    "body": "Failed to parse the request body as JSON: EOF while parsing an object at line 1 column 1"
+  }
+}

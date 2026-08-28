@@ -1,0 +1,55 @@
+{
+  "timestamp": "2026-08-28T21:19:28.368Z",
+  "singleVerify": {
+    "status": 200,
+    "headers": {
+      "access-control-allow-credentials": "true",
+      "access-control-allow-origin": "https://agent-capacity-ledger.sociobot.in",
+      "cache-control": "no-store",
+      "content-length": "52",
+      "content-type": "application/json",
+      "date": "Fri, 28 Aug 2026 21:19:27 GMT",
+      "set-cookie": "ARRAffinitySameSite=27a68b7e77a8b7692bcb4c16e2a8a32d44ecdf1f351d0e078d158af264a88edc;Path=/;HttpOnly;SameSite=None;Secure;Domain=api.sociobot.in",
+      "vary": "origin, access-control-request-method, access-control-request-headers"
+    },
+    "body": "{\"expires_at\":null,\"reason\":\"invalid\",\"valid\":false}"
+  },
+  "preflight": {
+    "status": 200,
+    "headers": {
+      "access-control-allow-credentials": "true",
+      "access-control-allow-headers": "authorization,content-type,idempotency-key,x-admin-key",
+      "access-control-allow-methods": "GET,POST,PUT,PATCH,DELETE,OPTIONS",
+      "access-control-allow-origin": "https://agent-capacity-ledger.sociobot.in",
+      "allow": "GET,HEAD",
+      "content-length": "0",
+      "date": "Fri, 28 Aug 2026 21:19:27 GMT",
+      "set-cookie": "ARRAffinitySameSite=27a68b7e77a8b7692bcb4c16e2a8a32d44ecdf1f351d0e078d158af264a88edc;Path=/;HttpOnly;SameSite=None;Secure;Domain=api.sociobot.in",
+      "vary": "origin, access-control-request-method, access-control-request-headers"
+    }
+  },
+  "checkout": {
+    "status": 404,
+    "headers": {
+      "access-control-allow-credentials": "true",
+      "content-length": "48",
+      "content-type": "application/json",
+      "date": "Fri, 28 Aug 2026 21:19:27 GMT",
+      "set-cookie": "ARRAffinitySameSite=27a68b7e77a8b7692bcb4c16e2a8a32d44ecdf1f351d0e078d158af264a88edc;Path=/;HttpOnly;SameSite=None;Secure;Domain=api.sociobot.in",
+      "vary": "origin, access-control-request-method, access-control-request-headers"
+    },
+    "body": "{\"error\":\"enabled factory product\",\"status\":404}"
+  },
+  "rate": {
+    "attempts": 80,
+    "counts": {
+      "200": 29,
+      "429": 51
+    },
+    "limitedTotal": 51,
+    "limitedWithRetryAfter": 51,
+    "retryAfterValues": [
+      "4"
+    ]
+  }
+}

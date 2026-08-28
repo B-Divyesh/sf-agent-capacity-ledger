@@ -1,0 +1,48 @@
+{
+  "headline": {
+    "text": "Plan agent capacity before limits stop work",
+    "box": {
+      "x": 20,
+      "y": 188.984375,
+      "width": 329.46875,
+      "height": 156.65625
+    }
+  },
+  "lede": {
+    "text": "For small engineering teams juggling coding subscriptions, project spend, and approved backup tools.",
+    "box": {
+      "x": 20,
+      "y": 379.609375,
+      "width": 350,
+      "height": 80.34375
+    }
+  },
+  "primary": {
+    "text": "Try it with sample data",
+    "box": {
+      "x": 20,
+      "y": 491.953125,
+      "width": 243.671875,
+      "height": 46.796875
+    }
+  },
+  "next": {
+    "text": "See a filled team ledger next.",
+    "box": {
+      "x": 20,
+      "y": 556.75,
+      "width": 164.796875,
+      "height": 44.65625
+    }
+  },
+  "facts": [
+    "No prompts collected",
+    "CSV import and export",
+    "$79 per team each month"
+  ],
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "overflow": 0
+}

@@ -1,0 +1,216 @@
+{
+  "timestamp": "2026-08-28T21:21:13.902Z",
+  "base": "https://agent-capacity-ledger.sociobot.in",
+  "routes": {
+    "/": {
+      "status": 200,
+      "title": "Agent Capacity Ledger — plan agent limits",
+      "lang": "en",
+      "h1": [
+        "Plan agent capacity before limits stop work"
+      ],
+      "main": 1,
+      "header": 1,
+      "nav": 2,
+      "footer": 1,
+      "imagesWithoutAlt": 0,
+      "skipTarget": "#main",
+      "seriousCritical": [],
+      "allAxeViolations": [],
+      "consoleErrors": [],
+      "pageErrors": []
+    },
+    "/demo": {
+      "status": 200,
+      "title": "Demo — Agent Capacity Ledger",
+      "lang": "en",
+      "h1": [
+        "Watch capacity and route work early"
+      ],
+      "main": 1,
+      "header": 1,
+      "nav": 2,
+      "footer": 1,
+      "imagesWithoutAlt": 0,
+      "skipTarget": "#main",
+      "seriousCritical": [],
+      "allAxeViolations": [],
+      "consoleErrors": [],
+      "pageErrors": []
+    },
+    "/ledger": {
+      "status": 200,
+      "title": "Ledger — Agent Capacity Ledger",
+      "lang": "en",
+      "h1": [
+        "Watch capacity and route work early"
+      ],
+      "main": 1,
+      "header": 1,
+      "nav": 2,
+      "footer": 1,
+      "imagesWithoutAlt": 0,
+      "skipTarget": "#main",
+      "seriousCritical": [],
+      "allAxeViolations": [],
+      "consoleErrors": [],
+      "pageErrors": []
+    },
+    "/privacy": {
+      "status": 200,
+      "title": "Privacy — Agent Capacity Ledger",
+      "lang": "en",
+      "h1": [
+        "Privacy without prompt collection"
+      ],
+      "main": 1,
+      "header": 1,
+      "nav": 2,
+      "footer": 1,
+      "imagesWithoutAlt": 0,
+      "skipTarget": "#main",
+      "seriousCritical": [],
+      "allAxeViolations": [],
+      "consoleErrors": [],
+      "pageErrors": []
+    },
+    "/terms": {
+      "status": 200,
+      "title": "Terms — Agent Capacity Ledger",
+      "lang": "en",
+      "h1": [
+        "Terms for honest capacity planning"
+      ],
+      "main": 1,
+      "header": 1,
+      "nav": 2,
+      "footer": 1,
+      "imagesWithoutAlt": 0,
+      "skipTarget": "#main",
+      "seriousCritical": [],
+      "allAxeViolations": [],
+      "consoleErrors": [],
+      "pageErrors": []
+    }
+  },
+  "flows": {
+    "desktopDemo": {
+      "firstFocus": {
+        "text": "Skip to main content",
+        "href": "#main",
+        "outline": "rgb(120, 216, 202) solid 3px"
+      },
+      "focusOrder": [
+        {
+          "tag": "A",
+          "text": "Agent CapacityLedger",
+          "href": "/"
+        },
+        {
+          "tag": "A",
+          "text": "Demo",
+          "href": "/demo"
+        },
+        {
+          "tag": "A",
+          "text": "Ledger",
+          "href": "/ledger"
+        },
+        {
+          "tag": "A",
+          "text": "Privacy",
+          "href": "/privacy"
+        },
+        {
+          "tag": "A",
+          "text": "Try it with sample data",
+          "href": "/demo"
+        }
+      ],
+      "demoReached": true,
+      "url": "https://agent-capacity-ledger.sociobot.in/demo",
+      "banner": "Demo — sample data, nothing is saved\nReset demo\nStart for real",
+      "sourcesBefore": 3,
+      "spendRowsBefore": 5,
+      "exportLines": 8,
+      "initialDialogFocus": "",
+      "wrapForward": "Close source form",
+      "wrapBackward": "Save source",
+      "focusReturned": "Add a source",
+      "dialogSeriousCritical": [],
+      "invalidAlert": "Sessions used cannot exceed the session limit. Fix the value and save again.",
+      "boundarySaved": true,
+      "impossibleDateAccepted": true,
+      "quotedCsvAlert": "Row 2 has missing or invalid values. Fix that row and import again.",
+      "quotedCsvImported": false,
+      "externalRequests": [],
+      "consoleErrors": [],
+      "pageErrors": []
+    },
+    "mobile": {
+      "menuVisible": true,
+      "overflow": 0,
+      "overflow200": 0,
+      "smallTargets": [
+        {
+          "tag": "A",
+          "text": "Agent CapacityLedger",
+          "width": 181.765625,
+          "height": 38
+        },
+        {
+          "tag": "A",
+          "text": "Start for real",
+          "width": 91.375,
+          "height": 22.328125
+        },
+        {
+          "tag": "BUTTON",
+          "text": "Edit",
+          "width": 39.515625,
+          "height": 44
+        },
+        {
+          "tag": "BUTTON",
+          "text": "Edit",
+          "width": 39.515625,
+          "height": 44
+        },
+        {
+          "tag": "BUTTON",
+          "text": "Edit",
+          "width": 39.515625,
+          "height": 44
+        },
+        {
+          "tag": "A",
+          "text": "Privacy",
+          "width": 49.21875,
+          "height": 21.0625
+        },
+        {
+          "tag": "A",
+          "text": "Terms",
+          "width": 40.03125,
+          "height": 21.0625
+        },
+        {
+          "tag": "A",
+          "text": "Built by Param Factory (external site)",
+          "width": 153.203125,
+          "height": 21.0625
+        }
+      ],
+      "consoleErrors": [],
+      "pageErrors": []
+    },
+    "reducedMotion": {
+      "rootScrollBehavior": "auto",
+      "sourceAnimationDuration": "1e-05s",
+      "sourceTransitionDuration": "1e-05s",
+      "imageAnimationDuration": null
+    },
+    "serviceWorkers": 0
+  },
+  "errors": []
+}
