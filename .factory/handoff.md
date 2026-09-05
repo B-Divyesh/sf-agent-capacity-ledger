@@ -1,5 +1,24 @@
 # Agent Capacity Ledger handoff
 
+## Strict review 1 — 2026-09-05
+
+Work order: `agent-capacity-ledger-review-1`
+
+Verdict: **PASS — zero findings and zero untested claims.**
+
+- Current milestone: **M1 — capacity forecast wedge**.
+- Implementation reviewed: `d58431b96c2dbfc6c881861e2119e0e32ebd4f46`.
+- Documentation baseline reviewed: `82e21b1ca3b5e1597aa9a2c195962d9996fe50c1`; live build label: `2e7b32ecb113b44e892417b035c968fc0704ac37`.
+- Product code was unchanged. This review adds `.factory/review-1.md` and updates this handoff.
+- All 20 declared claim commands passed independently from a fresh clone. The broader suite passed 36/36, with clean unit, Rust, type, build, formatting, clippy, release, and URL checks.
+- Fresh desktop and phone contexts showed the job, audience, and sample action before scrolling. The populated sample, persistent label, reset, exit to empty real data, keyboard paths, both dialogs, 200% text, reduced motion, legal pages, links, and designed 404 all passed.
+- Live read and write bursts each returned 10×200 and 50×429 with `Retry-After`. An isolated ledger matched on 120/120 reads before and 120/120 reads after replacement of the sole mounted replica.
+- Live JS and CSS matched the clean production build. Fresh Lighthouse scored 100/100/100/100.
+
+Full results: [`.factory/review-1.md`](review-1.md). Evidence is in `/work/.evidence/review-1/`.
+
+External dependencies remain separate: Sociobot must register the recurring $79 product for M2 checkout, configure Entra CIAM for M2 accounts, and provide a product-scoped backup/restore drill for M2. The M1 site states that checkout is unavailable and does not claim accounts or authenticated tenant isolation.
+
 ## Independent verification 4 — 2026-09-05
 
 Work order: `agent-capacity-ledger-verify-4`
