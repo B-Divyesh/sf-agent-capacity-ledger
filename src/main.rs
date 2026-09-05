@@ -14,7 +14,7 @@ use axum::{
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use sqlx::{
-    sqlite::{SqliteConnectOptions, SqliteJournalMode, SqlitePoolOptions},
+    sqlite::{SqliteConnectOptions, SqlitePoolOptions},
     SqlitePool,
 };
 use tower_governor::{
@@ -284,8 +284,7 @@ async fn make_app(database_url: &str, build_sha: String, dist: PathBuf, migrate:
     let options = SqliteConnectOptions::from_str(database_url)
         .expect("SQLite database URL should be valid")
         .create_if_missing(true)
-        .busy_timeout(Duration::from_secs(20))
-        .journal_mode(SqliteJournalMode::Delete);
+        .busy_timeout(Duration::from_secs(20));
     let db = SqlitePoolOptions::new()
         .max_connections(1)
         .connect_with(options)
@@ -384,7 +383,12 @@ async fn main() {
     tokio::fs::create_dir_all(&usable_dir)
         .await
         .expect("create data directory");
-    let database_url = format!("sqlite://{}/ledger.db?mode=rwc", usable_dir.display());
+    // Azure Files can retain SMB advisory locks after a container restart. The fleet pins this
+    // product to one replica, so SQLite can safely use the Unix no-lock VFS for its sole writer.
+    let database_url = format!(
+        "sqlite://{}/ledger.db?mode=rwc&vfs=unix-none",
+        usable_dir.display()
+    );
     info!(
         port,
         port_source = if port_value.is_some() { "supplied" } else { "defaulted" },
