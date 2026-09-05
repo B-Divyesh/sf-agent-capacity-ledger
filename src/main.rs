@@ -1,4 +1,7 @@
-use std::{collections::HashSet, env, net::SocketAddr, path::PathBuf, sync::Arc};
+use std::{
+    collections::HashSet, env, net::SocketAddr, path::PathBuf, str::FromStr, sync::Arc,
+    time::Duration,
+};
 
 use axum::{
     extract::{Path, Request, State},
@@ -10,7 +13,10 @@ use axum::{
 };
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use sqlx::{sqlite::SqlitePoolOptions, SqlitePool};
+use sqlx::{
+    sqlite::{SqliteConnectOptions, SqliteJournalMode, SqlitePoolOptions},
+    SqlitePool,
+};
 use tower_governor::{
     governor::GovernorConfigBuilder, key_extractor::SmartIpKeyExtractor, GovernorLayer,
 };
@@ -19,7 +25,7 @@ use tower_http::{
     set_header::SetResponseHeaderLayer,
     trace::TraceLayer,
 };
-use tracing::info;
+use tracing::{info, warn};
 
 #[derive(Clone)]
 struct AppState {
@@ -275,16 +281,27 @@ fn internal<E: std::fmt::Display>(err: E) -> (StatusCode, Json<Value>) {
 async fn make_app(database_url: &str, build_sha: String, dist: PathBuf, migrate: bool) -> Router {
     let schema = "CREATE TABLE IF NOT EXISTS agent_capacity_ledgers (\
          workspace_id TEXT PRIMARY KEY, data TEXT NOT NULL, updated_at TEXT NOT NULL)";
+    let options = SqliteConnectOptions::from_str(database_url)
+        .expect("SQLite database URL should be valid")
+        .create_if_missing(true)
+        .busy_timeout(Duration::from_secs(20))
+        .journal_mode(SqliteJournalMode::Delete);
     let db = SqlitePoolOptions::new()
-        .max_connections(5)
-        .connect(database_url)
+        .max_connections(1)
+        .connect_with(options)
         .await
         .expect("SQLite database should open");
     if migrate {
-        sqlx::query(schema)
-            .execute(&db)
-            .await
-            .expect("database should migrate");
+        for attempt in 1..=5 {
+            match sqlx::query(schema).execute(&db).await {
+                Ok(_) => break,
+                Err(error) if attempt < 5 => {
+                    warn!(attempt, error = %error, "SQLite schema is busy; retrying startup migration");
+                    tokio::time::sleep(Duration::from_secs(1)).await;
+                }
+                Err(error) => panic!("database should migrate after retries: {error}"),
+            }
+        }
     }
     let state = AppState { db, build_sha };
     let governor = Arc::new(
