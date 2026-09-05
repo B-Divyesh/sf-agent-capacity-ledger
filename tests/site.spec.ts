@@ -40,6 +40,19 @@ test('mobile demo fits 390 pixels and supports the menu', async ({ page }) => {
   expect(resizedOverflow).toBeLessThanOrEqual(1);
 });
 
+test('desktop first screen shows the job, audience, and sample action without scrolling', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await page.goto('/');
+  await expect(page.getByRole('heading', { name: 'Plan agent capacity before limits stop work' })).toBeVisible();
+  await expect(page.getByText('For small engineering teams juggling coding subscriptions, project spend, and approved backup tools.')).toBeVisible();
+  const action = page.getByRole('link', { name: 'Try it with sample data' });
+  await expect(action).toBeVisible();
+  const box = await action.boundingBox();
+  expect(box).not.toBeNull();
+  expect(box!.y).toBeGreaterThanOrEqual(0);
+  expect(box!.y + box!.height).toBeLessThanOrEqual(720);
+});
+
 test('bad CSV explains what to fix', async ({ page }) => {
   await page.goto('/demo');
   await page.getByRole('button', { name: 'Import usage CSV' }).click();
