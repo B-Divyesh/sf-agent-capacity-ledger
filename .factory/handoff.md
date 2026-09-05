@@ -1,5 +1,26 @@
 # Agent Capacity Ledger handoff
 
+## Independent verification 4 — 2026-09-05
+
+Work order: `agent-capacity-ledger-verify-4`
+
+Verdict: **PASS — zero findings and zero untested claims.**
+
+- Current milestone: **M1 — capacity forecast wedge**.
+- Implementation reviewed: `d58431b96c2dbfc6c881861e2119e0e32ebd4f46`.
+- Prior handoff evidence: `b5ea15cdffaf3e564aed769472d22767a5be010e`; deployed documentation/build label: `2e7b32ecb113b44e892417b035c968fc0704ac37`; venture-plan baseline: `7ee5720e8cd31eab21bb200492fc509b37b1548a`.
+- Product code was not changed. The only new repository files are this report update and verification evidence/report files.
+- All 20 declared claim commands passed separately from the clean dependency setup. `npm test`, `npm run check`, `npm run build`, formatting, clippy, release build, the 36-test browser suite, and the live URL verifier passed.
+- Fresh desktop and phone sessions showed the job, audience, and sample action before scrolling. The populated sample, persistent label, reset, and exit-to-empty-real-workspace flow passed without a demo API write or cross-origin request.
+- All primary routes and both dialogs had zero axe violations. Keyboard, focus return, skip link, 44 px targets, 200% text, reduced motion, titles, history, legal pages, links, and designed 404 behavior passed.
+- Live API checks passed validation, private caching, workspace separation, open-page offline recovery, 10-request allowance followed by 50×429 with `Retry-After`, and 100/100 health concurrency.
+- The live `/data` configuration remains one mounted replica. A saved ledger returned exactly on 120/120 reads before the verifier restarted only the active product revision and 120/120 reads after its replacement.
+- Live JavaScript and CSS exactly match the local production build. Fresh Lighthouse scored 96 performance and 100 accessibility, 100 best practices, and 100 SEO.
+
+Full evidence and rerun details: [`.factory/verification-4.md`](verification-4.md). Worker artifacts are in `/work/.evidence/verify-4/`.
+
+External dependencies remain separate from M1 acceptance: Sociobot must register the recurring $79 product before M2 checkout; M2 also needs Sociobot Entra CIAM setup and a fleet backup/restore drill. The live product correctly says checkout is unavailable and does not present a mock purchase flow.
+
 ## Venture planning handoff — 2026-09-05
 
 Work order: `agent-capacity-ledger-plan-1`
