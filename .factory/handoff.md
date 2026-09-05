@@ -7,7 +7,7 @@ Live URL: <https://agent-capacity-ledger.sociobot.in>
 ## Release identity
 
 - Implementation SHA: `d58431b96c2dbfc6c881861e2119e0e32ebd4f46`
-- Documentation SHA: recorded in the release handoff commit after this file is written.
+- Documentation evidence SHA: `b5ea15cdffaf3e564aed769472d22767a5be010e` (the handoff record commit).
 - Live revision: `sf-agent-capacity-ledger--0000011`
 - Live `/health` build SHA: `d58431b96c2dbfc6c881861e2119e0e32ebd4f46`
 
