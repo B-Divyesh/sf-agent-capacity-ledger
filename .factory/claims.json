@@ -1,7 +1,7 @@
 [
   {
     "id": "capacity-forecast",
-    "claim": "Forecasts remaining useful sessions and warns when a source may run out before reset.",
+    "claim": "Forecasts remaining useful sessions and marks an empty source at risk before reset.",
     "where": "landing preview, demo ledger, README",
     "test": "npm run test:e2e -- --grep @claim:capacity-forecast",
     "sandbox": "fresh browser context at /demo with bundled sample sources"
@@ -50,10 +50,10 @@
   },
   {
     "id": "server-persistence",
-    "claim": "Real workspaces save and load through the shared durable database service.",
+    "claim": "Real workspaces save, read back, and survive a server restart on durable SQLite storage.",
     "where": "README",
     "test": "npm run test:e2e -- --grep @claim:server-persistence",
-    "sandbox": "random isolated workspace through the local container API; Rust integration coverage opens independent app instances against one database file"
+    "sandbox": "temporary /data directory; write and read through one real server process, restart it, then read the same workspace"
   },
   {
     "id": "workspace-sharing",
@@ -61,6 +61,13 @@
     "where": "ledger toolbar, privacy page, README",
     "test": "npm run test:e2e -- --grep @claim:workspace-sharing",
     "sandbox": "seed a random workspace, open its link in a fresh browser context, and assert its source and team name"
+  },
+  {
+    "id": "private-ledger-cache",
+    "claim": "Ledger API responses are private and are not stored by caches.",
+    "where": "README",
+    "test": "npm run test:e2e -- --grep @claim:private-ledger-cache",
+    "sandbox": "fresh isolated workspace GET; assert the response carries private, no-store cache control"
   },
   {
     "id": "offline-queue",
@@ -77,11 +84,25 @@
     "sandbox": "60 parallel reads from one synthetic forwarded client IP"
   },
   {
+    "id": "health-build",
+    "claim": "The health endpoint reports a healthy server and its running build identifier.",
+    "where": "README",
+    "test": "npm run test:e2e -- --grep @claim:health-build",
+    "sandbox": "fresh local server; GET /health and assert its healthy status and nonempty build identifier"
+  },
+  {
     "id": "paid-license",
     "claim": "A returned team license is stored, removed from the URL, and verified with Sociobot.",
     "where": "team plan panel, privacy page, README",
     "test": "npm run test:e2e -- --grep @claim:paid-license",
     "sandbox": "fresh browser context with a recorded valid Sociobot verification response"
+  },
+  {
+    "id": "invalid-license-recovery",
+    "claim": "An invalid returned license shows a recovery message after verification.",
+    "where": "ledger team plan panel",
+    "test": "npm run test:e2e -- --grep @claim:invalid-license-recovery",
+    "sandbox": "fresh browser context with a recorded invalid Sociobot verification response"
   },
   {
     "id": "license-daily-cache",
@@ -98,6 +119,13 @@
     "sandbox": "fresh real ledger; assert the fourth source is blocked free and accepted with a cached valid license"
   },
   {
+    "id": "approved-fallbacks",
+    "claim": "Records an approved fallback for a paid source.",
+    "where": "demo ledger, README",
+    "test": "npm run test:e2e -- --grep @claim:approved-fallbacks",
+    "sandbox": "fresh demo ledger; select another source as the approved fallback and assert the saved selection"
+  },
+  {
     "id": "policy-boundary",
     "claim": "The product does not proxy models or provide an account-sharing or credential workflow.",
     "where": "landing boundaries, terms, README",
@@ -106,7 +134,7 @@
   },
   {
     "id": "team-plan-availability",
-    "claim": "The $9 monthly team plan clearly states that checkout is not available and shows no unavailable checkout link.",
+    "claim": "The team plan price is $79 per team each month and checkout status is shown honestly.",
     "where": "landing pricing, ledger plan panel, terms, README",
     "test": "npm run test:e2e -- --grep @claim:team-plan-availability",
     "sandbox": "fresh landing page; assert the price, unavailable status, and absence of a buy link"

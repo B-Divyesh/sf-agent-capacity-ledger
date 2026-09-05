@@ -13,6 +13,11 @@ describe('capacity forecast', () => {
     expect(risk({ ...source, used: 119, dailyPace: 5 })).toBe('At risk');
   });
 
+  it('marks an exhausted source at risk even when there is no daily pace', () => {
+    const source = sampleLedger().sources[0];
+    expect(risk({ ...source, used: source.limit, dailyPace: 0 })).toBe('At risk');
+  });
+
   it('calculates attributed spend', () => {
     expect(attributedPercent(sampleLedger())).toBe(93);
   });

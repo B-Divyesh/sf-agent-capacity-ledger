@@ -6,6 +6,10 @@ test('@claim:capacity-forecast forecasts remaining useful sessions and warns bef
   await expect(source.getByText('At risk')).toBeVisible();
   await expect(source.getByText(/17 of 120 sessions left/)).toBeVisible();
   await expect(source.getByText(/lasts about 2 days\. Estimate\./)).toBeVisible();
+  await source.getByLabel('Used sessions').fill('120');
+  await source.getByLabel('Used sessions').blur();
+  await expect(source.getByText('No sessions remain before reset. Estimate.')).toBeVisible();
+  await expect(source.getByText('At risk')).toBeVisible();
 });
 
 test('@claim:csv-export exports every demo source and spend entry as CSV', async ({ page }) => {
@@ -49,7 +53,7 @@ test('@claim:demo-isolation keeps demo changes out of the real workspace', async
   await used.fill('110');
   await used.blur();
   await page.getByRole('link', { name: 'Start for real' }).click();
-  await expect(page.getByRole('heading', { name: 'No sources to watch yet' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'No paid sources yet' })).toBeVisible();
 });
 
 test('@claim:prompt-privacy sends no demo data to another origin', async ({ page }) => {
@@ -79,7 +83,7 @@ test('@claim:data-boundary never requests or accepts prompts, code, keys, or pas
   expect((await stored.json()).data).toEqual({ teamName: 'My engineering team', sources: [], spend: [] });
 });
 
-test('@claim:server-persistence saves and loads a real workspace', async ({ request }) => {
+test('server persistence saves and loads a real workspace', async ({ request }) => {
   const id = `test-${Date.now()}`;
   const headers = { 'x-forwarded-for': '198.51.100.10' };
   const data = { teamName: 'Test team', sources: [], spend: [] };
@@ -101,6 +105,13 @@ test('@claim:workspace-sharing opens the same ledger from its private link', asy
   await page.goto(`/ledger?workspace=${id}`);
   await expect(page.getByRole('heading', { name: 'Shared Codex seat' })).toBeVisible();
   await expect(page.getByText('Shared team · forecasts are estimates')).toBeVisible();
+});
+
+test('@claim:private-ledger-cache marks workspace responses private and non-storable', async ({ request }) => {
+  const workspace = `private-cache-${Date.now()}`;
+  const response = await request.get(`/api/ledger/${workspace}`, { headers: { 'x-forwarded-for': '198.51.100.29' } });
+  expect(response.ok()).toBeTruthy();
+  expect(response.headers()['cache-control']).toBe('private, no-store');
 });
 
 test('@claim:offline-queue keeps an open-page edit and saves it after reconnect', async ({ page, context, request }) => {
@@ -128,6 +139,15 @@ test('@claim:rate-limit returns 429 and Retry-After after the API allowance', as
   expect(limited!.headers()['retry-after']).toBeTruthy();
 });
 
+test('@claim:health-build reports a healthy server with a build identifier', async ({ request }) => {
+  const response = await request.get('/health');
+  expect(response.status()).toBe(200);
+  const body = await response.json();
+  expect(body.status).toBe('ok');
+  expect(typeof body.build_sha).toBe('string');
+  expect(body.build_sha.length).toBeGreaterThan(0);
+});
+
 test('@claim:paid-license stores and verifies a returned team license', async ({ page }) => {
   await page.route('https://api.sociobot.in/api/v1/products/agent-capacity-ledger/verify?license=test_token', route => route.fulfill({
     status: 200,
@@ -137,6 +157,18 @@ test('@claim:paid-license stores and verifies a returned team license', async ({
   await page.goto('/ledger?license=test_token');
   await expect(page.getByRole('heading', { name: 'Team plan active' })).toBeVisible();
   expect(await page.evaluate(() => localStorage.getItem('sb_license:agent-capacity-ledger'))).toBe('test_token');
+  expect(new URL(page.url()).searchParams.has('license')).toBe(false);
+});
+
+test('@claim:invalid-license-recovery replaces a returned-license progress message with a recovery message', async ({ page }) => {
+  await page.route('https://api.sociobot.in/api/v1/products/agent-capacity-ledger/verify?license=invalid_token', route => route.fulfill({
+    status: 200,
+    contentType: 'application/json',
+    body: JSON.stringify({ valid: false, reason: 'invalid' }),
+  }));
+  await page.goto('/ledger?license=invalid_token');
+  await expect(page.getByText('This license is not active. Paste a current token and verify it again.')).toBeVisible();
+  await expect(page.getByText('License received. Checking it now.')).toHaveCount(0);
   expect(new URL(page.url()).searchParams.has('license')).toBe(false);
 });
 
@@ -181,6 +213,13 @@ test('@claim:source-cap keeps three sources free and permits a fourth with a val
   await expect(page.getByRole('heading', { name: 'Fourth source' })).toBeVisible();
 });
 
+test('@claim:approved-fallbacks records an approved fallback for a source', async ({ page }) => {
+  await page.goto('/demo');
+  const claude = page.locator('.source-row').filter({ has: page.getByRole('heading', { name: 'Claude Code' }) });
+  await claude.getByLabel('Approved fallback').selectOption({ label: 'GitHub Copilot' });
+  await expect(claude.getByLabel('Approved fallback')).toHaveValue('github-copilot');
+});
+
 test('@claim:policy-boundary has no model proxy or account-sharing workflow', async ({ page, request }) => {
   await page.goto('/');
   await expect(page.getByText('The ledger does not proxy models, collect prompts, store vendor credentials, or encourage account sharing.')).toBeVisible();
@@ -193,9 +232,9 @@ test('@claim:policy-boundary has no model proxy or account-sharing workflow', as
   expect(await page.locator('input[type="password"]').count()).toBe(0);
 });
 
-test('@claim:team-plan-availability keeps the $9 offer honest while checkout is unavailable', async ({ page }) => {
+test('@claim:team-plan-availability shows the $79 monthly price and honest checkout status', async ({ page }) => {
   await page.goto('/');
-  await expect(page.getByText('$9 per team each month')).toBeVisible();
-  await expect(page.getByText('The $9 team plan is not available to buy yet, so no checkout link is shown.')).toBeVisible();
+  await expect(page.getByText('$79 per team each month')).toBeVisible();
+  await expect(page.getByText('Team checkout needs Sociobot product registration, so it is not available today.')).toBeVisible();
   await expect(page.getByRole('link', { name: /Buy the team plan/i })).toHaveCount(0);
 });

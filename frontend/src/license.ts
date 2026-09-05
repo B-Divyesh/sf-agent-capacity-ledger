@@ -14,6 +14,7 @@ export function storeLicenseFromUrl(): boolean {
   const token = url.searchParams.get('license');
   if (!token) return false;
   localStorage.setItem(tokenKey, token);
+  localStorage.removeItem(verdictKey);
   url.searchParams.delete('license');
   history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`);
   return true;

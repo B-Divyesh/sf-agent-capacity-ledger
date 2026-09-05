@@ -60,10 +60,12 @@ export function daysUntil(date: string): number {
 }
 
 export function runoutDays(source: Source): number {
+  if (remaining(source) === 0) return 0;
   return source.dailyPace > 0 ? remaining(source) / source.dailyPace : Number.POSITIVE_INFINITY;
 }
 
 export function risk(source: Source): 'At risk' | 'Watch' | 'On track' {
+  if (remaining(source) === 0) return 'At risk';
   const margin = runoutDays(source) - daysUntil(source.resetsOn);
   if (margin < 0) return 'At risk';
   if (margin < 3) return 'Watch';

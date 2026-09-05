@@ -1,6 +1,6 @@
 # Landing copy audit
 
-Audited 2026-08-28. Counts treat numbers and hyphenated forms as one word. No line exceeds 22 words. No line contains: leverage, seamless, effortless, robust, powerful, intuitive, reimagine, supercharge, unlock, delightful, journey, ecosystem, or AI-powered.
+Audited 2026-09-05. Counts treat numbers and hyphenated forms as one word. No line exceeds 22 words. No line contains: leverage, seamless, effortless, robust, powerful, intuitive, reimagine, supercharge, unlock, delightful, journey, ecosystem, or AI-powered.
 
 | Landing line | Words | Flag |
 | --- | ---: | --- |
@@ -8,16 +8,15 @@ Audited 2026-08-28. Counts treat numbers and hyphenated forms as one word. No li
 | Demo | 1 | — |
 | Ledger | 1 | — |
 | Privacy | 1 | — |
-| A shared watch for paid agent limits | 7 | — |
+| Team capacity ledger | 3 | — |
 | Plan agent capacity before limits stop work | 7 | — |
 | For small engineering teams juggling coding subscriptions, project spend, and approved backup tools. | 12 | — |
 | Try it with sample data | 5 | — |
 | See a filled team ledger next. | 6 | — |
-| No prompts collected | 3 | — |
+| No prompts or credentials | 4 | — |
 | CSV import and export | 4 | — |
-| $9 per team each month | 5 | — |
-| Each source is finite. | 4 | — |
-| The ledger watches the reset horizon. | 6 | — |
+| $79 per team each month | 5 | — |
+| Each source has a limit and a reset date. | 9 | — |
 | Live preview | 2 | — |
 | See the interruption before it happens | 6 | — |
 | At risk | 2 | — |
@@ -32,22 +31,22 @@ Audited 2026-08-28. Counts treat numbers and hyphenated forms as one word. No li
 | Choose where work may move without sharing accounts or credentials. | 9 | — |
 | Attribute project spend | 3 | — |
 | Record costs by project, then export the full ledger as CSV. | 10 | — |
-| Clear boundaries | 2 | — |
-| Capacity planning, not limit bypassing | 5 | — |
+| Product boundaries | 2 | — |
+| Plan capacity without bypassing limits | 5 | — |
 | The ledger does not proxy models, collect prompts, store vendor credentials, or encourage account sharing. | 14 | — |
 | Forecasts use the limits and pace your team enters. | 9 | — |
 | Every forecast is labeled as an estimate. | 7 | — |
 | Team plan | 2 | — |
-| Track every paid source for $9 a month | 8 | — |
+| Track every paid source for $79 a month | 8 | — |
 | Free ledgers hold three sources. | 5 | — |
-| The $9 team plan is not available to buy yet, so no checkout link is shown. | 15 | — |
+| Team checkout needs Sociobot product registration, so it is not available today. | 12 | — |
 | The free ledger, CSV export, and private workspace links remain available. | 11 | — |
 | Plan paid agent capacity before limits stop work. | 8 | — |
 | Terms | 1 | — |
 | Built by Param Factory | 4 | — |
 | Generated artwork | 2 | — |
 
-Average sentence or phrase length: 5.5 words. The first screen reads in one breath: it names the job, the team, and the demo action.
+Average sentence or phrase length: 5.8 words. The first screen names the job, the team, and the sample action in one breath.
 
 ## Terminology table
 

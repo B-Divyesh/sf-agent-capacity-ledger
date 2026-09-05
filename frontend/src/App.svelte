@@ -325,10 +325,15 @@
     if (!licenseToken.trim()) { licenseMessage = 'Paste a license token first.'; return; }
     setLicense(licenseToken);
     licenseMessage = 'Checking the license…';
+    await refreshLicense(true);
+  }
+
+  async function refreshLicense(force = false) {
     try {
-      licensed = await verifyLicense(true);
-      licenseMessage = licensed ? 'Team plan active on this device.' : 'This license is not active. Check the token or buy a new plan.';
+      licensed = await verifyLicense(force);
+      licenseMessage = licensed ? 'Team plan active on this device.' : 'This license is not active. Paste a current token and verify it again.';
     } catch {
+      licensed = false;
       licenseMessage = 'The license could not be checked. Check the connection and try again.';
     }
   }
@@ -340,7 +345,8 @@
 
   onMount(() => {
     updateMeta();
-    if (storeLicenseFromUrl()) licenseMessage = 'License received. Checking it now.';
+    const returnedLicense = storeLicenseFromUrl();
+    if (returnedLicense) licenseMessage = 'License received. Checking it now.';
     if (route === '/ledger') void loadRealLedger();
     if (route === '/demo') ledger = sampleLedger();
     window.addEventListener('popstate', () => {
@@ -352,7 +358,7 @@
     window.addEventListener('online', () => { online = true; if (route === '/ledger') void save(); });
     window.addEventListener('offline', () => { online = false; saveState = 'offline'; statusMessage = 'Offline. Changes stay on this device until you reconnect.'; });
     if (localStorage.getItem('sb_license:agent-capacity-ledger')) {
-      verifyLicense().then((value) => licensed = value).catch(() => undefined);
+      void refreshLicense(returnedLicense);
     }
   });
 </script>
@@ -386,7 +392,7 @@
   {#if route === '/'}
     <section class="hero">
       <div class="hero-copy">
-        <p class="eyebrow">A shared watch for paid agent limits</p>
+        <p class="eyebrow">Team capacity ledger</p>
         <h1 tabindex="-1">Plan agent capacity before limits stop work</h1>
         <p class="lede">For small engineering teams juggling coding subscriptions, project spend, and approved backup tools.</p>
         <div class="hero-actions">
@@ -394,9 +400,9 @@
           <span>See a filled team ledger next.</span>
         </div>
         <ul class="plain-facts" aria-label="Product facts">
-          <li>No prompts collected</li>
+          <li>No prompts or credentials</li>
           <li>CSV import and export</li>
-          <li>$9 per team each month</li>
+          <li>$79 per team each month</li>
         </ul>
       </div>
       <figure class="hero-art">
@@ -404,7 +410,7 @@
           <source media="(max-width: 720px)" srcset="/assets/capacity-observatory-720.webp" />
           <img src="/assets/capacity-observatory-1200.webp" width="1200" height="800" fetchpriority="high" alt="An observatory measures three finite reservoirs before their channels run dry." />
         </picture>
-        <figcaption>Each source is finite. The ledger watches the reset horizon.</figcaption>
+        <figcaption>Each source has a limit and a reset date.</figcaption>
       </figure>
     </section>
 
@@ -427,14 +433,14 @@
     </section>
 
     <section class="boundaries" aria-labelledby="boundaries-title">
-      <div><p class="eyebrow">Clear boundaries</p><h2 id="boundaries-title">Capacity planning, not limit bypassing</h2></div>
+      <div><p class="eyebrow">Product boundaries</p><h2 id="boundaries-title">Plan capacity without bypassing limits</h2></div>
       <div><p>The ledger does not proxy models, collect prompts, store vendor credentials, or encourage account sharing.</p><p>Forecasts use the limits and pace your team enters. Every forecast is labeled as an estimate.</p></div>
     </section>
 
     <section class="pricing" aria-labelledby="price-title">
       <p class="eyebrow">Team plan</p>
-      <h2 id="price-title">Track every paid source for $9 a month</h2>
-      <p>Free ledgers hold three sources. The $9 team plan is not available to buy yet, so no checkout link is shown.</p>
+      <h2 id="price-title">Track every paid source for $79 a month</h2>
+      <p>Free ledgers hold three sources. Team checkout needs Sociobot product registration, so it is not available today.</p>
       <p class="fine-print">The free ledger, CSV export, and private workspace links remain available.</p>
     </section>
   {:else if route === '/demo' || route === '/ledger'}
@@ -442,7 +448,7 @@
       <div class="app-heading">
         <div>
           <p class="eyebrow">{route === '/demo' ? 'Sample workspace' : 'Team workspace'}</p>
-          <h1 tabindex="-1">Watch capacity and route work early</h1>
+          <h1 tabindex="-1">Track capacity and plan fallback work</h1>
           <p>{ledger.teamName} · forecasts are estimates</p>
         </div>
         <div class="app-actions">
@@ -476,9 +482,9 @@
       </section>
 
       <section class="ledger-section" aria-labelledby="sources-title">
-        <div class="section-toolbar"><div><p class="eyebrow">Capacity watch</p><h2 id="sources-title">Paid sources</h2></div></div>
+        <div class="section-toolbar"><div><p class="eyebrow">Capacity status</p><h2 id="sources-title">Paid sources</h2></div></div>
         {#if ledger.sources.length === 0}
-          <div class="empty-state"><span class="empty-orbit" aria-hidden="true"></span><h3>No sources to watch yet</h3><p>Your vendor limits and reset forecasts will appear here.</p><button class="primary-button" on:click={() => openSourceForm()}>Add your first source</button></div>
+          <div class="empty-state"><span class="empty-orbit" aria-hidden="true"></span><h3>No paid sources yet</h3><p>Your vendor limits and reset forecasts will appear here.</p><button class="primary-button" on:click={() => openSourceForm()}>Add your first source</button></div>
         {:else}
           <div class="source-list">
             {#each ledger.sources as source, index (source.id)}
@@ -487,7 +493,13 @@
                   <div class="source-title"><span class:at-risk={risk(source) === 'At risk'} class:watch={risk(source) === 'Watch'} class="status">{risk(source)}</span><h3>{source.vendor}</h3><span>{source.plan}</span></div>
                   <div class="capacity-line"><span><strong>{remaining(source)}</strong> of {source.limit} sessions left</span><span>Reset in {daysUntil(source.resetsOn)} days</span></div>
                   <div class="capacity-bar"><progress max={source.limit} value={remaining(source)} aria-label={`${Math.round(remaining(source) / source.limit * 100)} percent capacity remaining`}>{Math.round(remaining(source) / source.limit * 100)}%</progress></div>
-                  <p class="forecast-note">At {source.dailyPace} sessions a day, this source lasts about {Number.isFinite(runoutDays(source)) ? Math.floor(runoutDays(source)) : '∞'} days. Estimate.</p>
+                  {#if remaining(source) === 0}
+                    <p class="forecast-note">No sessions remain before reset. Estimate.</p>
+                  {:else if source.dailyPace === 0}
+                    <p class="forecast-note">Daily pace is zero, so no runout date is estimated.</p>
+                  {:else}
+                    <p class="forecast-note">At {source.dailyPace} sessions a day, this source lasts about {Math.floor(runoutDays(source))} days. Estimate.</p>
+                  {/if}
                   {#if source.notes}<p class="source-notes">{source.notes}</p>{/if}
                 </div>
                 <div class="source-controls">
@@ -518,7 +530,7 @@
 
       {#if route === '/ledger'}
         <section class="license-panel" aria-labelledby="license-title">
-          <div><p class="eyebrow">Team plan</p><h2 id="license-title">{licensed ? 'Team plan active' : 'Add more than three sources'}</h2><p>{licensed ? 'This device can use the team source limit.' : '$9 per team each month. Checkout is not available yet. CSV export and three sources stay free.'}</p></div>
+          <div><p class="eyebrow">Team plan</p><h2 id="license-title">{licensed ? 'Team plan active' : 'Add more than three sources'}</h2><p>{licensed ? 'This device can use the team source limit.' : '$79 per team each month. Team checkout is not available today. CSV export and three sources stay free.'}</p></div>
           {#if !licensed}<div class="license-actions"><label for="license-token">Have a license? Paste it<input id="license-token" bind:value={licenseToken} autocomplete="off" /></label><button class="secondary-button" on:click={restoreLicense}>Verify license</button></div>{/if}
           {#if licenseMessage}<p class="license-message" role="status">{licenseMessage}</p>{/if}
         </section>
@@ -530,7 +542,7 @@
       <p>Agent Capacity Ledger stores the capacity details you enter. It never asks for prompts, code, vendor passwords, or API keys.</p>
       <h2>What the service stores</h2><p>The server stores your workspace identifier, source limits, reset dates, fallback choices, project names, costs, and update time. Your browser keeps a matching copy for offline edits.</p><p>Anyone with a private workspace link can view and edit that ledger. Share the link only with your team.</p>
       <h2>Demo data</h2><p>The demo runs in memory. It does not read or write your real workspace.</p>
-      <h2>Licenses</h2><p>Your browser stores a license token when you paste one. It sends that token to Sociobot for verification no more than once a day. Checkout is not available yet.</p>
+      <h2>Licenses</h2><p>Your browser stores a license token when you paste one. It sends that token to Sociobot for verification no more than once a day. Team checkout is not available today.</p>
       <h2>Deletion</h2><p>Email <a href="mailto:privacy@sociobot.in">privacy@sociobot.in</a> with your workspace identifier to request deletion.</p>
     </article>
   {:else if route === '/terms'}
@@ -538,7 +550,7 @@
       <p class="eyebrow">Last updated 28 August 2026</p><h1 tabindex="-1">Terms for honest capacity planning</h1>
       <p>Use this service to plan work within each vendor’s rules. Do not use it to share accounts, bypass limits, or store credentials.</p>
       <h2>Forecasts are estimates</h2><p>Forecasts depend on the limits, reset dates, and pace you enter. Confirm critical capacity decisions with the vendor.</p>
-      <h2>Team plan</h2><p>The team plan is $9 each month when checkout is available. It is not available to buy yet. Existing licenses can still be verified.</p>
+      <h2>Team plan</h2><p>The team plan is $79 per team each month. Team checkout needs Sociobot product registration. Existing licenses can still be verified.</p>
       <h2>Your data</h2><p>You are responsible for team names, project names, costs, and vendor readings you enter. Do not add confidential prompts or source code.</p>
       <h2>Availability</h2><p>The service is provided as available. Export your ledger before a critical planning event.</p>
     </article>

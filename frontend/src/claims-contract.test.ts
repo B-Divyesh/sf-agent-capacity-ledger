@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -9,10 +9,10 @@ describe('public claim contract', () => {
   it('has exactly one tagged browser test for every listed claim', () => {
     const root = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
     const claims = JSON.parse(readFileSync(resolve(root, '.factory/claims.json'), 'utf8')) as Claim[];
-    const browserTests = [
-      readFileSync(resolve(root, 'tests/claims.spec.ts'), 'utf8'),
-      readFileSync(resolve(root, 'tests/site.spec.ts'), 'utf8'),
-    ].join('\n');
+    const browserTests = readdirSync(resolve(root, 'tests'))
+      .filter(file => file.endsWith('.spec.ts'))
+      .map(file => readFileSync(resolve(root, 'tests', file), 'utf8'))
+      .join('\n');
     const ids = claims.map(({ id }) => id);
     expect(new Set(ids).size).toBe(ids.length);
     for (const claim of claims) {
