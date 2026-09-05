@@ -1,5 +1,59 @@
 # Agent Capacity Ledger handoff
 
+## Venture planning handoff — 2026-09-05
+
+Work order: `agent-capacity-ledger-plan-1`
+
+Reviewed source/live SHA: `2e7b32ecb113b44e892417b035c968fc0704ac37`
+
+Code changes: none
+
+### Milestone decision
+
+- **M1 — capacity forecast wedge: ACCEPTED.** The accepted boundary is an anonymous, pilot-grade capability workspace with manual/generic CSV readings, labeled forecasts, isolated sample data, reconnect recovery, durable single-replica persistence, and export.
+- **M2 — accounts, tenant isolation, and paid subscription: NEXT.** Sign-in, authenticated teams, authorization isolation, and a working subscription are not current capabilities.
+- **M3 — approved handoffs and cost reconciliation: PLANNED.** The current fallback selector and manual spend rows are useful demonstrations, but they do not yet prove policy approval/history or reconciliation against total subscription cost.
+
+The controlling contract is [`.factory/plan.md`](plan.md). It records the PRD, architecture, data boundaries, design system, M1–M3 definitions of done, claims/tests, risks, and external dependencies.
+
+### Planner verification
+
+Fresh local checks on the reviewed source:
+
+- `npm ci`: pass, 0 vulnerabilities.
+- `npm test`: pass, 8 frontend tests and 6 Rust tests.
+- `npm run check`: pass, 0 errors and 0 warnings.
+- `npm run build`: pass; `dist/` produced, JS 26.98 KB gzip and CSS 4.57 KB gzip.
+- `cargo fmt --check`: pass.
+- `cargo clippy --all-targets -- -D warnings`: pass.
+- `cargo build --release`: pass.
+- `npm run test:e2e`: pass, 36/36 Chromium tests, including all 20 tagged claims.
+- `./verify-url.sh https://agent-capacity-ledger.sociobot.in`: pass.
+
+Fresh live checks against build `2e7b32ec…`:
+
+- `/`, `/demo`, `/ledger`, `/privacy`, and `/terms` each had one `<h1>`, one `<main>`, no 390 px overflow, no console/page errors, and no serious/critical Playwright axe finding.
+- One click opened three sample sources and four sample spend entries; the persistent demo banner exposed reset and exit, and exiting showed an empty real workspace.
+- A unique real ledger write returned 200; 30 reads from distinct synthetic clients returned the exact saved body; a second unique workspace remained empty.
+- An offline browser edit showed its queued state, saved after reconnect, and was present in a direct API read.
+- An exhausted source with zero daily pace displayed **At risk**, with no infinity text.
+- Ledger reads sent `Cache-Control: private, no-store`.
+- A 60-request same-client burst returned 10 HTTP 200 and 50 HTTP 429; every 429 had `Retry-After`.
+- The Sociobot checkout endpoint returned HTTP 404 with an unavailable-product response. No checkout, payment, or subscription was treated as implemented.
+
+The prior repair handoff below supplies the product-scoped live restart/redeploy persistence evidence and Lighthouse result. Historical independent verification files describe older failed SHAs; their closed findings and the remaining billing dependency are reconciled in the plan.
+
+### Pending work preserved
+
+1. Factory/operator must register the recurring $79/month Sociobot test/live product before M2 can verify checkout. A product worker must not request payment-provider credentials.
+2. Factory/operator must configure product-scoped Sociobot Entra CIAM metadata/redirects before M2 can verify sign-in. Sign-in and tenant isolation are currently absent.
+3. M2 must replace bearer workspace authority with server-derived team membership, enforce entitlement on the backend, handle concurrent writes, and prove export/delete plus a product-scoped backup restore.
+4. The current license tests use recorded responses; the local cached source-cap state is not payment proof and is bypassable.
+5. Messaging, HMRC, vendor API sync, and AI are not implemented or required through M3.
+6. This planner could not run an exact Docker image build because Docker is not present; preserve that check for the next container-capable verifier. The release binary and production build passed.
+
+## Previous repair handoff
+
 Work order: `agent-capacity-ledger-repair-3`
 Completed: 2026-09-05 UTC
 Live URL: <https://agent-capacity-ledger.sociobot.in>
